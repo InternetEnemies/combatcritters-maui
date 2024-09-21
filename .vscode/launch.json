@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Run Mac Catalyst",
+        "type": "coreclr",
+        "request": "launch",
+        "preLaunchTask": "build-maccatalyst",
+        "program": "${workspaceFolder}/bin/Debug/net8.0-maccatalyst/Combat-Critters_2.0.app/Contents/MacOS/Combat-Critters_2.0",
+        "args": [],
+        "cwd": "${workspaceFolder}",
+        "stopAtEntry": false,
+        "console": "internalConsole",
+        "internalConsoleOptions": "openOnSessionStart"
+      }
+    ]
+  }

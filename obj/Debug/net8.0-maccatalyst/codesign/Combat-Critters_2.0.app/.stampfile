@@ -1,0 +1,1 @@
+-v --force --timestamp=none --sign - --entitlements /Users/somto/Desktop/University/FINAL_SEMESTER/Combat-Critters_2.0/obj/Debug/net8.0-maccatalyst/Entitlements.xcent /Users/somto/Desktop/University/FINAL_SEMESTER/Combat-Critters_2.0/bin/Debug/net8.0-maccatalyst/Combat-Critters_2.0.app
