@@ -5,7 +5,7 @@ AreAnyAssembliesTrimmed=false
 				AOTOutputDirectory=obj/Debug/net8.0-maccatalyst/maccatalyst-arm64/nativelibraries/aot-output/
 				DedupAssembly=obj/Debug/net8.0-maccatalyst/maccatalyst-arm64/aot-instances.dll
 				AppBundleManifestPath=bin/Debug/net8.0-maccatalyst/maccatalyst-arm64/Combat-Critters_2.0.app/Contents/Info.plist
-				CacheDirectory=/Users/somto/Desktop/University/FINAL_SEMESTER/Combat-Critters_2.0/obj/Debug/net8.0-maccatalyst/maccatalyst-arm64/linker-cache
+				CacheDirectory=/Users/somto/Documents/GitHub/idafum/combatcritters-maui/obj/Debug/net8.0-maccatalyst/maccatalyst-arm64/linker-cache
 				
 				Debug=true
 				DeploymentTarget=13.1
@@ -185,7 +185,7 @@ FrameworkAssembly=System.Private.CoreLib
 				IntermediateLinkDir=obj/Debug/net8.0-maccatalyst/maccatalyst-arm64/linked/
 				InvariantGlobalization=false
 				HybridGlobalization=false
-				ItemsDirectory=/Users/somto/Desktop/University/FINAL_SEMESTER/Combat-Critters_2.0/obj/Debug/net8.0-maccatalyst/maccatalyst-arm64/linker-items
+				ItemsDirectory=/Users/somto/Documents/GitHub/idafum/combatcritters-maui/obj/Debug/net8.0-maccatalyst/maccatalyst-arm64/linker-items
 				IsAppExtension=false
 				IsSimulatorBuild=False
 				LibMonoLinkMode=static

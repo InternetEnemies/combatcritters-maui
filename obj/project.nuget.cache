@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "z+y025etdzY=",
+  "dgSpecHash": "xAMxGu70ET4=",
   "success": true,
-  "projectFilePath": "/Users/somto/Desktop/University/FINAL_SEMESTER/Combat-Critters_2.0/Combat-Critters_2.0.csproj",
+  "projectFilePath": "/Users/somto/Documents/GitHub/idafum/combatcritters-maui/Combat-Critters_2.0.csproj",
   "expectedPackageFiles": [
     "/Users/somto/.nuget/packages/microsoft.extensions.configuration/8.0.0/microsoft.extensions.configuration.8.0.0.nupkg.sha512",
     "/Users/somto/.nuget/packages/microsoft.extensions.configuration.abstractions/8.0.0/microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Combat-Critters_2.0")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+4af107a079790a830c6d7f11a538a33c656a95e4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+185a97340423c73c6a5521105085b6aec25d77bd")]
 [assembly: System.Reflection.AssemblyProductAttribute("Combat-Critters_2.0")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Combat-Critters_2.0")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

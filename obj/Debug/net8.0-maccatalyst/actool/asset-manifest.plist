@@ -6,9 +6,9 @@
 	<dict>
 		<key>output-files</key>
 		<array>
-			<string>/Users/somto/Desktop/University/FINAL_SEMESTER/Combat-Critters_2.0/obj/Debug/net8.0-maccatalyst/actool/bundle/Assets.car</string>
-			<string>/Users/somto/Desktop/University/FINAL_SEMESTER/Combat-Critters_2.0/obj/Debug/net8.0-maccatalyst/actool/bundle/appicon.icns</string>
-			<string>/Users/somto/Desktop/University/FINAL_SEMESTER/Combat-Critters_2.0/obj/Debug/net8.0-maccatalyst/actool/partial-info.plist</string>
+			<string>/Users/somto/Documents/GitHub/idafum/combatcritters-maui/obj/Debug/net8.0-maccatalyst/actool/bundle/Assets.car</string>
+			<string>/Users/somto/Documents/GitHub/idafum/combatcritters-maui/obj/Debug/net8.0-maccatalyst/actool/bundle/appicon.icns</string>
+			<string>/Users/somto/Documents/GitHub/idafum/combatcritters-maui/obj/Debug/net8.0-maccatalyst/actool/partial-info.plist</string>
 		</array>
 	</dict>
 </dict>

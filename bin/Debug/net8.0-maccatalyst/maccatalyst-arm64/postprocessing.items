@@ -8,9 +8,9 @@
       <dSYMSourcePathExists>false</dSYMSourcePathExists>
       <NoSymbolStrip>true</NoSymbolStrip>
       <dSYMInfoPlistRelativePath>Combat-Critters_2.0.app.dSYM\Contents\Info.plist</dSYMInfoPlistRelativePath>
-      <SymbolFile>/Users/somto/Desktop/University/FINAL_SEMESTER/Combat-Critters_2.0/obj/Debug/net8.0-maccatalyst/mtouch-symbols-maccatalyst-arm64.list</SymbolFile>
+      <SymbolFile>/Users/somto/Documents/GitHub/idafum/combatcritters-maui/obj/Debug/net8.0-maccatalyst/mtouch-symbols-maccatalyst-arm64.list</SymbolFile>
       <DSymName>Combat-Critters_2.0.app.dSYM</DSymName>
-      <SourceProjectPath>/Users/somto/Desktop/University/FINAL_SEMESTER/Combat-Critters_2.0</SourceProjectPath>
+      <SourceProjectPath>/Users/somto/Documents/GitHub/idafum/combatcritters-maui</SourceProjectPath>
       <IsXPCService></IsXPCService>
     </_PostProcessingItem>
   </ItemGroup>

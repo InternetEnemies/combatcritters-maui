@@ -12,35 +12,35 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Combat_Critters_2._0
-build_property.ProjectDir = /Users/somto/Desktop/University/FINAL_SEMESTER/Combat-Critters_2.0/
+build_property.ProjectDir = /Users/somto/Documents/GitHub/idafum/combatcritters-maui/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 
-[/Users/somto/Desktop/University/FINAL_SEMESTER/Combat-Critters_2.0/App.xaml]
+[/Users/somto/Documents/GitHub/idafum/combatcritters-maui/App.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = Combat_Critters_2._0.App.xaml
 build_metadata.AdditionalFiles.TargetPath = App.xaml
 build_metadata.AdditionalFiles.RelativePath = App.xaml
 
-[/Users/somto/Desktop/University/FINAL_SEMESTER/Combat-Critters_2.0/AppShell.xaml]
+[/Users/somto/Documents/GitHub/idafum/combatcritters-maui/AppShell.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = Combat_Critters_2._0.AppShell.xaml
 build_metadata.AdditionalFiles.TargetPath = AppShell.xaml
 build_metadata.AdditionalFiles.RelativePath = AppShell.xaml
 
-[/Users/somto/Desktop/University/FINAL_SEMESTER/Combat-Critters_2.0/MainPage.xaml]
+[/Users/somto/Documents/GitHub/idafum/combatcritters-maui/MainPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = Combat_Critters_2._0.MainPage.xaml
 build_metadata.AdditionalFiles.TargetPath = MainPage.xaml
 build_metadata.AdditionalFiles.RelativePath = MainPage.xaml
 
-[/Users/somto/Desktop/University/FINAL_SEMESTER/Combat-Critters_2.0/Resources/Styles/Colors.xaml]
+[/Users/somto/Documents/GitHub/idafum/combatcritters-maui/Resources/Styles/Colors.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = Combat_Critters_2._0.Resources.Styles.Colors.xaml
 build_metadata.AdditionalFiles.TargetPath = Resources/Styles/Colors.xaml
 build_metadata.AdditionalFiles.RelativePath = Resources/Styles/Colors.xaml
 
-[/Users/somto/Desktop/University/FINAL_SEMESTER/Combat-Critters_2.0/Resources/Styles/Styles.xaml]
+[/Users/somto/Documents/GitHub/idafum/combatcritters-maui/Resources/Styles/Styles.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = Combat_Critters_2._0.Resources.Styles.Styles.xaml
 build_metadata.AdditionalFiles.TargetPath = Resources/Styles/Styles.xaml
