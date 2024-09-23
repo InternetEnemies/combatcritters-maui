@@ -38,27 +38,21 @@ Before you begin, ensure you have the following installed
     dotnet restore
    ```
 
-3. Building the Project
+3. Install Mac Catalyst Workload
+
+   ```
+   dotnet workload install maccatalyst
+   ```
+
+4. Building the Project
 
    ```
    dotnet build -f net8.0-maccatalyst
    ```
 
-4. Running the Project
+5. Running the Project
    ```
    dotnet run -f net8.0-maccatalyst
    ```
 
 You can also run and debug the project from Visual Studio Code by using the built-in terminal or setting up a debug configuration in the launch.json file.
-
-## Development
-
-The project supports both Apple Silicon (arm64) and intel-based (x64) Macs. You can configure and run the project based on the architecture of your device.
-
-For Apple Silicon (M1/M2 chips):
-`    dotnet run -f net8.0-maccatalyst --arch arm64
-   `
-
-For Intel Macs:
-`    dotnet run -f net8.0-maccatalyst --arch x64
-   `
