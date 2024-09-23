@@ -22,6 +22,8 @@ jobs:
         dotnet-version: 8.0.x
     - name: Restore dependencies
       run: dotnet restore
+    - name: Restore Workload
+      run: dotnet workload restore
     - name: Build
       run: dotnet build --no-restore
     - name: Test
