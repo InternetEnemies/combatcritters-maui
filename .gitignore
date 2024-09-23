@@ -1,20 +1,20 @@
-#Ignore Visual Studio Code settings
+# Ignore Visual Studio Code settings
 .vscode/
 
-#Ignore build output and intermediate files
+# Ignore build output and intermediate files
 bin/
 obj/
 platforms/
 
-#Ignore user-specific files
+# Ignore user-specific files
 *.user
 *.Studio
 *.userosscache
 *.sln.docstates
 
-#Ignore logs and temporary files
-*.logs
-*.temporary
+# Ignore logs and temporary files
+*.log
+*.tmp
 
-#Ignore MacOs system files
-.DS Store
+# Ignore MacOS system files
+.DS_Store
