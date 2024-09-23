@@ -5,7 +5,6 @@
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)
 - [Setup](#setup)
-- [Development](#development)
 
 ## Overview
 
