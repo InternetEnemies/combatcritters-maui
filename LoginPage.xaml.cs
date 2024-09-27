@@ -19,8 +19,8 @@ public partial class LoginPage : ContentPage
     }
 
     // Create Account button Click handler
-    private void OnCreateAccountClicked(object sender, EventArgs e)
+    private async void OnCreateAccountClicked(object sender, EventArgs e)
     {
-        // What happend when a user tries to create a new account
+        await Navigation.PushAsync(new CreateAccountPage());
     }
 }
