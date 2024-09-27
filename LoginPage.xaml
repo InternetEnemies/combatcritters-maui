@@ -1,0 +1,69 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Combat_Critters_2._0.LoginPage"
+             Title="Login">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0"
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
+              BackgroundColor="Green">
+            <Label
+                Text="Combat Critters Manager"
+                FontSize="42"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                TextColor="Black"/>
+        </Grid>
+
+        <StackLayout Grid.Row="1"
+                     Grid.Column="0"
+                     Padding="20"
+                     Spacing="10"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Fill">
+
+            <Entry x:Name="username"
+                   Placeholder="Username"/>
+            <Entry x:Name="password"
+                   Placeholder="Password"
+                   IsPassword="True"/>
+            <Button Text="Login"
+                    Clicked="OnLoginClicked"/>
+            <Button Text="Create Account"
+                    Clicked="OnCreateAccountClicked"/>
+        </StackLayout>
+
+        <ContentView Grid.Row="1"
+                     Grid.Column="1"
+                     Padding="20">
+            <Image
+                Source="loginpageimage.jpeg"
+                Aspect="AspectFit"/>
+        </ContentView>
+
+        <Grid Grid.Row="2"
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
+              BackgroundColor="Black">
+            <Label
+                Text="Internet Enemies Production"
+                FontSize="24"
+                TextColor="White"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"/>
+        </Grid>
+    </Grid>
+
+
+</ContentPage>
