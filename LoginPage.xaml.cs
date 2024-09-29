@@ -12,8 +12,8 @@ public partial class LoginPage : ContentPage
     private void OnLoginClicked(object sender, EventArgs eventArgs)
     {
         //What happens when a user tries to login
-        string userName = username.Text;
-        string userPassword = password.Text;
+        // string userName = username.Text;
+        // string userPassword = password.Text;
 
         //Do something.
     }

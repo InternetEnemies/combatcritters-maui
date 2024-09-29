@@ -2,67 +2,80 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.LoginPage"
              Title="Login">
+
+    <!-- Grid Layout -->
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0"
+                                 EndPoint="1,1">
+                <GradientStop Color="#100303"
+                              Offset="0.0"/>
+                <GradientStop Color="#95389E"
+                              Offset="0.5"/>
+                <GradientStop Color="#100303"
+                              Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <!--Grid definitions-->
+        <!-- Row Definitions for Header, Body, and Footer -->
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="6*"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
-        <Grid Grid.Row="0"
-              Grid.Column="0"
-              Grid.ColumnSpan="2"
-              BackgroundColor="Green">
+        <!--Header-->
+        <Frame Style="{StaticResource LogoFrameStyle}"
+               Grid.Row="0"
+               HorizontalOptions="Center"
+               VerticalOptions="Center">
             <Label
                 Text="Combat Critters Manager"
-                FontSize="42"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                TextColor="Black"/>
-        </Grid>
-
-        <StackLayout Grid.Row="1"
-                     Grid.Column="0"
-                     Padding="20"
-                     Spacing="10"
-                     VerticalOptions="Center"
-                     HorizontalOptions="Fill">
-
-            <Entry x:Name="username"
-                   Placeholder="Username"/>
-            <Entry x:Name="password"
-                   Placeholder="Password"
-                   IsPassword="True"/>
-            <Button Text="Login"
-                    Clicked="OnLoginClicked"/>
-            <Button Text="Create Account"
-                    Clicked="OnCreateAccountClicked"/>
-        </StackLayout>
-
-        <ContentView Grid.Row="1"
-                     Grid.Column="1"
-                     Padding="20">
-            <Image
-                Source="loginpageimage.jpeg"
-                Aspect="AspectFit"/>
-        </ContentView>
-
-        <Grid Grid.Row="2"
-              Grid.Column="0"
-              Grid.ColumnSpan="2"
-              BackgroundColor="Black">
-            <Label
-                Text="Internet Enemies Production"
-                FontSize="24"
-                TextColor="White"
+                Style="{StaticResource LogoTextStyle}"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"/>
-        </Grid>
+        </Frame>
+
+        <!-- Form Body -->
+        <Frame Grid.Row="1"
+               Style="{StaticResource FormStyle}">
+
+            <StackLayout Spacing="15"
+                         HorizontalOptions="Fill">
+                <Entry x:Name="username"
+                       Placeholder="Enter Username"
+                       Style="{StaticResource FormEntryStyle}"/>
+
+                <Entry x:Name="password"
+                       Placeholder="Enter Password"
+                       IsPassword="True"
+                       Style="{StaticResource FormEntryStyle}"/>
+
+                <HorizontalStackLayout Spacing="15">
+                    <Button
+                        Text="Login"
+                        Style="{StaticResource ButtonStyle}"
+                        Clicked="OnLoginClicked"/>
+
+                    <Button
+                        Text="Create Account"
+                        Style="{StaticResource ButtonStyle}"
+                        Clicked="OnCreateAccountClicked"/>
+                </HorizontalStackLayout>
+            </StackLayout>
+
+        </Frame>
+
+        <!-- Footer -->
+        <ContentView Grid.Row="2">
+            <Label
+                Text="An Internet Enemies Game"
+                TextColor="#F7F7F7"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"/>
+        </ContentView>
+
     </Grid>
 
 
