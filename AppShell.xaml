@@ -4,12 +4,29 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Combat_Critters_2._0"
-    Shell.FlyoutBehavior="Disabled"
+    Shell.FlyoutBehavior="Flyout"
     Title="Combat_Critters_2._0">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+
+    <FlyoutItem Title="Profile">
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="MainPage"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Cards">
+        <ShellContent
+            Title="Cards"
+            ContentTemplate="{DataTemplate local:CardPage}"
+            Route="CardsPage"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Decks">
+        <ShellContent
+            Title="Decks"
+            ContentTemplate="{DataTemplate local:DeckPage}"
+            Route="DeckPage"/>
+    </FlyoutItem>
 
 </Shell>

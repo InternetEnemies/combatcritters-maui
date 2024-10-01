@@ -9,13 +9,26 @@ public partial class LoginPage : ContentPage
     }
 
     // Login button click handler
-    private void OnLoginClicked(object sender, EventArgs eventArgs)
+    private async void OnLoginClicked(object sender, EventArgs eventArgs)
     {
         //What happens when a user tries to login
-        // string userName = username.Text;
-        // string userPassword = password.Text;
+        string userName = username.Text;
+        string userPassword = password.Text;
 
         //Do something.
+
+        bool loginSuccess = true;
+
+        if (loginSuccess)
+        {
+            //Navigate to dashboard
+            (Application.Current as App).NavigateToDashboard();
+        }
+        else
+        {
+            //Show Login error
+            await DisplayAlert("Error", "Invalid username or password", "OK");
+        }
     }
 
     // Create Account button Click handler
