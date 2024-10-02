@@ -81,6 +81,71 @@
                         Value="50"/>
         </Style>
 
+
+        <Style x:Key="CardFrameStyle"
+                        TargetType="Frame">
+                <Setter Property="WidthRequest"
+                                Value="204"/>
+                <Setter Property="HeightRequest"
+                                Value="300"/>
+                <Setter Property="BorderColor"
+                                Value="Black"/>
+                <Setter Property="CornerRadius"
+                                Value="8"/>
+                <Setter Property="Margin"
+                                Value="10"/>
+
+        </Style>
+        <!-- Common Gradient -->
+        <LinearGradientBrush x:Key="CommonGradient"
+                             StartPoint="0,0"
+                             EndPoint="1,1">
+                <GradientStop Color="#2F2F2F"
+                              Offset="0.0"/>
+                <GradientStop Color="#959595"
+                              Offset="1.0"/>
+        </LinearGradientBrush>
+
+        <!-- Uncommon Gradient -->
+        <LinearGradientBrush x:Key="UncommonGradient"
+                             StartPoint="0,0"
+                             EndPoint="0,1">
+                <GradientStop Color="#01330D"
+                              Offset="0.0"/>
+                <GradientStop Color="#62CB3F"
+                              Offset="1.0"/>
+        </LinearGradientBrush>
+
+        <!-- Rare Gradient -->
+        <LinearGradientBrush x:Key="RareGradient"
+                             StartPoint="0,0"
+                             EndPoint="0,1">
+                <GradientStop Color="#002479"
+                              Offset="0.0"/>
+                <GradientStop Color="#4B81FF"
+                              Offset="1.0"/>
+        </LinearGradientBrush>
+
+        <!-- Epic Gradient -->
+        <LinearGradientBrush x:Key="EpicGradient"
+                             StartPoint="0,0"
+                             EndPoint="0,1">
+                <GradientStop Color="#600042"
+                              Offset="0.0"/>
+                <GradientStop Color="#FA3CB4"
+                              Offset="1.0"/>
+        </LinearGradientBrush>
+
+        <!-- Legendary Gradient -->
+        <LinearGradientBrush x:Key="LegendaryGradient"
+                             StartPoint="0,0"
+                             EndPoint="0,1">
+                <GradientStop Color="#403902"
+                              Offset="0.0"/>
+                <GradientStop Color="#FCDD00"
+                              Offset="1.0"/>
+        </LinearGradientBrush>
+
         <Style TargetType="ActivityIndicator">
                 <Setter Property="Color"
                         Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}"/>

@@ -3,7 +3,7 @@
     x:Class="Combat_Critters_2._0.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Combat_Critters_2._0"
+    xmlns:pages="clr-namespace:Combat_Critters_2._0.Pages"
     Shell.FlyoutBehavior="Flyout"
     Title="Combat_Critters_2._0">
 
@@ -11,21 +11,21 @@
     <FlyoutItem Title="Profile">
         <ShellContent
             Title="Home"
-            ContentTemplate="{DataTemplate local:MainPage}"
+            ContentTemplate="{DataTemplate pages:MainPage}"
             Route="MainPage"/>
     </FlyoutItem>
 
     <FlyoutItem Title="Cards">
         <ShellContent
             Title="Cards"
-            ContentTemplate="{DataTemplate local:CardPage}"
+            ContentTemplate="{DataTemplate pages:CardPage}"
             Route="CardsPage"/>
     </FlyoutItem>
 
     <FlyoutItem Title="Decks">
         <ShellContent
             Title="Decks"
-            ContentTemplate="{DataTemplate local:DeckPage}"
+            ContentTemplate="{DataTemplate pages:DeckPage}"
             Route="DeckPage"/>
     </FlyoutItem>
 

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Combat_Critters_2._0.Components.Card">
+
+    <AbsoluteLayout>
+        <!-- Background Image -->
+        <Image Source="Resources/Images/CardRarity/rareTexture.svg"
+               Aspect="AspectFill"
+               AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+               AbsoluteLayout.LayoutFlags="All"/>
+
+        <!-- Frame with card content -->
+        <Frame CornerRadius="8"
+               BorderColor="Black"
+               HasShadow="True"
+               Padding="10"
+               AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+               AbsoluteLayout.LayoutFlags="All">
+            <StackLayout>
+                <!-- Image of the card -->
+                <Image Source="{Binding Image}"
+                       HeightRequest="120"
+                       HorizontalOptions="Center"/>
+
+                <!-- Title of the card -->
+                <Label Text="{Binding Name}"
+                       FontSize="18"
+                       FontFamily="{StaticResource mtgBold}"
+                       TextColor="Black"
+                       HorizontalOptions="Center"/>
+
+                <!-- Description of the card -->
+                <Label Text="{Binding Description}"
+                       FontSize="12"
+                       FontFamily="{StaticResource robotoRegular}"
+                       TextColor="Gray"
+                       HorizontalOptions="Center"/>
+            </StackLayout>
+        </Frame>
+    </AbsoluteLayout>
+</ContentView>

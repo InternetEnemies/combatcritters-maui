@@ -1,19 +1,24 @@
-﻿namespace Combat_Critters_2._0;
+﻿using Combat_Critters_2._0.Pages;
 
-public partial class App : Application
+namespace Combat_Critters_2._0
 {
-	public App()
+	public partial class App : Application
 	{
-		InitializeComponent();
+		public App()
+		{
+			InitializeComponent();
 
-		// Set the LoginPage as the first page 
-		MainPage = new NavigationPage(new LoginPage());
+			// Set the LoginPage as the first page 
+			MainPage = new NavigationPage(new LoginPage());
+		}
+
+		//This method is called after a successful login
+		public void NavigateToDashboard()
+		{
+			//This would set the AppShell as the main page
+			MainPage = new AppShell();
+		}
 	}
 
-	//This method is called after a successful login
-	public void NavigateToDashboard()
-	{
-		//This would set the AppShell as the main page
-		MainPage = new AppShell();
-	}
 }
+

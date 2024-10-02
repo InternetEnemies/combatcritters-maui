@@ -1,4 +1,4 @@
-namespace Combat_Critters_2._0
+namespace Combat_Critters_2._0.Pages
 {
     public partial class CreateAccountPage : ContentPage
     {
@@ -8,7 +8,7 @@ namespace Combat_Critters_2._0
         }
 
         // Create Account button Click handler
-        private async void OnCreateAccountClicked(object sender, EventArgs e)
+        private void OnCreateAccountClicked(object sender, EventArgs e)
         {
             //Send info to backend
         }
