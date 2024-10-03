@@ -13,7 +13,7 @@
 		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
 
 		<!-- Other properties -->
-  		<RuntimeIdentifiers>maccatalyst-arm64</RuntimeIdentifiers>
+  		<RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers>
 
 		<OutputType>Exe</OutputType>
 		<RootNamespace>Combat_Critters_2._0</RootNamespace>
