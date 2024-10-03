@@ -1,4 +1,9 @@
 
+/*
+This card model represent individual cards 
+and its properties
+*/
+
 namespace Combat_Critters_2._0.Models
 {
     public class Card
@@ -6,7 +11,7 @@ namespace Combat_Critters_2._0.Models
         // Properties
         public int CardId { get; set; }                   // Unique identifier for the card
         public required string Name { get; set; }                  // Name of the card (Required)
-        public required int PlayCost { get; set; }                 // Cost to play the card (Required)
+        public int PlayCost { get; set; }                 // Cost to play the card (Required)
         public int Rarity { get; set; }                   // Rarity of the card (Required)
         public required string Image { get; set; }                    // Image URI (Required)
         public required string Type { get; set; }                  // Type of card (Required, critter, item, type_specific)

@@ -1,4 +1,5 @@
-﻿using Combat_Critters_2._0.Pages;
+﻿
+using Combat_Critters_2._0.Pages;
 
 namespace Combat_Critters_2._0
 {
@@ -8,17 +9,15 @@ namespace Combat_Critters_2._0
 		{
 			InitializeComponent();
 
-			// Set the LoginPage as the first page 
+			// Set AppShell as the main page for Shell navigation
 			MainPage = new NavigationPage(new LoginPage());
 		}
 
-		//This method is called after a successful login
-		public void NavigateToDashboard()
+		// This method is called after a successful login
+		public void NavigateToAppShell()
 		{
-			//This would set the AppShell as the main page
+			// Set AppShell as the main page after login
 			MainPage = new AppShell();
 		}
 	}
-
 }
-

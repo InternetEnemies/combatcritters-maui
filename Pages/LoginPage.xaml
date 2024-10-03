@@ -1,7 +1,6 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Combat_Critters_2._0.Pages.LoginPage"
-             Title="Login">
+             x:Class="Combat_Critters_2._0.Pages.LoginPage">
 
     <!-- Grid Layout -->
     <Grid>
@@ -43,11 +42,11 @@
 
             <StackLayout Spacing="15"
                          HorizontalOptions="Fill">
-                <Entry x:Name="username"
+                <Entry Text="{Binding Username}"
                        Placeholder="Enter Username"
                        Style="{StaticResource FormEntryStyle}"/>
 
-                <Entry x:Name="password"
+                <Entry Text="{Binding Password}"
                        Placeholder="Enter Password"
                        IsPassword="True"
                        Style="{StaticResource FormEntryStyle}"/>
@@ -56,12 +55,12 @@
                     <Button
                         Text="Login"
                         Style="{StaticResource ButtonStyle}"
-                        Clicked="OnLoginClicked"/>
+                        Command="{Binding LoginCommand}"/>
 
                     <Button
                         Text="Create Account"
                         Style="{StaticResource ButtonStyle}"
-                        Clicked="OnCreateAccountClicked"/>
+                        Command="{Binding CreateAccountCommand}"/>
                 </HorizontalStackLayout>
             </StackLayout>
 

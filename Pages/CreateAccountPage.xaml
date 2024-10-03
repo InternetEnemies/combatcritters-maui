@@ -1,8 +1,7 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Combat_Critters_2._0.Pages.CreateAccountPage"
-    Title="Create Account">
+    x:Class="Combat_Critters_2._0.Pages.CreateAccountPage">
 
     <!-- Grid Layout -->
     <Grid>
@@ -44,23 +43,23 @@
 
             <StackLayout Spacing="15"
                          HorizontalOptions="Fill">
-                <Entry x:Name="FirstName"
+                <Entry Text="{Binding FirstName}"
                        Placeholder="first name"
                        Style="{StaticResource FormEntryStyle}"/>
 
-                <Entry x:Name="LastName"
+                <Entry Text="{Binding LastName}"
                        Placeholder="last name"
                        Style="{StaticResource FormEntryStyle}"/>
 
-                <Entry x:Name="Email"
+                <Entry Text="{Binding Email}"
                        Placeholder="email"
                        Style="{StaticResource FormEntryStyle}"/>
 
-                <Entry x:Name="username"
+                <Entry Text="{Binding Username}"
                        Placeholder="username"
                        Style="{StaticResource FormEntryStyle}"/>
 
-                <Entry x:Name="password"
+                <Entry Text="{Binding Password}"
                        Placeholder="create a password"
                        IsPassword="True"
                        Style="{StaticResource FormEntryStyle}"/>
@@ -68,7 +67,7 @@
                 <Button
                     Text="Create Account"
                     Style="{StaticResource ButtonStyle}"
-                    Clicked="OnCreateAccountClicked"
+                    Command="{Binding CreateAccountCommand}"
                     HorizontalOptions="Center"/>
             </StackLayout>
 
