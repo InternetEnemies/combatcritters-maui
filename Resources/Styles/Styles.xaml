@@ -83,17 +83,17 @@
 
 
         <Style x:Key="CardFrameStyle"
-                        TargetType="Frame">
+               TargetType="Frame">
                 <Setter Property="WidthRequest"
-                                Value="204"/>
+                        Value="205"/>
                 <Setter Property="HeightRequest"
-                                Value="300"/>
+                        Value="300"/>
                 <Setter Property="BorderColor"
-                                Value="Black"/>
+                        Value="Black"/>
                 <Setter Property="CornerRadius"
-                                Value="8"/>
+                        Value="8"/>
                 <Setter Property="Margin"
-                                Value="10"/>
+                        Value="10"/>
 
         </Style>
         <!-- Common Gradient -->
