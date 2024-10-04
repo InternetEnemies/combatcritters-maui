@@ -1,65 +1,76 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Combat_Critters_2._0.Pages.CardPage"
-             Title="Cards">
-    <ScrollView>
-        <FlexLayout
-            Direction="Row"
-            Wrap="Wrap"
-            JustifyContent="Start"
-            AlignItems="Start">
+             x:Class="Combat_Critters_2._0.Pages.CardPage">
 
-            <!-- Example items in FlexLayout -->
-            <Frame Background="{StaticResource CommonGradient}"
-                   Style="{DynamicResource CardFrameStyle}">
-                <StackLayout>
-                    <Label
-                        Text="UglyMan, the Hideous Hero"
-                        FontFamily="MtgBold"
-                        FontSize="14"
-                        TextColor="White"/>
-                    <Image
-                        Source="loginpageimage.jpeg"/>
-                    <StackLayout Orientation="Horizontal"
-                                 HorizontalOptions="Start">
-                        <Image Source="ability0.jpg"
-                               WidthRequest="30"
-                               HeightRequest="30"/>
-                        <Image Source="ability1.jpg"
-                               WidthRequest="30"
-                               HeightRequest="30"/>
-                        <Image Source="ability2.jpg"
-                               WidthRequest="30"
-                               HeightRequest="30"/>
-                    </StackLayout>
-                </StackLayout>
-            </Frame>
-            <Frame Background="{StaticResource UncommonGradient}"
-                   Style="{DynamicResource CardFrameStyle}">
-                <Label Text="Item 1"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Center"/>
-            </Frame>
-            <Frame Background="{StaticResource RareGradient}"
-                   Style="{DynamicResource CardFrameStyle}">
-                <Label Text="Item 1"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Center"/>
-            </Frame>
-            <Frame Background="{StaticResource EpicGradient}"
-                   Style="{DynamicResource CardFrameStyle}">
-                <Label Text="Item 1"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Center"/>
-            </Frame>
-            <Frame Background="{StaticResource LegendaryGradient}"
-                   Style="{DynamicResource CardFrameStyle}">
-                <Label Text="Item 1"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Center"/>
-            </Frame>
+       <StackLayout Padding="20">
+              <!-- UI No card display -->
+              <Label Text="Too bad you have no cards."
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center">
+                     <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding HasCards}"
+                                         Value="True">
+                                   <Setter Property="IsVisible"
+                                           Value="False"/>
+                            </DataTrigger>
+                     </Label.Triggers>
+              </Label>
 
+              <!-- UI card display -->
+              <ScrollView>
+                     <!-- CollectionView with 5 columns in Grid Layout -->
+                     <CollectionView ItemsSource="{Binding UserCards}">
+                            <CollectionView.ItemsLayout>
+                                   <!-- Set the grid span to 5 columns -->
+                                   <GridItemsLayout Orientation="Vertical"
+                                                    Span="5"
+                                                    VerticalItemSpacing="20"
+                                                    HorizontalItemSpacing="20"/>
+                            </CollectionView.ItemsLayout>
 
-        </FlexLayout>
-    </ScrollView>
+                            <CollectionView.ItemTemplate>
+                                   <DataTemplate>
+                                          <Frame Background="{StaticResource CommonGradient}"
+                                                 Style="{DynamicResource CardFrameStyle}"
+                                                 HorizontalOptions="Center"
+                                                 VerticalOptions="Center">
+                                                 <StackLayout>
+                                                        <Label
+                                                               Text="{Binding Name}"
+                                                               FontFamily="MtgBold"
+                                                               FontSize="14"
+                                                               TextColor="White"/>
+                                                        <Image Source="{Binding Image}"/>
+
+                                                        <StackLayout Orientation="Horizontal"
+                                                                     HorizontalOptions="Start">
+                                                               <Image Source="ability0.jpg"
+                                                                      WidthRequest="30"
+                                                                      HeightRequest="30"/>
+                                                               <Image Source="ability1.jpg"
+                                                                      WidthRequest="30"
+                                                                      HeightRequest="30"/>
+                                                               <Image Source="ability2.jpg"
+                                                                      WidthRequest="30"
+                                                                      HeightRequest="30"/>
+                                                        </StackLayout>
+                                                 </StackLayout>
+                                          </Frame>
+                                   </DataTemplate>
+                            </CollectionView.ItemTemplate>
+
+                            <!-- Trigger to hide CollectionView if no cards are available -->
+                            <CollectionView.Triggers>
+                                   <DataTrigger TargetType="CollectionView"
+                                                Binding="{Binding HasCards}"
+                                                Value="False">
+                                          <Setter Property="IsVisible"
+                                                  Value="False"/>
+                                   </DataTrigger>
+                            </CollectionView.Triggers>
+                     </CollectionView>
+              </ScrollView>
+       </StackLayout>
+
 </ContentPage>

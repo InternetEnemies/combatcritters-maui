@@ -3,7 +3,6 @@
     with the backend
 */
 
-using System.Reflection.Metadata.Ecma335;
 using Combat_Critters_2._0.Models;
 
 public static class BackendService
@@ -15,11 +14,32 @@ public static class BackendService
         return true;
     }
 
-
     public static async Task<bool> CreateAccountAsync(Profile credentials)
     {
         // Interact with the Java backend to create a new account
         //return await WrapperClient.CreateAccount(credentials);
         return true;
+    }
+
+    //Fetch the user's owned cards
+    public static async Task<List<Card>> GetUserCardsAsync()
+    {
+        //Interact with the backend using the wrapper
+        //... 
+
+        //For testing
+        return new List<Card>
+        {
+            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"}
+        };
     }
 }
