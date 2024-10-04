@@ -1,0 +1,65 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Combat_Critters_2._0.Pages.CardPage"
+             Title="Cards">
+    <ScrollView>
+        <FlexLayout
+            Direction="Row"
+            Wrap="Wrap"
+            JustifyContent="Start"
+            AlignItems="Start">
+
+            <!-- Example items in FlexLayout -->
+            <Frame Background="{StaticResource CommonGradient}"
+                   Style="{DynamicResource CardFrameStyle}">
+                <StackLayout>
+                    <Label
+                        Text="UglyMan, the Hideous Hero"
+                        FontFamily="MtgBold"
+                        FontSize="14"
+                        TextColor="White"/>
+                    <Image
+                        Source="loginpageimage.jpeg"/>
+                    <StackLayout Orientation="Horizontal"
+                                 HorizontalOptions="Start">
+                        <Image Source="ability0.jpg"
+                               WidthRequest="30"
+                               HeightRequest="30"/>
+                        <Image Source="ability1.jpg"
+                               WidthRequest="30"
+                               HeightRequest="30"/>
+                        <Image Source="ability2.jpg"
+                               WidthRequest="30"
+                               HeightRequest="30"/>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+            <Frame Background="{StaticResource UncommonGradient}"
+                   Style="{DynamicResource CardFrameStyle}">
+                <Label Text="Item 1"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"/>
+            </Frame>
+            <Frame Background="{StaticResource RareGradient}"
+                   Style="{DynamicResource CardFrameStyle}">
+                <Label Text="Item 1"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"/>
+            </Frame>
+            <Frame Background="{StaticResource EpicGradient}"
+                   Style="{DynamicResource CardFrameStyle}">
+                <Label Text="Item 1"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"/>
+            </Frame>
+            <Frame Background="{StaticResource LegendaryGradient}"
+                   Style="{DynamicResource CardFrameStyle}">
+                <Label Text="Item 1"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"/>
+            </Frame>
+
+
+        </FlexLayout>
+    </ScrollView>
+</ContentPage>

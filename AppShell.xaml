@@ -1,15 +1,33 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <Shell
     x:Class="Combat_Critters_2._0.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Combat_Critters_2._0"
-    Shell.FlyoutBehavior="Disabled"
+    xmlns:pages="clr-namespace:Combat_Critters_2._0.Pages"
     Title="Combat_Critters_2._0">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <!-- Flyout Items Profile, Card and Deck Page -->
+    <FlyoutItem Title="Profile">
+        <ShellContent
+            Title="Profile"
+            ContentTemplate="{DataTemplate pages:ProfilePage}"
+            Route="ProfilePage"
+            Shell.FlyoutBehavior="Flyout"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Cards">
+        <ShellContent
+            Title="Cards"
+            ContentTemplate="{DataTemplate pages:CardPage}"
+            Route="CardsPage"
+            Shell.FlyoutBehavior="Flyout"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Decks">
+        <ShellContent
+            Title="Decks"
+            ContentTemplate="{DataTemplate pages:DeckPage}"
+            Route="DeckPage"
+            Shell.FlyoutBehavior="Flyout"/>
+    </FlyoutItem>
 
 </Shell>

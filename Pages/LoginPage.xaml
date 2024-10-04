@@ -1,0 +1,81 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Combat_Critters_2._0.Pages.LoginPage">
+
+    <!-- Grid Layout -->
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0"
+                                 EndPoint="1,1">
+                <GradientStop Color="#100303"
+                              Offset="0.0"/>
+                <GradientStop Color="#95389E"
+                              Offset="0.5"/>
+                <GradientStop Color="#100303"
+                              Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <!--Grid definitions-->
+        <!-- Row Definitions for Header, Body, and Footer -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <!--Header-->
+        <Frame Style="{StaticResource LogoFrameStyle}"
+               Grid.Row="0"
+               HorizontalOptions="Center"
+               VerticalOptions="Center">
+            <Label
+                Text="Combat Critters Manager"
+                Style="{StaticResource LogoTextStyle}"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"/>
+        </Frame>
+
+        <!-- Form Body -->
+        <Frame Grid.Row="1"
+               Style="{StaticResource FormStyle}">
+
+            <StackLayout Spacing="15"
+                         HorizontalOptions="Fill">
+                <Entry Text="{Binding Username}"
+                       Placeholder="Enter Username"
+                       Style="{StaticResource FormEntryStyle}"/>
+
+                <Entry Text="{Binding Password}"
+                       Placeholder="Enter Password"
+                       IsPassword="True"
+                       Style="{StaticResource FormEntryStyle}"/>
+
+                <HorizontalStackLayout Spacing="15">
+                    <Button
+                        Text="Login"
+                        Style="{StaticResource ButtonStyle}"
+                        Command="{Binding LoginCommand}"/>
+
+                    <Button
+                        Text="Create Account"
+                        Style="{StaticResource ButtonStyle}"
+                        Command="{Binding CreateAccountCommand}"/>
+                </HorizontalStackLayout>
+            </StackLayout>
+
+        </Frame>
+
+        <!-- Footer -->
+        <ContentView Grid.Row="2">
+            <Label
+                Text="An Internet Enemies Game"
+                TextColor="#F7F7F7"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"/>
+        </ContentView>
+
+    </Grid>
+
+
+</ContentPage>
