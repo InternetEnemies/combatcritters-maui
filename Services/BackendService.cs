@@ -30,16 +30,54 @@ public static class BackendService
         //For testing
         return new List<Card>
         {
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"}
+             new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+             new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+            // new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+            // new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+            // new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+
+        };
+    }
+
+    //Fetch User Decks
+    public static async Task<List<Deck>> GetUserDecksAsync()
+    {
+        //Interact with the backend using the wrapper
+        //...
+
+        //For testing 
+        return new List<Deck>
+        {
+             new()
+             {
+                Name = "Test Deck 1",
+                    Cards = new List<Card>
+                    {
+                        new Card{CardId = 1, Name = "UglyMan1, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+                        new Card{CardId = 1, Name = "UglyMan1, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+                        new Card{CardId = 1, Name = "UglyMan1, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+                        new Card{CardId = 1, Name = "UglyMan1, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+                        new Card{CardId = 1, Name = "UglyMan1, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"}
+                    }
+             },
+             new()
+             {
+                Name = "Test Deck 2",
+                    Cards = new List<Card>
+                    {
+                        new Card{CardId = 1, Name = "UglyMan2, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+                        new Card{CardId = 1, Name = "UglyMan2, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"}
+                    }
+             },
+             new()
+             {
+                Name = "Test Deck 3",
+                    Cards = new List<Card>
+                    {
+                        new Card{CardId = 1, Name = "UglyMan3, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
+                        new Card{CardId = 1, Name = "UglyMan3, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"}
+                    }
+             }
         };
     }
 }
