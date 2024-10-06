@@ -5,6 +5,7 @@
     xmlns:pages="clr-namespace:Combat_Critters_2._0.Pages"
     Title="Combat_Critters_2._0">
 
+
     <!-- This defines a Shell Item -->
     <Shell.ItemTemplate>
         <DataTemplate>
@@ -17,7 +18,7 @@
                 <Label Grid.Column="1"
                        Text="{Binding Title}"
                        VerticalTextAlignment="Center"
-                       FontFamily="FlyoutItemFont"
+                       FontFamily="HeaderText"
                        FontSize="24"/>
             </Grid>
         </DataTemplate>
@@ -44,7 +45,7 @@
     <FlyoutItem Title="Profile"
                 Icon="testicon.jpg">
         <ShellContent
-            Title="Your Critter Profile"
+            Title="COMBAT CRITTERS"
             ContentTemplate="{DataTemplate pages:ProfilePage}"
             Route="ProfilePage"
             Shell.FlyoutBehavior="Flyout"/>
@@ -53,13 +54,13 @@
     <FlyoutItem Title="Cards"
                 Icon="testicon.jpg">
         <ShellContent
-            Title="Cards"
+            Title="COMBAT CRITTERS"
             ContentTemplate="{DataTemplate pages:CardPage}"
             Route="CardsPage"
             Shell.FlyoutBehavior="Flyout"/>
     </FlyoutItem>
 
-    <FlyoutItem Title="Decks"
+    <FlyoutItem Title="COMBAT CRITTERS"
                 Icon="testicon.jpg">
         <ShellContent
             Title="Decks"

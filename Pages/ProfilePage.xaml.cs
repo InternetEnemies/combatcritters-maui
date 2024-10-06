@@ -9,7 +9,14 @@ namespace Combat_Critters_2._0.Pages
             InitializeComponent();
             //BindingContext = new ProfilePageViewModel();
         }
+
+        // This method will share a user profile
+        public void OnShareClicked(object sender, EventArgs e)
+        {
+            //To be implemented
+        }
     }
+
 }
 
 
