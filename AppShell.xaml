@@ -5,16 +5,53 @@
     xmlns:pages="clr-namespace:Combat_Critters_2._0.Pages"
     Title="Combat_Critters_2._0">
 
+    <!-- This defines a Shell Item -->
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid ColumnDefinitions="0.2*, 0.8*"
+                  ColumnSpacing="20"
+                  Padding="10">
+                <Image Source="{Binding FlyoutIcon}"
+                       Margin="5"
+                       HeightRequest="45"/>
+                <Label Grid.Column="1"
+                       Text="{Binding Title}"
+                       VerticalTextAlignment="Center"
+                       FontFamily="FlyoutItemFont"
+                       FontSize="24"/>
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+    <Shell.MenuItemTemplate>
+        <DataTemplate>
+            <Grid ColumnDefinitions="0.2*, 0.8*"
+                  ColumnSpacing="20"
+                  Padding="10">
+                <Image Source="{Binding Icon}"
+                       Margin="5"
+                       HeightRequest="45"/>
+                <Label Grid.Column="1"
+                       Text="{Binding Text}"
+                       VerticalTextAlignment="Center"
+                       FontFamily="FlyoutItemFont"
+                       FontSize="16"/>
+            </Grid>
+        </DataTemplate>
+    </Shell.MenuItemTemplate>
+
     <!-- Flyout Items Profile, Card and Deck Page -->
-    <FlyoutItem Title="Profile">
+    <FlyoutItem Title="Profile"
+                Icon="testicon.jpg">
         <ShellContent
-            Title="Profile"
+            Title="Your Critter Profile"
             ContentTemplate="{DataTemplate pages:ProfilePage}"
             Route="ProfilePage"
             Shell.FlyoutBehavior="Flyout"/>
     </FlyoutItem>
 
-    <FlyoutItem Title="Cards">
+    <FlyoutItem Title="Cards"
+                Icon="testicon.jpg">
         <ShellContent
             Title="Cards"
             ContentTemplate="{DataTemplate pages:CardPage}"
@@ -22,12 +59,54 @@
             Shell.FlyoutBehavior="Flyout"/>
     </FlyoutItem>
 
-    <FlyoutItem Title="Decks">
+    <FlyoutItem Title="Decks"
+                Icon="testicon.jpg">
         <ShellContent
             Title="Decks"
             ContentTemplate="{DataTemplate pages:DeckPage}"
             Route="DeckPage"
             Shell.FlyoutBehavior="Flyout"/>
     </FlyoutItem>
+
+    <MenuFlyoutSeparator/>
+
+    <MenuItem Text="Dev Repo"
+              IconImageSource="github.png"
+              Command="{Binding GitHubRepoCommand}"
+              CommandParameter="https://github.com/InternetEnemies/combatcritters-maui.git"/>
+
+    <Shell.FlyoutFooterTemplate>
+        <DataTemplate>
+            <StackLayout Orientation="Vertical"
+                         Padding="10"
+                         Spacing="10">
+                <Button
+                    Style="{StaticResource ButtonStyle}"
+                    Text="Log out"
+                    Clicked="OnLogoutClicked"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Center"
+                    BorderWidth="2"/>
+
+                <Button
+                    BackgroundColor="Red"
+                    Text="Delete Account"
+                    TextColor="Black"
+                    BorderColor="Black"
+                    BorderWidth="2"
+                    Clicked="OnDeleteAccountClicked"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Center"/>
+
+                <Label
+                    Text="An Internet Enemies Game"
+                    TextColor="Black"
+                    FontSize="Small"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"/>
+            </StackLayout>
+        </DataTemplate>
+    </Shell.FlyoutFooterTemplate>
+
 
 </Shell>

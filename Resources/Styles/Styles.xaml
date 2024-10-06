@@ -4,6 +4,23 @@
         xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+        <!-- Gradient Background Style -->
+        <LinearGradientBrush x:Key="PageBackground"
+                             StartPoint="0,0"
+                             EndPoint="1,1">
+                <GradientStop Color="#100303"
+                              Offset="0.0"/>
+                <GradientStop Color="#95389E"
+                              Offset="0.5"/>
+                <GradientStop Color="#100303"
+                              Offset="1.0"/>
+        </LinearGradientBrush>
+
+        <!-- Global Style for ContentPage to apply the background -->
+        <Style TargetType="ContentPage">
+                <Setter Property="Background"
+                        Value="{StaticResource PageBackground}"/>
+        </Style>
         <!-- Style for the Frame (Logo) -->
         <Style x:Key="LogoFrameStyle"
                TargetType="Frame">

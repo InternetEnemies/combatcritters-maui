@@ -1,6 +1,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Combat_Critters_2._0.Pages.CardPage">
+             x:Class="Combat_Critters_2._0.Pages.CardPage"
+             Background="{StaticResource PageBackground}">
 
        <StackLayout Padding="20">
               <!-- UI No card display -->

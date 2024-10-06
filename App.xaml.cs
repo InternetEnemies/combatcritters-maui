@@ -9,7 +9,7 @@ namespace Combat_Critters_2._0
 		{
 			InitializeComponent();
 
-			// Set AppShell as the main page for Shell navigation
+			// Set the Loginpage as the initial page
 			MainPage = new NavigationPage(new LoginPage());
 		}
 
@@ -18,6 +18,13 @@ namespace Combat_Critters_2._0
 		{
 			// Set AppShell as the main page after login
 			MainPage = new AppShell();
+		}
+
+		// This method is called when the user logs out
+		public void NavigateToLoginPage()
+		{
+			//Set LoginPage as the main page for logout
+			MainPage = new NavigationPage(new LoginPage());
 		}
 	}
 }
