@@ -1,9 +1,13 @@
-namespace Combat_Critters_2._0.Pages;
+using Combat_Critters_2._0.ViewModels;
 
-public partial class DeckPage : ContentPage
+namespace Combat_Critters_2._0.Pages
 {
-    public DeckPage()
+    public partial class DeckPage : ContentPage
     {
-        InitializeComponent();
+        public DeckPage()
+        {
+            InitializeComponent();
+            BindingContext = new DeckViewModel();
+        }
     }
 }

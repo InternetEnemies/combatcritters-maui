@@ -7,7 +7,7 @@ namespace Combat_Critters_2._0.Models
 {
     public class Deck
     {
-        public required string Name;
-        public required List<Card> Cards { get; set; }
+        public required string Name { get; set; }
+        public required List<Card> Cards { get; set; }  // Changed to ObservableCollection
     }
 }

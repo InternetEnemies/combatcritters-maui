@@ -3,5 +3,92 @@
              x:Class="Combat_Critters_2._0.Pages.DeckPage"
              Title="Decks">
 
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <!-- Custom Dropdown for Deck Selection -->
+        <StackLayout Grid.Row="0"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="Start">
+            <!-- Dropdown button -->
+            <Button Text="Choose a Deck"
+                    Style="{StaticResource ButtonStyle}"
+                    Command="{Binding ToggleDeckListCommand}"
+                    FontSize="Large"
+                    HorizontalOptions="Center"/>
+
+            <!-- Custom dropdown list (CollectionView) -->
+            <CollectionView ItemsSource="{Binding UserDecks}"
+                            IsVisible="{Binding IsDeckListVisible}"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedDeck}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                                     Span="1"
+                                     VerticalItemSpacing="20"
+                                     HorizontalItemSpacing="20"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding Name}"
+                               Padding="10"
+                               FontSize="Medium"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+
+        <!-- Deck View -->
+        <StackLayout Grid.Row="1"
+                     Padding="10"
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center">
+
+            <!-- Cards display -->
+            <CollectionView ItemsSource="{Binding SelectedDeckCards}"
+                            IsVisible="{Binding HasDecks}">
+                <CollectionView.ItemsLayout>
+                    <!-- Set the grid span to 5 columns -->
+                    <GridItemsLayout Orientation="Vertical"
+                                     Span="5"
+                                     VerticalItemSpacing="20"
+                                     HorizontalItemSpacing="20"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Background="{StaticResource CommonGradient}"
+                               Style="{DynamicResource CardFrameStyle}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center">
+                            <StackLayout>
+                                <Label Text="{Binding Name}"
+                                       FontFamily="MtgBold"
+                                       FontSize="14"
+                                       TextColor="White"/>
+                                <Image Source="{Binding Image}"/>
+
+                                <StackLayout Orientation="Horizontal"
+                                             HorizontalOptions="Start">
+                                    <Image Source="ability0.jpg"
+                                           WidthRequest="30"
+                                           HeightRequest="30"/>
+                                    <Image Source="ability1.jpg"
+                                           WidthRequest="30"
+                                           HeightRequest="30"/>
+                                    <Image Source="ability2.jpg"
+                                           WidthRequest="30"
+                                           HeightRequest="30"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </Grid>
 </ContentPage>

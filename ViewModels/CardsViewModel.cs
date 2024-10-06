@@ -30,7 +30,7 @@ namespace Combat_Critters_2._0.ViewModels
 
         public CardsViewModel()
         {
-            _userCards = new ObservableCollection<Card>();
+            _userCards = [];
             LoadUserCards();
         }
 
@@ -44,11 +44,8 @@ namespace Combat_Critters_2._0.ViewModels
             //User has at least 1 card?
             if (cards != null && cards.Count > 0)
             {
+                UserCards = new ObservableCollection<Card>(cards);
                 HasCards = true;
-                foreach (var card in cards)
-                {
-                    UserCards.Add(card);
-                }
             }
             else
             {
