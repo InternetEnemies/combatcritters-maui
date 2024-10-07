@@ -8,7 +8,10 @@ using System.Windows.Input;
 using Combat_Critters_2._0;
 using Combat_Critters_2._0.Models;
 using Combat_Critters_2._0.Pages;
+using CombatCrittersSharp;
+using CombatCrittersSharp.exception;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Layouts;
 
 public class LoginViewModel : INotifyPropertyChanged
 {
@@ -52,6 +55,19 @@ public class LoginViewModel : INotifyPropertyChanged
 
     private async void OnLogin()
     {
+        // var client = new Client("http://api.combatcritters.ca:4000");
+        // var result = false;
+        // try
+        // {
+        //     Console.WriteLine("Attempting to Login");
+        //     await client.Login(Username, Password);
+        //     Console.WriteLine("Login success");
+        //     (Application.Current as App)?.NavigateToAppShell();
+        // }
+        // catch(RestException e)
+        // {
+        //     Console.WriteLine("Failed to Login");
+        // }
         var result = await BackendService.LoginAsync(new UserCredentials
         {
             Username = Username,
@@ -59,7 +75,7 @@ public class LoginViewModel : INotifyPropertyChanged
         });
 
         //TEST
-        result = true;
+        //result = true;
         if (result)
         {
             // Navigate to ProfilePage through Shell after successful login
@@ -73,6 +89,7 @@ public class LoginViewModel : INotifyPropertyChanged
 
     private async void OnCreateAccount()
     {
+        Console.WriteLine("Moved to create account");
         // Navigate to the CreateAccountPage
         await _navigation.PushAsync(new CreateAccountPage());
     }

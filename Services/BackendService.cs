@@ -4,14 +4,29 @@
 */
 
 using Combat_Critters_2._0.Models;
-
+using CombatCrittersSharp;
+using CombatCrittersSharp.exception; //The wrapper class
 public static class BackendService
 {
     public static async Task<bool> LoginAsync(UserCredentials credentials)
     {
         //Interact with the back end using the wrapper
         //return await WrapperClient.Login(credentials);
-        return true;
+
+        var client = new Client("http://api.combatcritters.ca:4000");
+        try
+        {
+            Console.Write("Attempting to login...");
+            await client.Login(credentials.Username, credentials.Password);
+            Console.WriteLine("Login Success...");
+            return true;
+        }
+        catch(RestException e)
+        {
+            Console.WriteLine("Failed to Login");
+            return false;
+        }
+        
     }
 
     public static async Task<bool> CreateAccountAsync(Profile credentials)
