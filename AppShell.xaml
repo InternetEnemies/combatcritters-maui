@@ -60,10 +60,10 @@
             Shell.FlyoutBehavior="Flyout"/>
     </FlyoutItem>
 
-    <FlyoutItem Title="COMBAT CRITTERS"
+    <FlyoutItem Title="Decks"
                 Icon="testicon.jpg">
         <ShellContent
-            Title="Decks"
+            Title="COMBAT CRITTERS"
             ContentTemplate="{DataTemplate pages:DeckPage}"
             Route="DeckPage"
             Shell.FlyoutBehavior="Flyout"/>

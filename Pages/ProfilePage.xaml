@@ -50,11 +50,100 @@
                HasShadow="True"
                HorizontalOptions="Fill"
                VerticalOptions="Fill">
+            
 
-            <Label
-                Text="Feature your most crittery deck!"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"/>
+            <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.1*"/>
+                    <RowDefinition Height="0.9*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.2*"/>
+                    <ColumnDefinition Width="0.8*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="Deck List"
+                    TextColor="Black"
+                    BackgroundColor="Red"
+                    IsVisible="True"
+                    HorizontalOptions="Start"
+                    Command="{Binding ShowDeckListCommand}"
+                    />
+            
+                <Image
+                    Grid.Row ="1"
+                    Grid.Column="0"
+                    Source="testIcon.jpg"
+                    IsVisible="{Binding DeckListButtonClicked, Converter={StaticResource InverseBooleanConverter}}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    />
+
+                <ListView
+                    IsVisible="{Binding DeckListButtonClicked}"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    ItemsSource="{Binding UserDecks}"
+                    SelectedItem="{Binding SelectedDeck}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Text ="{Binding Name}" TextColor ="Black"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <CollectionView Grid.Row="1"
+                    Grid.Column="1"
+                    ItemsSource="{Binding SelectedDeckCards}"
+                    IsVisible="{Binding SelectedDeck}"
+                    VerticalOptions ="Center"
+                    HorizontalOptions="Center">
+                    
+                    <CollectionView.ItemsLayout>
+                    <!-- Set the grid span to 5 columns -->
+                        <GridItemsLayout Orientation="Vertical"
+                                        Span="5"
+                                        VerticalItemSpacing="20"
+                                        HorizontalItemSpacing="20"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Background="{StaticResource CommonGradient}"
+                                Style="{DynamicResource CardFrameStyle}"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center">
+                                <StackLayout>
+                                    <Label Text="{Binding Name}"
+                                        FontFamily="MtgBold"
+                                        FontSize="14"
+                                        TextColor="White"/>
+                                        <Image Source="{Binding Image}"/>
+
+                                <StackLayout
+                                            Orientation="Horizontal"
+                                            HorizontalOptions="Start">
+                                            <Image Source="ability0.jpg"
+                                            WidthRequest="30"
+                                            HeightRequest="30"/>
+                                            <Image Source="ability1.jpg"
+                                            WidthRequest="30"
+                                            HeightRequest="30"/>
+                                            <Image Source="ability2.jpg"
+                                            WidthRequest="30"
+                                            HeightRequest="30"/>
+                                </StackLayout>
+                                </StackLayout>
+                            </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+                
+            </Grid>
         </Frame>
 
         <Frame Grid.Row="2"

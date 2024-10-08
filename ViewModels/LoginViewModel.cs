@@ -55,27 +55,14 @@ public class LoginViewModel : INotifyPropertyChanged
 
     private async void OnLogin()
     {
-        // var client = new Client("http://api.combatcritters.ca:4000");
-        // var result = false;
-        // try
+        // var result = await BackendService.LoginAsync(new UserCredentials
         // {
-        //     Console.WriteLine("Attempting to Login");
-        //     await client.Login(Username, Password);
-        //     Console.WriteLine("Login success");
-        //     (Application.Current as App)?.NavigateToAppShell();
-        // }
-        // catch(RestException e)
-        // {
-        //     Console.WriteLine("Failed to Login");
-        // }
-        var result = await BackendService.LoginAsync(new UserCredentials
-        {
-            Username = Username,
-            Password = Password
-        });
+        //     Username = Username,
+        //     Password = Password
+        // });
 
-        //TEST
-        //result = true;
+        //For TEST
+        var result = true;
         if (result)
         {
             // Navigate to ProfilePage through Shell after successful login
@@ -89,7 +76,7 @@ public class LoginViewModel : INotifyPropertyChanged
 
     private async void OnCreateAccount()
     {
-        Console.WriteLine("Moved to create account");
+        
         // Navigate to the CreateAccountPage
         await _navigation.PushAsync(new CreateAccountPage());
     }

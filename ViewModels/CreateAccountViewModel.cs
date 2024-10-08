@@ -73,45 +73,23 @@ public class CreateAccountViewModel : INotifyPropertyChanged
 
     private async void OnCreateAccount()
     {
-        var client = new Client("http://api.combatcritters.ca:4000");
-        var result = false;
-        try
+        
+        var result = await BackendService.CreateAccountAsync(new Profile
         {
-            Console.WriteLine("Attempting to register...");
-        
-            await client.Register(Username, Password);
-        
-            Console.WriteLine("Registration successful.");
-        
+            FirstName = FirstName,
+            LastName = LastName,
+            Email = Email,
+            Username = Username,
+            Password = Password
+        });
+
+        //TEST
+        result = true;
+        if (result)
+        {
             // Navigate back to the login page
             await _navigation.PopAsync();
         }
-        catch(RestException e)
-        {
-            Console.WriteLine($"Failed to register: {e.Message}");
-            Console.WriteLine(e.StackTrace);
-        }
-        catch(Exception ex)
-        {
-            Console.WriteLine($"An unexpected error occurred: {ex.Message}");
-            Console.WriteLine(ex.StackTrace);
-        }
-        // var result = await BackendService.CreateAccountAsync(new Profile
-        // {
-        //     FirstName = FirstName,
-        //     LastName = LastName,
-        //     Email = Email,
-        //     Username = Username,
-        //     Password = Password
-        // });
-
-        // //TEST
-        // result = true;
-        // if (result)
-        // {
-        //     // Navigate back to the login page
-        //     await _navigation.PopAsync();
-        // }
 
 
     }

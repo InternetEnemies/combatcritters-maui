@@ -10,8 +10,6 @@ public static class BackendService
 {
     public static async Task<bool> LoginAsync(UserCredentials credentials)
     {
-        //Interact with the back end using the wrapper
-        //return await WrapperClient.Login(credentials);
 
         var client = new Client("http://api.combatcritters.ca:4000");
         try
@@ -23,10 +21,9 @@ public static class BackendService
         }
         catch(RestException e)
         {
-            Console.WriteLine("Failed to Login");
+            Console.WriteLine($"Failed to Login: {e.Message}");
             return false;
-        }
-        
+        }        
     }
 
     public static async Task<bool> CreateAccountAsync(Profile credentials)
