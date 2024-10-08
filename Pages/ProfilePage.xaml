@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Combat_Critters_2._0.Pages.ProfilePage"
-             Background="{StaticResource PageBackground}">
+             x:Class="Combat_Critters_2._0.Pages.ProfilePage">
 
     <!-- <ContentView>
            <Button
@@ -14,62 +13,164 @@
         </ContentView> -->
 
     <Grid Padding="20">
-
-        <!--Profile has a 2 by 2 grid-->
+        <!--Profile has a 3 by 2 grid-->
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.6*"/>
+            <RowDefinition Height="0.3*"/>
         </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <!-- Rank Cell -->
-        <Border Stroke="Black"
-                StrokeThickness="2"
-                Grid.Row="0"
-                Grid.Column="0">
-            <Label Text="Rank"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"/>
-        </Border>
 
-        <!-- Featured Deck Cell -->
-        <Border Stroke="Black"
-                StrokeThickness="2"
-                Grid.Row="0"
-                Grid.Column="1">
-            <Label Text="Featured Deck"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"/>
-        </Border>
+        <Label
+            Grid.Row="0"
+            Grid.Column="0"
+            Text="Critter Profile"
+            FontFamily="HeaderText"
+            FontSize="24"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"/>
 
-        <!-- Achievement Cell -->
-        <Border Stroke="Black"
-                StrokeThickness="2"
-                Grid.Row="1"
-                Grid.Column="0">
+        <Button
+            Grid.Row="0"
+            Grid.Column="1"
+            Text="SHARE"
+            Style="{StaticResource ButtonStyle}"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Clicked="OnShareClicked"/>
 
+        <Frame Grid.Row="1"
+               Grid.ColumnSpan="2"
+               BorderColor="Black"
+               HasShadow="True"
+               HorizontalOptions="Fill"
+               VerticalOptions="Fill">
+            
 
+            <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.1*"/>
+                    <RowDefinition Height="0.9*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.2*"/>
+                    <ColumnDefinition Width="0.8*"/>
+                </Grid.ColumnDefinitions>
 
-            <Label Text="Achivements"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"/>
-        </Border>
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="Deck List"
+                    TextColor="Black"
+                    BackgroundColor="Red"
+                    IsVisible="True"
+                    HorizontalOptions="Start"
+                    Command="{Binding ShowDeckListCommand}"
+                    />
+            
+                <Image
+                    Grid.Row ="1"
+                    Grid.Column="0"
+                    Source="testIcon.jpg"
+                    IsVisible="{Binding DeckListButtonClicked, Converter={StaticResource InverseBooleanConverter}}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    />
 
-        <!-- Featured Card Cell -->
-        <Border Stroke="Black"
-                StrokeThickness="2"
-                Grid.Row="1"
-                Grid.Column="1">
-            <Label Text="Featured Cards"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"/>
-        </Border>
+                <ListView
+                    IsVisible="{Binding DeckListButtonClicked}"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    ItemsSource="{Binding UserDecks}"
+                    SelectedItem="{Binding SelectedDeck}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Text ="{Binding Name}" TextColor ="Black"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
+                <CollectionView Grid.Row="1"
+                    Grid.Column="1"
+                    ItemsSource="{Binding SelectedDeckCards}"
+                    IsVisible="{Binding SelectedDeck}"
+                    VerticalOptions ="Center"
+                    HorizontalOptions="Center">
+                    
+                    <CollectionView.ItemsLayout>
+                    <!-- Set the grid span to 5 columns -->
+                        <GridItemsLayout Orientation="Vertical"
+                                        Span="5"
+                                        VerticalItemSpacing="20"
+                                        HorizontalItemSpacing="20"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Background="{StaticResource CommonGradient}"
+                                Style="{DynamicResource CardFrameStyle}"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center">
+                                <StackLayout>
+                                    <Label Text="{Binding Name}"
+                                        FontFamily="MtgBold"
+                                        FontSize="14"
+                                        TextColor="White"/>
+                                        <Image Source="{Binding Image}"/>
+
+                                <StackLayout
+                                            Orientation="Horizontal"
+                                            HorizontalOptions="Start">
+                                            <Image Source="ability0.jpg"
+                                            WidthRequest="30"
+                                            HeightRequest="30"/>
+                                            <Image Source="ability1.jpg"
+                                            WidthRequest="30"
+                                            HeightRequest="30"/>
+                                            <Image Source="ability2.jpg"
+                                            WidthRequest="30"
+                                            HeightRequest="30"/>
+                                </StackLayout>
+                                </StackLayout>
+                            </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+                
+            </Grid>
+        </Frame>
+
+        <Frame Grid.Row="2"
+               Grid.Column="0"
+               BorderColor="Black"
+               HasShadow="True"
+               HorizontalOptions="Fill"
+               VerticalOptions="Fill">
+
+            <Label
+                Text="Feature 2 crittery card"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"/>
+        </Frame>
+
+        <Frame Grid.Row="2"
+               Grid.Column="1"
+               BorderColor="Black"
+               HasShadow="True"
+               HorizontalOptions="Fill"
+               VerticalOptions="Fill">
+
+            <Label
+                Text="Rank!"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"/>
+        </Frame>
     </Grid>
-
-
 
 </ContentPage>

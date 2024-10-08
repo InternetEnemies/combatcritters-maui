@@ -10,8 +10,8 @@ namespace Combat_Critters_2._0.ViewModels
         private ObservableCollection<Deck> _userDecks;
         private ObservableCollection<Card> _selectedDeckCards; // Stores cards for the selected deck
         private Deck _selectedDeck;
-        private bool _hasDecks;
-        private bool _isDeckListVisible; // Controls the visibility of the dropdown menu
+        private bool _hasDecks = false;
+        private bool _isDeckListVisible = false; // Controls the visibility of the dropdown menu
 
         public ObservableCollection<Deck> UserDecks
         {
@@ -82,6 +82,18 @@ namespace Combat_Critters_2._0.ViewModels
 
         public DeckViewModel()
         {
+            // Initialize _userDecks with an empty collection of Decks
+            _userDecks = new ObservableCollection<Deck>();
+
+            // Initialize _selectedDeckCards with an empty collection of Cards
+            _selectedDeckCards = new ObservableCollection<Card>();
+
+            // Initialize _selectedDeck with a default Deck (or use real values if needed)
+            _selectedDeck = new Deck
+            {
+                Name = "Default Deck",
+                Cards = new List<Card>() // Empty card list
+            };
             ToggleDeckListCommand = new Command(ToggleDeckList);
             UserDecks = new ObservableCollection<Deck>();
             SelectedDeckCards = new ObservableCollection<Card>();

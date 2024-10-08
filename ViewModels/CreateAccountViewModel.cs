@@ -5,6 +5,8 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using Combat_Critters_2._0.Models;
+using CombatCrittersSharp;
+using CombatCrittersSharp.exception;
 
 public class CreateAccountViewModel : INotifyPropertyChanged
 {
@@ -71,6 +73,7 @@ public class CreateAccountViewModel : INotifyPropertyChanged
 
     private async void OnCreateAccount()
     {
+        
         var result = await BackendService.CreateAccountAsync(new Profile
         {
             FirstName = FirstName,

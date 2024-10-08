@@ -8,7 +8,10 @@ using System.Windows.Input;
 using Combat_Critters_2._0;
 using Combat_Critters_2._0.Models;
 using Combat_Critters_2._0.Pages;
+using CombatCrittersSharp;
+using CombatCrittersSharp.exception;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Layouts;
 
 public class LoginViewModel : INotifyPropertyChanged
 {
@@ -52,14 +55,14 @@ public class LoginViewModel : INotifyPropertyChanged
 
     private async void OnLogin()
     {
-        var result = await BackendService.LoginAsync(new UserCredentials
-        {
-            Username = Username,
-            Password = Password
-        });
+        // var result = await BackendService.LoginAsync(new UserCredentials
+        // {
+        //     Username = Username,
+        //     Password = Password
+        // });
 
-        //TEST
-        result = true;
+        //For TEST
+        var result = true;
         if (result)
         {
             // Navigate to ProfilePage through Shell after successful login
@@ -73,6 +76,7 @@ public class LoginViewModel : INotifyPropertyChanged
 
     private async void OnCreateAccount()
     {
+        
         // Navigate to the CreateAccountPage
         await _navigation.PushAsync(new CreateAccountPage());
     }

@@ -2,9 +2,11 @@
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Combat_Critters_2._0"
+             xmlns:converter="clr-namespace:Combat_Critters_2._0.Converters"
              x:Class="Combat_Critters_2._0.App">
     <Application.Resources>
         <ResourceDictionary>
+            <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
