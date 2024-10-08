@@ -2,35 +2,55 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.CardPage">
 
-       <StackLayout Padding="20">
-              <!-- UI No card display -->
-              <Label Text="Too bad you have no cards."
+       <Grid Padding="20">
+              <Grid.RowDefinitions>
+                     <RowDefinition Height="0.1*"/>
+                     <RowDefinition Height="0.9*"/>
+              </Grid.RowDefinitions>
+
+              <Grid.ColumnDefinitions>
+                     <ColumnDefinition/>
+                     <ColumnDefinition/>
+              </Grid.ColumnDefinitions>
+
+              <Label
+                     Grid.Row="0"
+                     Grid.Column="0"
+                     Text="Cards"
+                     FontFamily="HeaderText"
+                     FontSize="24"
                      HorizontalOptions="Center"
-                     VerticalOptions="Center">
-                     <Label.Triggers>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding HasCards}"
-                                         Value="True">
-                                   <Setter Property="IsVisible"
-                                           Value="False"/>
-                            </DataTrigger>
-                     </Label.Triggers>
-              </Label>
+                     VerticalOptions="Center"
+                     />
+              
+              <Frame Grid.Row="1" Grid.ColumnSpan="2" Padding="5">
+                     <ContentView>
+                            <ContentView.Triggers>
+                                   <DataTrigger TargetType="ContentView" Binding="{Binding HasCards}" Value="False">
+                                          <Setter Property="Content">
+                                                 <Setter.Value>
+                                                        <Label
+                                                               Text="Too bad you have no cards"
+                                                               HorizontalOptions="Center"
+                                                               VerticalOptions="Center"
+                                                               />
+                                                 </Setter.Value>
+                                          </Setter>
+                                   </DataTrigger>
 
-              <!-- UI card display -->
-              <ScrollView>
-                     <!-- CollectionView with 5 columns in Grid Layout -->
-                     <CollectionView ItemsSource="{Binding UserCards}">
-                            <CollectionView.ItemsLayout>
-                                   <!-- Set the grid span to 5 columns -->
-                                   <GridItemsLayout Orientation="Vertical"
-                                                    Span="5"
-                                                    VerticalItemSpacing="20"
-                                                    HorizontalItemSpacing="20"/>
-                            </CollectionView.ItemsLayout>
-
-                            <CollectionView.ItemTemplate>
-                                   <DataTemplate>
+                                   <DataTrigger TargetType="ContentView" Binding="{Binding HasCards}" Value="True">
+                                          <Setter Property="Content">
+                                                 <Setter.Value>
+                                                        <ScrollView>
+                                                               <CollectionView ItemsSource="{Binding UserCards}">
+                                                                      <CollectionView.ItemsLayout>
+                                                                             <GridItemsLayout Orientation="Vertical"
+                                                                                    Span="5"
+                                                                                    VerticalItemSpacing="20"
+                                                                                    HorizontalItemSpacing="20"/>
+                                                                      </CollectionView.ItemsLayout>
+                                                                      <CollectionView.ItemTemplate>
+                                                                             <DataTemplate>
                                           <Frame Background="{StaticResource CommonGradient}"
                                                  Style="{DynamicResource CardFrameStyle}"
                                                  HorizontalOptions="Center"
@@ -58,19 +78,16 @@
                                                  </StackLayout>
                                           </Frame>
                                    </DataTemplate>
-                            </CollectionView.ItemTemplate>
+                                                                      </CollectionView.ItemTemplate>
+                                                               </CollectionView>
+                                                        </ScrollView>
+                                                 </Setter.Value>
+                                          </Setter>
 
-                            <!-- Trigger to hide CollectionView if no cards are available -->
-                            <CollectionView.Triggers>
-                                   <DataTrigger TargetType="CollectionView"
-                                                Binding="{Binding HasCards}"
-                                                Value="False">
-                                          <Setter Property="IsVisible"
-                                                  Value="False"/>
                                    </DataTrigger>
-                            </CollectionView.Triggers>
-                     </CollectionView>
-              </ScrollView>
-       </StackLayout>
+                            </ContentView.Triggers>
+                     </ContentView>
+              </Frame>
+       </Grid>
 
 </ContentPage>

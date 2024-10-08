@@ -40,7 +40,7 @@ namespace Combat_Critters_2._0.ViewModels
             //Call the BackendService to get the user's cards
             var cards = await BackendService.GetUserCardsAsync();
 
-            //cards = null; Test to see what happens if user has no cards
+            //cards = null; //Test to see what happens if user has no cards
             //User has at least 1 card?
             if (cards != null && cards.Count > 0)
             {
