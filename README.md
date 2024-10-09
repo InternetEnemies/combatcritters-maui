@@ -1,14 +1,10 @@
-# combatcritters-maui .NET MAUI Project (Mac Catalyst Only)
+**This repo is the Desktop front end for CombatCritters.**
 
-## Table of Content
+**Our main repository can be found [here]
+(https://github.com/InternetEnemies/CombatCritters).**
 
-- [Overview](#overview)
-- [Prerequisites](#prerequisites)
-- [Setup](#setup)
-
-## Overview
-
-CombatCritters is a cross-platform mobile application built using .NET MAUI. This project supports **Mac Catalyst** exclusively. The app is designed to deliver a consistent experience on Mac device, including both Apple Silicon and Intel-based Macs.
+# Getting Started
+This project supports **Mac Catalyst** exclusively. The app is designed to deliver a consistent experience on Mac device, including both Apple Silicon and Intel-based Macs.
 
 ## Prerequisites
 
@@ -22,36 +18,30 @@ Before you begin, ensure you have the following installed
 
 > Note: Visual Studio 2022 for Mac is no longer supported. Use **Visual Studio Code** with the appropriate extension for development.
 
-## Setup
+## Front end Setup
 
-### Cloning the Repository
+### 1. Cloning the Repository
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/InternetEnemies/combatcritters-maui.git
-   cd combatcritters-maui
-   ```
-2. Install dependencies:
+First, clone the Desktop frontend repository to your local machine
 
-   ```
-    dotnet restore
-   ```
+```bash
+git clone https://github.com/InternetEnemies/combatcritters-maui.git
+```
 
-3. Install Mac Catalyst Workload
+Navigate into the project directory
 
-   ```
-   dotnet workload install maccatalyst
-   ```
+```bash
+cd combatcritters-maui
+```
+### 2. Build the Project:
 
-4. Building the Project
+```bash
+dotnet build -f net8.0-maccatalyst
+```
 
-   ```
-   dotnet build -f net8.0-maccatalyst
-   ```
-
-5. Running the Project
-   ```
-   dotnet run -f net8.0-maccatalyst
-   ```
+### 3. Running the Project
+```
+dotnet run -f net8.0-maccatalyst
+```
 
 You can also run and debug the project from Visual Studio Code by using the built-in terminal or setting up a debug configuration in the launch.json file.
