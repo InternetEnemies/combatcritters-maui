@@ -8,10 +8,7 @@ using System.Windows.Input;
 using Combat_Critters_2._0;
 using Combat_Critters_2._0.Models;
 using Combat_Critters_2._0.Pages;
-using CombatCrittersSharp;
-using CombatCrittersSharp.exception;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Layouts;
+using Combat_Critters_2._0.Services;
 
 public class LoginViewModel : INotifyPropertyChanged
 {
@@ -55,28 +52,36 @@ public class LoginViewModel : INotifyPropertyChanged
 
     private async void OnLogin()
     {
-        // var result = await BackendService.LoginAsync(new UserCredentials
-        // {
-        //     Username = Username,
-        //     Password = Password
-        // });
+        try
+        {
+            var loginRequestToBackend = await BackendService.LoginAsync(new UserCredentials{
+                Username = Username,
+                Password = Password
+            });
+            
+            if (loginRequestToBackend)
+            {
+                //The client con has been stored in backendservices
 
-        //For TEST
-        var result = true;
-        if (result)
-        {
-            // Navigate to ProfilePage through Shell after successful login
-            (Application.Current as App)?.NavigateToAppShell();
+                //Navigate to User Profile page
+                (Application.Current as App)?.NavigateToAppShell();
+            }
+            else
+            {
+                
+                //show an error message
+                //Maybe display a notification in UI
+            }
         }
-        else
+        catch (Exception ex)
         {
-            //Show error message
+            Console.WriteLine($"Failed to login: {ex.Message}");
+            
         }
+        
     }
-
     private async void OnCreateAccount()
     {
-        
         // Navigate to the CreateAccountPage
         await _navigation.PushAsync(new CreateAccountPage());
     }

@@ -36,6 +36,11 @@
     <key>XSAppIconAssets</key>
     <string>Assets.xcassets/appicon.appiconset</string>
 
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+    </array>
+
     <!-- App Transport Security configuration -->
     <key>NSAppTransportSecurity</key>
     <dict>
