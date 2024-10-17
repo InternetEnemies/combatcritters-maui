@@ -5,103 +5,71 @@
 
 using Combat_Critters_2._0.Models;
 using CombatCrittersSharp;
-using CombatCrittersSharp.exception; //The wrapper class
-public static class BackendService
+using CombatCrittersSharp.exception;
+namespace Combat_Critters_2._0.Services
 {
-    public static async Task<bool> LoginAsync(UserCredentials credentials)
+    public static class BackendService
     {
-
-        var client = new Client("http://api.combatcritters.ca:4000");
-        try
+        /// <summary>
+        /// This method sends a request to the backend for login
+        /// </summary>
+        /// <param name="credentials"></param>
+        /// <returns></returns>
+        public static async Task<bool> LoginAsync(UserCredentials credentials)
         {
-            Console.Write("Attempting to login...");
-            await client.Login(credentials.Username, credentials.Password);
-            Console.WriteLine("Login Success...");
-            return true;
+            
+            IClient cli = new Client("http://api.combatcritters.ca:4000"); // Create a new client connection
+            try
+            {
+                Console.Write("Attempting to login...");
+                await cli.Login(credentials.Username, credentials.Password);
+                Console.WriteLine("Login Success...");
+
+                //Store the user client connection
+                App.CurrentClient = cli;
+                return true;
+            }
+            catch(RestException e)
+            {
+                Console.WriteLine($"Failed to Login: {e.Message}");
+                return false;
+            }        
         }
-        catch(RestException e)
+
+        public static async Task<bool> CreateAccountAsync(UserCredentials credentials)
         {
-            Console.WriteLine($"Failed to Login: {e.Message}");
-            return false;
-        }        
-    }
+            IClient cli = new Client("http://api.combatcritters.ca:4000"); // Create a new client conn
+            try
+            {
+                Console.WriteLine("Attempting to register user...");
+                await cli.Register(credentials.Username, credentials.Password);
+                Console.WriteLine("Register user success");
 
-    public static async Task<bool> CreateAccountAsync(Profile credentials)
-    {
-        // Interact with the Java backend to create a new account
-        //return await WrapperClient.CreateAccount(credentials);
-        return true;
-    }
-
-    //Fetch the user's owned cards
-    public static async Task<List<Card>> GetUserCardsAsync()
-    {
-        //Interact with the backend using the wrapper
-        //... 
-
-        //For testing
-        return new List<Card>
+                //close the cli connection?
+                return true;
+            }
+            catch(RestException e)
+            {
+                Console.WriteLine($"Failed to Register user: {e.Message}");
+                if (e.ResponseMessage != null)
+                    {
+                        Console.WriteLine($"Server Response: {e.ResponseMessage.Content}");
+                    }
+                    if (e.InnerException != null)
+                    {
+                        Console.WriteLine($"Inner Exception: {e.InnerException.Message}");
+                    }          
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An unexpected error occurred during registration: {ex.Message}");
+                if (ex.InnerException != null)
         {
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-            new() {CardId = 1, Name = "UglyMan, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"}
-
-        };
-    }
-
-    //Fetch User Decks
-    public static async Task<List<Deck>> GetUserDecksAsync()
-    {
-        //Interact with the backend using the wrapper
-        //...
-
-        //For testing 
-        return new List<Deck>
-        {
-             new()
-             {
-                Name = "Test Deck 1",
-                    Cards = new List<Card>
-                    {
-                        new Card{CardId = 1, Name = "UglyMan1, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-                        new Card{CardId = 1, Name = "UglyMan1, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-                        new Card{CardId = 1, Name = "UglyMan1, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-                        new Card{CardId = 1, Name = "UglyMan1, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-                        new Card{CardId = 1, Name = "UglyMan1, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"}
-                    }
-             },
-             new()
-             {
-                Name = "Test Deck 2",
-                    Cards = new List<Card>
-                    {
-                        new Card{CardId = 1, Name = "UglyMan2, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-                        new Card{CardId = 1, Name = "UglyMan2, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"}
-                    }
-             },
-             new()
-             {
-                Name = "Test Deck 3",
-                    Cards = new List<Card>
-                    {
-                        new Card{CardId = 1, Name = "UglyMan3, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"},
-                        new Card{CardId = 1, Name = "UglyMan3, the hedious hero", PlayCost=5, Rarity = 2, Image = "testimage.jpeg", Type="Critter",Description="This is test card 1"}
-                    }
-             }
-        };
+            Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+        }
+                return false;
+            }
+        }
     }
 }

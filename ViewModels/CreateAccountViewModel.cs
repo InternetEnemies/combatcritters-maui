@@ -5,6 +5,7 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using Combat_Critters_2._0.Models;
+using Combat_Critters_2._0.Services;
 using CombatCrittersSharp;
 using CombatCrittersSharp.exception;
 
@@ -73,25 +74,28 @@ public class CreateAccountViewModel : INotifyPropertyChanged
 
     private async void OnCreateAccount()
     {
-        
-        var result = await BackendService.CreateAccountAsync(new Profile
+        try
         {
-            FirstName = FirstName,
-            LastName = LastName,
-            Email = Email,
-            Username = Username,
-            Password = Password
-        });
+            var createAccountRequestToBackend = await BackendService.CreateAccountAsync(new UserCredentials{
+                Username = Username,
+                Password = Password
+            });
 
-        //TEST
-        result = true;
-        if (result)
-        {
-            // Navigate back to the login page
-            await _navigation.PopAsync();
+            if (createAccountRequestToBackend)
+            {
+                //Navigate to Login page
+                await _navigation.PopAsync();
+            }
+            else
+            {
+                //show an error message
+                //Maybe display a notification in UI
+            }
         }
-
-
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to login: {ex.Message}");
+        }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
