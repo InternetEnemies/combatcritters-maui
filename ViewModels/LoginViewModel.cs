@@ -12,6 +12,7 @@ using Combat_Critters_2._0.Services;
 
 public class LoginViewModel : INotifyPropertyChanged
 {
+    private readonly BackendService _backendService;
     private string _username = "";
     private string _password = "";
     private readonly INavigation _navigation; //For navigation to Create account
@@ -48,13 +49,15 @@ public class LoginViewModel : INotifyPropertyChanged
         _navigation = navigation;
         LoginCommand = new Command(OnLogin);
         CreateAccountCommand = new Command(OnCreateAccount);
+        
+        _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
     }
 
     private async void OnLogin()
     {
         try
         {
-            var loginRequestToBackend = await BackendService.LoginAsync(new UserCredentials{
+            var loginRequestToBackend = await _backendService.LoginAsync(new UserCredentials{
                 Username = Username,
                 Password = Password
             });

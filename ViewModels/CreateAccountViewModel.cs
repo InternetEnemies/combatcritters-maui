@@ -11,6 +11,7 @@ using CombatCrittersSharp.exception;
 
 public class CreateAccountViewModel : INotifyPropertyChanged
 {
+    private readonly BackendService _backendService;
     private string _firstName = "";
     private string _lastName = "";
     private string _email = "";
@@ -70,13 +71,15 @@ public class CreateAccountViewModel : INotifyPropertyChanged
     {
         _navigation = navigation;
         CreateAccountCommand = new Command(OnCreateAccount);
+
+        _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
     }
 
     private async void OnCreateAccount()
     {
         try
         {
-            var createAccountRequestToBackend = await BackendService.CreateAccountAsync(new UserCredentials{
+            var createAccountRequestToBackend = await _backendService.CreateAccountAsync(new UserCredentials{
                 Username = Username,
                 Password = Password
             });

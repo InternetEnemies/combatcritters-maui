@@ -102,16 +102,7 @@ namespace Combat_Critters_2._0.ViewModels
         // This method retrieves the user deck list asynchronously
         private async Task LoadUserDeck()
         {
-            // var decks = await BackendService.GetUserDecksAsync(); // Request the user deck from backend
-            // if (decks != null && decks.Count > 0)
-            // {
-            //     UserDecks = new ObservableCollection<Deck>(decks);
-            //     HasDecks = true;
-            // }
-            // else
-            // {
-            //     HasDecks = false; // User has no decks
-            // }
+            
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

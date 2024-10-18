@@ -37,20 +37,7 @@ namespace Combat_Critters_2._0.ViewModels
         private async Task LoadUserCards()
         {
 
-            // //Call the BackendService to get the user's cards
-            // var cards = await BackendService.GetUserCardsAsync();
-
-            // //cards = null; //Test to see what happens if user has no cards
-            // //User has at least 1 card?
-            // if (cards != null && cards.Count > 0)
-            // {
-            //     UserCards = new ObservableCollection<Card>(cards);
-            //     HasCards = true;
-            // }
-            // else
-            // {
-            //     HasCards = false; //User had no cards;
-            // }
+           
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
