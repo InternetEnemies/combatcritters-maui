@@ -5,11 +5,13 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using Combat_Critters_2._0.Models;
+using Combat_Critters_2._0.Services;
 using CombatCrittersSharp;
 using CombatCrittersSharp.exception;
 
 public class CreateAccountViewModel : INotifyPropertyChanged
 {
+    private readonly BackendService _backendService;
     private string _firstName = "";
     private string _lastName = "";
     private string _email = "";
@@ -69,29 +71,33 @@ public class CreateAccountViewModel : INotifyPropertyChanged
     {
         _navigation = navigation;
         CreateAccountCommand = new Command(OnCreateAccount);
+
+        _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
     }
 
     private async void OnCreateAccount()
     {
-        
-        var result = await BackendService.CreateAccountAsync(new Profile
+        try
         {
-            FirstName = FirstName,
-            LastName = LastName,
-            Email = Email,
-            Username = Username,
-            Password = Password
-        });
-
-        //TEST
-        result = true;
-        if (result)
-        {
-            // Navigate back to the login page
+            await _backendService.CreateAccountAsync(new UserCredentials{
+                Username = Username,
+                Password = Password
+            });
+ 
+            //Navigate to Login page
             await _navigation.PopAsync();
+           
         }
-
-
+        catch (RestException ex)
+        {
+            if (Application.Current?.MainPage !=  null)
+                await Application.Current.MainPage.DisplayAlert("Register Failed", ex.Message, "OK");
+        }
+        catch (Exception ex)
+        {
+            if (Application.Current?.MainPage !=  null)
+                await Application.Current.MainPage.DisplayAlert("Error", $"An unexpected error occured{ex.Message}. Please try again.", "OK");
+        }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

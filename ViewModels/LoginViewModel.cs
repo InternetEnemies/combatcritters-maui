@@ -8,13 +8,12 @@ using System.Windows.Input;
 using Combat_Critters_2._0;
 using Combat_Critters_2._0.Models;
 using Combat_Critters_2._0.Pages;
-using CombatCrittersSharp;
+using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Layouts;
 
 public class LoginViewModel : INotifyPropertyChanged
 {
+    private readonly BackendService _backendService;
     private string _username = "";
     private string _password = "";
     private readonly INavigation _navigation; //For navigation to Create account
@@ -51,32 +50,44 @@ public class LoginViewModel : INotifyPropertyChanged
         _navigation = navigation;
         LoginCommand = new Command(OnLogin);
         CreateAccountCommand = new Command(OnCreateAccount);
+        
+        _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
     }
 
     private async void OnLogin()
     {
-        // var result = await BackendService.LoginAsync(new UserCredentials
-        // {
-        //     Username = Username,
-        //     Password = Password
-        // });
-
-        //For TEST
-        var result = true;
-        if (result)
+        try
         {
-            // Navigate to ProfilePage through Shell after successful login
+            await _backendService.LoginAsync(new UserCredentials{
+                Username = Username,
+                Password = Password
+            });
+            
+            //Navigate to User Profile page
             (Application.Current as App)?.NavigateToAppShell();
+            
         }
-        else
+        catch(RestException ex)
         {
-            //Show error message
-        }
-    }
+            Console.WriteLine($"Login failed: {ex.Message}");
 
+            //Display a UI alert for a login failure
+            if (Application.Current?.MainPage !=  null)
+                await Application.Current.MainPage.DisplayAlert("Login Failed", ex.Message, "OK");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occured: {ex.Message}");
+
+            //display a notification in UI
+            if (Application.Current?.MainPage !=  null)
+                await Application.Current.MainPage.DisplayAlert("Error", "An unepected error occured. Please try again", "OK");
+            
+        }
+        
+    }
     private async void OnCreateAccount()
     {
-        
         // Navigate to the CreateAccountPage
         await _navigation.PushAsync(new CreateAccountPage());
     }

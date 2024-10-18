@@ -103,18 +103,7 @@ namespace Combat_Critters_2._0.ViewModels
         // Load the user's decks from the backend
         private async Task LoadUserDecks()
         {
-            // Example data for testing (replace with actual backend call)
-            var decks = await BackendService.GetUserDecksAsync();
-
-            if (decks != null && decks.Count > 0)
-            {
-                UserDecks = new ObservableCollection<Deck>(decks);
-                HasDecks = true;
-            }
-            else
-            {
-                HasDecks = false; //User had no cards;
-            }
+            
         }
 
         private void ToggleDeckList()
