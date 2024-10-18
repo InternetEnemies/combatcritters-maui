@@ -22,10 +22,11 @@ namespace Combat_Critters_2._0.Services
     
         /// <summary>
         /// This method sends a request to the backend for login
+        /// It throws an exception if login fails.
         /// </summary>
         /// <param name="credentials"></param>
         /// <returns></returns>
-        public async Task<bool> LoginAsync(UserCredentials credentials)
+        public async Task LoginAsync(UserCredentials credentials)
         {
             
             try
@@ -33,32 +34,28 @@ namespace Combat_Critters_2._0.Services
                 Console.Write("Attempting to login...");
                 await _client.Login(credentials.Username, credentials.Password);
                 Console.WriteLine("Login Success...");
-
-                return true;
             }
             catch(RestException e)
             {
                 Console.WriteLine($"Failed to Login: {e.Message}");
-                return false;
+                
+                throw; //throw the exception
             }        
         }
 
-        public async Task<bool> CreateAccountAsync(UserCredentials credentials)
+        public async Task CreateAccountAsync(UserCredentials credentials)
         {
             try
             {
                 Console.WriteLine("Attempting to register user...");
                 await _client.Register(credentials.Username, credentials.Password);
                 Console.WriteLine("Register user success");
-
-                //close the cli connection?
-                return true;
             }
             catch(RestException e)
             {
                 Console.WriteLine($"Failed to Register user: {e.Message}");
 
-                return false;
+                throw; //throw the exception
             }
         }
     }

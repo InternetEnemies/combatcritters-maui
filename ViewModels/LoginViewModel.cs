@@ -9,6 +9,7 @@ using Combat_Critters_2._0;
 using Combat_Critters_2._0.Models;
 using Combat_Critters_2._0.Pages;
 using Combat_Critters_2._0.Services;
+using CombatCrittersSharp.exception;
 
 public class LoginViewModel : INotifyPropertyChanged
 {
@@ -57,28 +58,30 @@ public class LoginViewModel : INotifyPropertyChanged
     {
         try
         {
-            var loginRequestToBackend = await _backendService.LoginAsync(new UserCredentials{
+            await _backendService.LoginAsync(new UserCredentials{
                 Username = Username,
                 Password = Password
             });
             
-            if (loginRequestToBackend)
-            {
-                //The client con has been stored in backendservices
+            //Navigate to User Profile page
+            (Application.Current as App)?.NavigateToAppShell();
+            
+        }
+        catch(RestException ex)
+        {
+            Console.WriteLine($"Login failed: {ex.Message}");
 
-                //Navigate to User Profile page
-                (Application.Current as App)?.NavigateToAppShell();
-            }
-            else
-            {
-                
-                //show an error message
-                //Maybe display a notification in UI
-            }
+            //Display a UI alert for a login failure
+            if (Application.Current?.MainPage !=  null)
+                await Application.Current.MainPage.DisplayAlert("Login Failed", ex.Message, "OK");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to login: {ex.Message}");
+            Console.WriteLine($"An error occured: {ex.Message}");
+
+            //display a notification in UI
+            if (Application.Current?.MainPage !=  null)
+                await Application.Current.MainPage.DisplayAlert("Error", "An unepected error occured. Please try again", "OK");
             
         }
         
