@@ -20,64 +20,68 @@
                      FontFamily="HeaderText"
                      FontSize="24"
                      HorizontalOptions="Center"
-                     VerticalOptions="Center"
-                     />
-              
-              <Frame Grid.Row="1" Grid.ColumnSpan="2" Padding="5">
+                     VerticalOptions="Center"/>
+
+              <Frame Grid.Row="1"
+                     Grid.ColumnSpan="2"
+                     Padding="5">
                      <ContentView>
                             <ContentView.Triggers>
-                                   <DataTrigger TargetType="ContentView" Binding="{Binding HasCards}" Value="False">
+                                   <DataTrigger TargetType="ContentView"
+                                                Binding="{Binding HasCards}"
+                                                Value="False">
                                           <Setter Property="Content">
                                                  <Setter.Value>
                                                         <Label
                                                                Text="Too bad you have no cards"
                                                                HorizontalOptions="Center"
-                                                               VerticalOptions="Center"
-                                                               />
+                                                               VerticalOptions="Center"/>
                                                  </Setter.Value>
                                           </Setter>
                                    </DataTrigger>
 
-                                   <DataTrigger TargetType="ContentView" Binding="{Binding HasCards}" Value="True">
+                                   <DataTrigger TargetType="ContentView"
+                                                Binding="{Binding HasCards}"
+                                                Value="True">
                                           <Setter Property="Content">
                                                  <Setter.Value>
                                                         <ScrollView>
                                                                <CollectionView ItemsSource="{Binding UserCards}">
                                                                       <CollectionView.ItemsLayout>
                                                                              <GridItemsLayout Orientation="Vertical"
-                                                                                    Span="5"
-                                                                                    VerticalItemSpacing="20"
-                                                                                    HorizontalItemSpacing="20"/>
+                                                                                              Span="5"
+                                                                                              VerticalItemSpacing="20"
+                                                                                              HorizontalItemSpacing="20"/>
                                                                       </CollectionView.ItemsLayout>
                                                                       <CollectionView.ItemTemplate>
                                                                              <DataTemplate>
-                                          <Frame Background="{StaticResource CommonGradient}"
-                                                 Style="{DynamicResource CardFrameStyle}"
-                                                 HorizontalOptions="Center"
-                                                 VerticalOptions="Center">
-                                                 <StackLayout>
-                                                        <Label
-                                                               Text="{Binding Name}"
-                                                               FontFamily="MtgBold"
-                                                               FontSize="14"
-                                                               TextColor="White"/>
-                                                        <Image Source="{Binding Image}"/>
+                                                                                    <Frame Background="{StaticResource CommonGradient}"
+                                                                                           Style="{DynamicResource CardFrameStyle}"
+                                                                                           HorizontalOptions="Center"
+                                                                                           VerticalOptions="Center">
+                                                                                           <StackLayout>
+                                                                                                  <Label
+                                                                                                         Text="{Binding Name}"
+                                                                                                         FontFamily="MtgBold"
+                                                                                                         FontSize="14"
+                                                                                                         TextColor="White"/>
+                                                                                                  <Image Source="{Binding Image}"/>
 
-                                                        <StackLayout Orientation="Horizontal"
-                                                                     HorizontalOptions="Start">
-                                                               <Image Source="ability0.jpg"
-                                                                      WidthRequest="30"
-                                                                      HeightRequest="30"/>
-                                                               <Image Source="ability1.jpg"
-                                                                      WidthRequest="30"
-                                                                      HeightRequest="30"/>
-                                                               <Image Source="ability2.jpg"
-                                                                      WidthRequest="30"
-                                                                      HeightRequest="30"/>
-                                                        </StackLayout>
-                                                 </StackLayout>
-                                          </Frame>
-                                   </DataTemplate>
+                                                                                                  <StackLayout Orientation="Horizontal"
+                                                                                                               HorizontalOptions="Start">
+                                                                                                         <Image Source="ability0.jpg"
+                                                                                                                WidthRequest="30"
+                                                                                                                HeightRequest="30"/>
+                                                                                                         <Image Source="ability1.jpg"
+                                                                                                                WidthRequest="30"
+                                                                                                                HeightRequest="30"/>
+                                                                                                         <Image Source="ability2.jpg"
+                                                                                                                WidthRequest="30"
+                                                                                                                HeightRequest="30"/>
+                                                                                                  </StackLayout>
+                                                                                           </StackLayout>
+                                                                                    </Frame>
+                                                                             </DataTemplate>
                                                                       </CollectionView.ItemTemplate>
                                                                </CollectionView>
                                                         </ScrollView>

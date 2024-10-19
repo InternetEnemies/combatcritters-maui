@@ -2,18 +2,23 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using Combat_Critters_2._0.Models;
+using Combat_Critters_2._0.Services;
+using CombatCrittersSharp.exception;
+using CombatCrittersSharp.objects.card.Interfaces;
+using CombatCrittersSharp.objects.deck;
 
 namespace Combat_Critters_2._0.ViewModels
 {
     public class DeckViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<Deck> _userDecks;
+        private readonly BackendService _backendService;
+        private ObservableCollection<IDeck> _userDecks;
         private ObservableCollection<Card> _selectedDeckCards; // Stores cards for the selected deck
-        private Deck _selectedDeck;
+        private IDeck _selectedDeck;
         private bool _hasDecks = false;
         private bool _isDeckListVisible = false; // Controls the visibility of the dropdown menu
 
-        public ObservableCollection<Deck> UserDecks
+        public ObservableCollection<IDeck> UserDecks
         {
             get => _userDecks;
             set
@@ -33,7 +38,7 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-        public Deck SelectedDeck
+        public IDeck SelectedDeck
         {
             get => _selectedDeck;
             set
@@ -46,7 +51,7 @@ namespace Combat_Critters_2._0.ViewModels
                     // Update the cards for the selected deck
                     if (_selectedDeck != null)
                     {
-                        SelectedDeckCards = new ObservableCollection<Card>(_selectedDeck.Cards);
+                        SelectedDeckCards = null;
                         IsDeckListVisible = false; // Hide the dropdown after selection
                     }
                     else
@@ -83,27 +88,46 @@ namespace Combat_Critters_2._0.ViewModels
         public DeckViewModel()
         {
             // Initialize _userDecks with an empty collection of Decks
-            _userDecks = new ObservableCollection<Deck>();
+            _userDecks = new ObservableCollection<IDeck>();
 
             // Initialize _selectedDeckCards with an empty collection of Cards
             _selectedDeckCards = new ObservableCollection<Card>();
 
-            // Initialize _selectedDeck with a default Deck (or use real values if needed)
-            _selectedDeck = new Deck
-            {
-                Name = "Default Deck",
-                Cards = new List<Card>() // Empty card list
-            };
             ToggleDeckListCommand = new Command(ToggleDeckList);
-            UserDecks = new ObservableCollection<Deck>();
+            UserDecks = new ObservableCollection<IDeck>();
             SelectedDeckCards = new ObservableCollection<Card>();
-            LoadUserDecks(); // Load user decks
+
+            _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
+            
         }
 
         // Load the user's decks from the backend
-        private async Task LoadUserDecks()
+        public async Task LoadUserDecks()
         {
-            
+            try
+            {
+                var userCards = await _backendService.GetDecksAsync();
+
+                if (userCards == null)
+                {
+                    HasDecks = false; 
+                }
+                else
+                {
+                    UserDecks = new ObservableCollection<IDeck>(UserDecks);
+                    HasDecks = true;
+                }
+            }
+            catch(RestException ex)
+            {
+                HasDecks = false;
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                HasDecks = false;
+                Console.WriteLine($"General error occurred: {ex.Message}");
+            }
         }
 
         private void ToggleDeckList()
