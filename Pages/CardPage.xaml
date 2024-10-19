@@ -5,7 +5,8 @@
        <Grid Padding="20">
               <Grid.RowDefinitions>
                      <RowDefinition Height="0.1*"/>
-                     <RowDefinition Height="0.9*"/>
+                     <RowDefinition Height="0.8*"/>
+                     <RowDefinition Height="0.1*"/>
               </Grid.RowDefinitions>
 
               <Grid.ColumnDefinitions>
@@ -46,7 +47,9 @@
                                           <Setter Property="Content">
                                                  <Setter.Value>
                                                         <ScrollView>
-                                                               <CollectionView ItemsSource="{Binding UserCards}">
+                                                               <CollectionView ItemsSource="{Binding UserCards}"
+                                                                               RemainingItemsThreshold="5"
+                                                                               RemainingItemsThresholdReached="OnRemainingItemsThresholdReached">
                                                                       <CollectionView.ItemsLayout>
                                                                              <GridItemsLayout Orientation="Vertical"
                                                                                               Span="5"
@@ -92,6 +95,16 @@
                             </ContentView.Triggers>
                      </ContentView>
               </Frame>
+
+              <Button
+                     Style="{StaticResource RedButtonStyle}"
+                     Text="Load More..."
+                     Grid.Row="2"
+                     Grid.ColumnSpan="2"
+                     IsVisible="{Binding ShowLoadMoreButton}"
+                     HorizontalOptions="Fill"
+                     VerticalOptions="Center"
+                     Command="{Binding LoadMoreCommand}"/>
        </Grid>
 
 </ContentPage>
