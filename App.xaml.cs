@@ -1,15 +1,11 @@
-﻿
-using System.Security.Cryptography.X509Certificates;
-using Combat_Critters_2._0.Pages;
-using Combat_Critters_2._0.Services;
-using CombatCrittersSharp;
-using CombatCrittersSharp.objects.card;
+﻿using Combat_Critters_2._0.Pages;
+
 
 namespace Combat_Critters_2._0
 {
 	public partial class App : Application
 	{
-		
+
 		public App()
 		{
 
@@ -20,7 +16,7 @@ namespace Combat_Critters_2._0
 		}
 
 		// This method is called after a successful login
-		public async void NavigateToAppShell()
+		public void NavigateToAppShell()
 		{
 			// Set AppShell as the main page after login
 			MainPage = new AppShell();

@@ -25,8 +25,9 @@
 
               <Frame Grid.Row="1"
                      Grid.ColumnSpan="2"
-                     Padding="5">
-                     <ContentView>
+                     Padding="5"
+                     Background="{StaticResource PageBackground}">
+                     <ContentView Padding="20">
                             <ContentView.Triggers>
                                    <DataTrigger TargetType="ContentView"
                                                 Binding="{Binding HasCards}"
@@ -52,9 +53,9 @@
                                                                                RemainingItemsThresholdReached="OnRemainingItemsThresholdReached">
                                                                       <CollectionView.ItemsLayout>
                                                                              <GridItemsLayout Orientation="Vertical"
-                                                                                              Span="5"
-                                                                                              VerticalItemSpacing="20"
-                                                                                              HorizontalItemSpacing="20"/>
+                                                                                              Span="4"
+                                                                                              VerticalItemSpacing="30"
+                                                                                              HorizontalItemSpacing="30"/>
                                                                       </CollectionView.ItemsLayout>
                                                                       <CollectionView.ItemTemplate>
                                                                              <DataTemplate>
@@ -62,26 +63,33 @@
                                                                                            Style="{DynamicResource CardFrameStyle}"
                                                                                            HorizontalOptions="Center"
                                                                                            VerticalOptions="Center">
-                                                                                           <StackLayout>
-                                                                                                  <Label
-                                                                                                         Text="{Binding Name}"
-                                                                                                         FontFamily="MtgBold"
-                                                                                                         FontSize="14"
-                                                                                                         TextColor="White"/>
-                                                                                                  <Image Source="{Binding Image}"/>
 
-                                                                                                  <StackLayout Orientation="Horizontal"
-                                                                                                               HorizontalOptions="Start">
-                                                                                                         <Image Source="ability0.jpg"
-                                                                                                                WidthRequest="30"
-                                                                                                                HeightRequest="30"/>
-                                                                                                         <Image Source="ability1.jpg"
-                                                                                                                WidthRequest="30"
-                                                                                                                HeightRequest="30"/>
-                                                                                                         <Image Source="ability2.jpg"
-                                                                                                                WidthRequest="30"
-                                                                                                                HeightRequest="30"/>
-                                                                                                  </StackLayout>
+                                                                                           <StackLayout Orientation="Vertical">
+                                                                                                  <Frame Padding="5"
+                                                                                                         BackgroundColor="Black"
+                                                                                                         Margin="0,0,0,1"
+                                                                                                         HasShadow="False">
+                                                                                                         <Label
+                                                                                                                Text="{Binding Name}"
+                                                                                                                FontFamily="MtgBold"
+                                                                                                                FontSize="14"
+                                                                                                                TextColor="White"
+                                                                                                                HorizontalOptions="Center"
+                                                                                                                VerticalOptions="Center"/>
+                                                                                                  </Frame>
+                                                                                                  <Frame Padding="10"
+                                                                                                         HasShadow="False"
+                                                                                                         BackgroundColor="Transparent">
+                                                                                                         <Image Source="testimage.jpeg"/>
+                                                                                                  </Frame>
+
+                                                                                                  <Frame BorderColor="Black">
+                                                                                                         <Label
+                                                                                                                Text="{Binding Description}"
+                                                                                                                HorizontalOptions="Center"
+                                                                                                                VerticalOptions="Center"/>
+                                                                                                  </Frame>
+
                                                                                            </StackLayout>
                                                                                     </Frame>
                                                                              </DataTemplate>

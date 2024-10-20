@@ -17,7 +17,8 @@
         </LinearGradientBrush>
 
         <!-- Global Style for ContentPage to apply the background -->
-        <Style TargetType="ContentPage">
+        <Style TargetType="Frame"
+               x:Key="FrameBackgroundViewStyle">
                 <Setter Property="Background"
                         Value="{StaticResource PageBackground}"/>
         </Style>
@@ -119,7 +120,7 @@
         <Style x:Key="CardFrameStyle"
                TargetType="Frame">
                 <Setter Property="WidthRequest"
-                        Value="205"/>
+                        Value="190"/>
                 <Setter Property="HeightRequest"
                         Value="300"/>
                 <Setter Property="BorderColor"

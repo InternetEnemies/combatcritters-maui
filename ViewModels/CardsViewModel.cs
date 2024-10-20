@@ -114,6 +114,9 @@ namespace Combat_Critters_2._0.ViewModels
 
         }
 
+        /// <summary>
+        /// Call to load next batch of cards on display
+        /// </summary>
         public void LoadMoreCards()
         {
             var currentCardCount = UserCards.Count;
@@ -127,10 +130,11 @@ namespace Combat_Critters_2._0.ViewModels
                     UserCards.Add(card);
                 }
 
-                ShowLoadMoreButton = UserCards.Count > _allUserCards.Count;
+                ShowLoadMoreButton = HasCards & (UserCards.Count < _allUserCards.Count);
 
             }
         }
+
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
