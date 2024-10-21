@@ -5,7 +5,8 @@ using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.deck;
-using CombatCrittersSharp.rest;
+using CommunityToolkit.Maui.Alerts;
+using Microsoft.Toolkit.Uwp.Notifications;
 
 namespace Combat_Critters_2._0.ViewModels
 {
@@ -78,7 +79,7 @@ namespace Combat_Critters_2._0.ViewModels
 
             CreateDeckCommand = new Command(OnCreateDeckCommand);
             DeckSelectedCommand = new Command<IDeck>(OnDeckSelected);
-            FeatureOnProfileCommand = new Command(FeatureOnProfile);
+            FeatureOnProfileCommand = new Command<IDeck>(FeatureOnProfile);
             DeleteDeckCommand = new Command(DeleteDeck);
             _hasDecks = false;
 
@@ -86,9 +87,41 @@ namespace Combat_Critters_2._0.ViewModels
             Task.Run(async () => await InitializeViewModelAsync());
         }
 
-        private void FeatureOnProfile()
+        private async void FeatureOnProfile(IDeck deck)
         {
-            //Logic to feature the selected deck on profile
+            if (deck != null)
+            {
+                try
+                {
+                    Console.WriteLine($"Featuring deck {deck.Name} on profile...");
+                    await _backendService.FeatureDeckOnProfileAsync(deck);
+                    Console.WriteLine($"Deck {deck.Name} has been featured on the profile");
+
+                    //Display confirmation UI
+                    var toast = Toast.Make($"Deck '{deck.Name}' has been featured on your profile.", CommunityToolkit.Maui.Core.ToastDuration.Short);
+                    await toast.Show();
+                }
+                catch (RestException ex)
+                {
+                    if (Application.Current?.MainPage != null)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Error", $"Failed to feature deck: {ex.Message}", "OK");
+                    }
+                }
+                catch (Exception)
+                {
+                    throw; // bubble up to the global exception handler
+                }
+            }
+            else
+            {
+                //No deck selected or invalid deck
+                if (Application.Current?.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Open the deck you wish to feature first", "OK");
+                }
+            }
+
         }
 
         private void DeleteDeck()

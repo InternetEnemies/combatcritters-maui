@@ -73,7 +73,8 @@
                                                     <FlyoutBase.ContextFlyout>
                                                         <MenuFlyout>
                                                             <MenuFlyoutItem Text="Feature on Profile"
-                                                                            Command="{Binding FeatureOnProfileCommand}"/>
+                                                                            Command="{Binding FeatureOnProfileCommand}"
+                                                                            CommandParameter="{Binding .}"/>
                                                             <MenuFlyoutItem Text="Delete Deck"
                                                                             Command="{Binding DeleteDeckCommand}"/>
                                                         </MenuFlyout>
