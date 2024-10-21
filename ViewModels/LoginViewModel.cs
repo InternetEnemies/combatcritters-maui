@@ -77,13 +77,7 @@ public class LoginViewModel : INotifyPropertyChanged
         }
         catch (Exception)
         {
-            //Log this globally for further tracking
-            AppDomain.CurrentDomain.UnhandledException += (s, e) => Console.WriteLine($"Global error: {e}");
-
-            //display a notification in UI
-            if (Application.Current?.MainPage != null)
-                await Application.Current.MainPage.DisplayAlert("Error", "An unepected error occured. Please try again", "OK");
-
+            throw; // bubble up to the global exception
         }
 
     }

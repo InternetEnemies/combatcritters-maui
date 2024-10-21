@@ -97,8 +97,7 @@ public class CreateAccountViewModel : INotifyPropertyChanged
         }
         catch (Exception)
         {
-            if (Application.Current?.MainPage != null)
-                await Application.Current.MainPage.DisplayAlert("Error", "An unexpected error occured. Please try again.", "OK");
+            throw; //bubble up to the global exception handler
         }
     }
 

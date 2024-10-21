@@ -32,9 +32,14 @@ namespace Combat_Critters_2._0
 		private void HandleException(Exception ex)
 		{
 
-			//Log the exception,  show a UI ALERT
+			//Log the exception, 
 			Console.WriteLine($"Global Exception Caught: {ex.Message}");
-			Application.Current.MainPage?.DisplayAlert("Error", "An unexpected error occured. Please try again later", "OK");
+
+			// Display a global error UI alert
+			Application.Current.MainPage?.Dispatcher.Dispatch(async () =>
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", "An unexpected error occurred. Please try again later.", "OK");
+			});
 		}
 
 		// This method is called after a successful login

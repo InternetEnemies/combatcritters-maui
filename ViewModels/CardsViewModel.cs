@@ -5,6 +5,7 @@ using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card;
 using CombatCrittersSharp.objects.card.Interfaces;
+using CombatCrittersSharp.objects.user;
 
 
 namespace Combat_Critters_2._0.ViewModels
@@ -79,7 +80,8 @@ namespace Combat_Critters_2._0.ViewModels
                 //Default query for all cards
                 var userCards = await _backendService.GetCardsAsync(new CardQueryBuilder().Build());
 
-                if (userCards != null)
+                // Check if the list is null or empty
+                if (userCards != null && userCards.Count != 0)
                 {
                     HasCards = true;
 
@@ -89,27 +91,31 @@ namespace Combat_Critters_2._0.ViewModels
                     //Shoe the Load More button if user has cards there are more than 15 cards
                     ShowLoadMoreButton = (HasCards && (_allUserCards.Count > _batchSize));
 
-                    //Only show up to bacth size
-                    var cardsToDisplay = _allUserCards.Take(_batchSize).ToList(); //Take the first 15
+                    //Display only the first batch of cards
+                    var cardsToDisplay = _allUserCards.Take(_batchSize).ToList();
                     UserCards = new ObservableCollection<ICard>(cardsToDisplay);
                 }
                 else
                 {
+                    //User has no cards
                     HasCards = false;
+
+                    //Clear the UserCards collection 
+                    UserCards.Clear();
                 }
             }
-            catch (RestException ex)
+            catch (RestException)
             {
                 HasCards = false;
-                Console.WriteLine(ex.Message);
 
                 if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to load user cards from the server. Please try again.", "OK");
+                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to load user cards. Please try again.", "OK");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 HasCards = false;
-                Console.WriteLine($"General error occurred: {ex.Message}");
+
+                throw; //bubble up to the global exception
             }
 
         }
