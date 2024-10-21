@@ -6,20 +6,29 @@
           ColumnSpacing="20"
           RowSpacing="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.2*"/>
-            <RowDefinition Height="0.8*"/>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.9*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.3*"/>
-            <ColumnDefinition Width="0.7*"/>
+            <ColumnDefinition Width="0.2*"/>
+            <ColumnDefinition Width="0.8*"/>
         </Grid.ColumnDefinitions>
 
-        <Label
-            Text="Your Deck"
-            Grid.Row="0"
-            Grid.Column="0"
-            HorizontalOptions="Center"
-            VerticalOptions="Center"/>
+        <Frame Grid.Row="0"
+               Grid.Column="0"
+               CornerRadius="10"
+               BackgroundColor="red"
+               HorizontalOptions="Center"
+               VerticalOptions="Center">
+            <Label
+                Text="Deck List"
+                TextColor="Black"
+                FontFamily="HeaderText"
+                FontSize="20"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"/>
+        </Frame>
+
 
         <ContentView Grid.Column="0"
                      Grid.Row="1">
@@ -127,5 +136,21 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
+        <Frame Grid.Row="0"
+               Grid.Column="1"
+               BackgroundColor="Black"
+               WidthRequest="300"
+               CornerRadius="10"
+               HorizontalOptions="Center"
+               VerticalOptions="Center">
+            <Label Text="{Binding SelectedDeck.Name}"
+                   TextColor="White"
+                   FontFamily="HeaderText"
+                   FontSize="20"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"/>
+
+        </Frame>
     </Grid>
 </ContentPage>
