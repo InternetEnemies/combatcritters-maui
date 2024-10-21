@@ -7,10 +7,8 @@ using System.Reflection.Emit;
 using Combat_Critters_2._0.Models;
 using CombatCrittersSharp;
 using CombatCrittersSharp.exception;
-using CombatCrittersSharp.objects.card;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.deck;
-using Intents;
 namespace Combat_Critters_2._0.Services
 {
     public class BackendService
@@ -21,6 +19,27 @@ namespace Combat_Critters_2._0.Services
             _client = client; //Client is injected here
         }
 
+        private async Task<T> ExecuteBackendOperationAsync<T>(Func<Task<T>> operation, string errorMessage)
+        {
+            try
+            {
+                //Excute the operation
+                return await operation();
+            }
+            catch (RestException ex)
+            {
+                //Log specific RestException
+                Console.WriteLine($"{errorMessage}", ex);
+                throw new Exception(errorMessage, ex);
+            }
+            catch (Exception ex)
+            {
+                //Catch general errors and throw them up the stack
+                Console.WriteLine($"{errorMessage}", ex.Message);
+                throw new Exception(errorMessage, ex);
+            }
+        }
+
         /// <summary>
         /// This method sends a request to the backend for login
         /// It throws an exception if login fails.
@@ -29,37 +48,25 @@ namespace Combat_Critters_2._0.Services
         /// <returns></returns>
         public async Task LoginAsync(UserCredentials credentials)
         {
-
-            try
+            await ExecuteBackendOperationAsync(async () =>
             {
                 Console.Write("Attempting to login...");
-
                 await _client.Login(credentials.Username, credentials.Password);
                 Console.WriteLine("Login Success...");
-
-            }
-            catch (RestException e)
-            {
-                Console.WriteLine($"Failed to Login: {e.Message}");
-
-                throw; //throw the exception
-            }
+                return Task.CompletedTask;
+            }, "Login failed");
         }
 
         public async Task CreateAccountAsync(UserCredentials credentials)
         {
-            try
+
+            await ExecuteBackendOperationAsync(async () =>
             {
                 Console.WriteLine("Attempting to register user...");
                 await _client.Register(credentials.Username, credentials.Password);
                 Console.WriteLine("Register user success");
-            }
-            catch (RestException e)
-            {
-                Console.WriteLine($"Failed to Register user: {e.Message}");
-
-                throw; //throw the exception
-            }
+                return Task.CompletedTask;
+            }, "User registrationn failed");
         }
 
         /// <summary>
@@ -69,64 +76,36 @@ namespace Combat_Critters_2._0.Services
         /// <returns></returns>
         public async Task<List<IItemStack<ICard>>?> GetCardsAsync(ICardQuery query)
         {
-            //Fetch cards if they are not caches yet
-            try
+            return await ExecuteBackendOperationAsync(async () =>
             {
-                if (_client.User != null)
-                {
-                    if (query != null) //query must not be null
-                    {
-                        var cardsManager = _client.User.Cards;
-                        Console.WriteLine("Attempting to get user cards");
-                        var cards = await cardsManager.GetCards(query);
-                        return cards; //return cards
-                    }
-                    else
-                    {
-                        throw new Exception("Invalid card filter query");
-                    }
-                }
-                else
-                {
+                if (_client.User == null)
                     throw new Exception("Invalid user");
-                }
-            }
-            catch (RestException)
-            {
-                throw; // throw the exception
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+
+                if (query == null)
+                    throw new Exception("Invalid card filter query");
+
+                var cardsManager = _client.User.Cards;
+                Console.WriteLine("Attempting to get user cards");
+                var cards = await cardsManager.GetCards(query);
+                return cards; //return cards
+            }, "Failed to fetch user cards");
         }
 
         public async Task<List<IDeck>> GetDecksAsync()
         {
-            try
+
+            return await ExecuteBackendOperationAsync(async () =>
             {
-                if (_client.User != null)
-                {
-                    var deckManager = _client.User.Decks;
-                    Console.WriteLine("Attempting to get user decks");
-                    var decks = await deckManager.GetDecks();
-                    Console.WriteLine($"User has {decks.Count} decks");
-                    Console.WriteLine("got decks");
-                    return decks;
-                }
-                else
-                {
+                if (_client.User == null)
                     throw new Exception("Invalid user");
-                }
-            }
-            catch (RestException)
-            {
-                throw; // throw the exception
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+
+                Console.WriteLine("Attempting to get user decks");
+                var deckManager = _client.User.Decks;
+                var decks = await deckManager.GetDecks();
+                Console.WriteLine($"User has {decks.Count} decks");
+                Console.WriteLine("got decks");
+                return decks;
+            }, "Failed to fetch user decks");
         }
     }
 }
