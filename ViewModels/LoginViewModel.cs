@@ -50,7 +50,7 @@ public class LoginViewModel : INotifyPropertyChanged
         _navigation = navigation;
         LoginCommand = new Command(OnLogin);
         CreateAccountCommand = new Command(OnCreateAccount);
-        
+
         _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
     }
 
@@ -58,33 +58,34 @@ public class LoginViewModel : INotifyPropertyChanged
     {
         try
         {
-            await _backendService.LoginAsync(new UserCredentials{
+            // Call the backend service for login
+            await _backendService.LoginAsync(new UserCredentials
+            {
                 Username = Username,
                 Password = Password
             });
-            
-            //Navigate to User Profile page
-            (Application.Current as App)?.NavigateToAppShell();
-            
-        }
-        catch(RestException ex)
-        {
-            Console.WriteLine($"Login failed: {ex.Message}");
 
-            //Display a UI alert for a login failure
-            if (Application.Current?.MainPage !=  null)
-                await Application.Current.MainPage.DisplayAlert("Login Failed", ex.Message, "OK");
+            // On success, Navigate to User Profile page
+            (Application.Current as App)?.NavigateToAppShell();
+
         }
-        catch (Exception ex)
+        catch (RestException)
         {
-            Console.WriteLine($"An error occured: {ex.Message}");
+            //UI feedback on failed login
+            if (Application.Current?.MainPage != null)
+                await Application.Current.MainPage.DisplayAlert("Login Failed", "Incorrect username or password. Please try again.", "OK");
+        }
+        catch (Exception)
+        {
+            //Log this globally for further tracking
+            AppDomain.CurrentDomain.UnhandledException += (s, e) => Console.WriteLine($"Global error: {e}");
 
             //display a notification in UI
-            if (Application.Current?.MainPage !=  null)
+            if (Application.Current?.MainPage != null)
                 await Application.Current.MainPage.DisplayAlert("Error", "An unepected error occured. Please try again", "OK");
-            
+
         }
-        
+
     }
     private async void OnCreateAccount()
     {
