@@ -5,6 +5,7 @@ using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.deck;
+using CombatCrittersSharp.rest;
 
 namespace Combat_Critters_2._0.ViewModels
 {
@@ -88,21 +89,33 @@ namespace Combat_Critters_2._0.ViewModels
                 try
                 {
                     Console.WriteLine($"Fetching cards for deck: {selectedDeck.Name}");
+
+                    //Attempt to fetch the cards for the selected deck                    
                     var deckCards = await selectedDeck.GetCards();
-                    if (deckCards != null)
+
+                    if (deckCards != null && deckCards.Count > 0)
                     {
+                        // Update the SelectedDeckCards collection with the deck's card
                         SelectedDecksCards = new ObservableCollection<ICard>((IEnumerable<ICard>)deckCards);
                         Console.WriteLine($"Loaded {deckCards.Count} cards for deck: {selectedDeck.Name}");
                     }
                     else
                     {
-                        SelectedDecksCards = new ObservableCollection<ICard>();
+                        // No cards found, clear the collection
+                        SelectedDecksCards.Clear();
                         Console.WriteLine($"No cards found for deck: {selectedDeck.Name}");
                     }
                 }
-                catch (Exception ex)
+                catch (RestException)
                 {
-                    Console.WriteLine($"Error loading deck cards: {ex.Message}");
+                    if (Application.Current?.MainPage != null)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Error", "Failed to load deck cards. Please try again.", "OK");
+                    }
+                }
+                catch (Exception)
+                {
+                    throw; // bubble up to the general exceptio handler
                 }
 
             }
@@ -123,31 +136,35 @@ namespace Combat_Critters_2._0.ViewModels
         {
             try
             {
+                //Fetch the user decks from the backend service
                 var userDecks = await _backendService.GetDecksAsync();
 
-
-                if (userDecks != null)
+                //Check if the list of decks is null or empty
+                if (userDecks != null && userDecks.Count > 0)
                 {
                     UserDecks = new ObservableCollection<IDeck>(userDecks);
                     HasDecks = true;
-                    Console.Write($"Had deck is {HasDecks}");
                 }
                 else
                 {
-                    Console.WriteLine("In here; fail");
-                    //User has no decks
+                    //No decks found
                     HasDecks = false;
+                    UserDecks.Clear();
                 }
             }
-            catch (RestException ex)
+            catch (RestException)
             {
                 HasDecks = false;
-                Console.WriteLine(ex.Message);
+
+                if (Application.Current?.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to load user decks. Please try again.", "OK");
+                }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 HasDecks = false;
-                Console.WriteLine($"General error occurred: {ex.Message}");
+                throw; // bubble up to the global exception handler
             }
         }
 
