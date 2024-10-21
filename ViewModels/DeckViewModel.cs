@@ -17,7 +17,8 @@ namespace Combat_Critters_2._0.ViewModels
         private IDeck _selectedDeck;
         public ICommand CreateDeckCommand { get; }
         public ICommand DeckSelectedCommand { get; set; }
-
+        public ICommand FeatureOnProfileCommand { get; }
+        public ICommand DeleteDeckCommand { get; }
         private bool _hasDecks;
 
         public ObservableCollection<ICard> SelectedDecksCards
@@ -74,12 +75,25 @@ namespace Combat_Critters_2._0.ViewModels
             _selectedDeck = new Deck(null, null, -1, "");
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
+
             CreateDeckCommand = new Command(OnCreateDeckCommand);
             DeckSelectedCommand = new Command<IDeck>(OnDeckSelected);
+            FeatureOnProfileCommand = new Command(FeatureOnProfile);
+            DeleteDeckCommand = new Command(DeleteDeck);
             _hasDecks = false;
 
             //start Loading the user decks.
             Task.Run(async () => await InitializeViewModelAsync());
+        }
+
+        private void FeatureOnProfile()
+        {
+            //Logic to feature the selected deck on profile
+        }
+
+        private void DeleteDeck()
+        {
+            //Logic to delete the selected deck
         }
 
         private async void OnDeckSelected(IDeck selectedDeck)

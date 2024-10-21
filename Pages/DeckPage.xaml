@@ -51,13 +51,36 @@
                                                Margin="10,5"
                                                Padding="10"
                                                HasShadow="True">
-                                            <StackLayout Orientation="Vertical">
+                                            <Grid>
+                                                <!--Display for Deck name-->
                                                 <Label Text="{Binding Name}"
                                                        FontSize="16"
                                                        FontAttributes="Bold"
                                                        TextColor="Black"
-                                                       HorizontalOptions="Start"/>
-                                            </StackLayout>
+                                                       HorizontalOptions="Start"
+                                                       VerticalOptions="Center"/>
+
+                                                <!--Display for Options-->
+                                                <Button Text="..."
+                                                        TextColor="Black"
+                                                        FontAttributes="Bold"
+                                                        FontSize="Large"
+                                                        Padding="10,0"
+                                                        HorizontalOptions="End"
+                                                        VerticalOptions="Center"
+                                                        BackgroundColor="Transparent">
+
+                                                    <FlyoutBase.ContextFlyout>
+                                                        <MenuFlyout>
+                                                            <MenuFlyoutItem Text="Feature on Profile"
+                                                                            Command="{Binding FeatureOnProfileCommand}"/>
+                                                            <MenuFlyoutItem Text="Delete Deck"
+                                                                            Command="{Binding DeleteDeckCommand}"/>
+                                                        </MenuFlyout>
+                                                    </FlyoutBase.ContextFlyout>
+                                                </Button>
+
+                                            </Grid>
                                         </Frame>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
