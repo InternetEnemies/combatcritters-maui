@@ -20,7 +20,7 @@ namespace Combat_Critters_2._0.Services
         {
             _client = client; //Client is injected here
         }
-            
+
         /// <summary>
         /// This method sends a request to the backend for login
         /// It throws an exception if login fails.
@@ -29,21 +29,21 @@ namespace Combat_Critters_2._0.Services
         /// <returns></returns>
         public async Task LoginAsync(UserCredentials credentials)
         {
-            
+
             try
             {
                 Console.Write("Attempting to login...");
-                
+
                 await _client.Login(credentials.Username, credentials.Password);
                 Console.WriteLine("Login Success...");
-                
+
             }
-            catch(RestException e)
+            catch (RestException e)
             {
                 Console.WriteLine($"Failed to Login: {e.Message}");
-                
+
                 throw; //throw the exception
-            }        
+            }
         }
 
         public async Task CreateAccountAsync(UserCredentials credentials)
@@ -54,7 +54,7 @@ namespace Combat_Critters_2._0.Services
                 await _client.Register(credentials.Username, credentials.Password);
                 Console.WriteLine("Register user success");
             }
-            catch(RestException e)
+            catch (RestException e)
             {
                 Console.WriteLine($"Failed to Register user: {e.Message}");
 
@@ -72,9 +72,9 @@ namespace Combat_Critters_2._0.Services
             //Fetch cards if they are not caches yet
             try
             {
-                if(_client.User != null)
+                if (_client.User != null)
                 {
-                    if(query != null) //query must not be null
+                    if (query != null) //query must not be null
                     {
                         var cardsManager = _client.User.Cards;
                         Console.WriteLine("Attempting to get user cards");
@@ -101,7 +101,7 @@ namespace Combat_Critters_2._0.Services
             }
         }
 
-        public async Task<List<IDeck>?> GetDecksAsync()
+        public async Task<List<IDeck>> GetDecksAsync()
         {
             try
             {
@@ -110,21 +110,20 @@ namespace Combat_Critters_2._0.Services
                     var deckManager = _client.User.Decks;
                     Console.WriteLine("Attempting to get user decks");
                     var decks = await deckManager.GetDecks();
+                    Console.WriteLine($"User has {decks.Count} decks");
                     Console.WriteLine("got decks");
                     return decks;
                 }
                 else
                 {
-                    Console.Write("User is null");
-                    return null;
+                    throw new Exception("Invalid user");
                 }
             }
-            catch (RestException e)
+            catch (RestException)
             {
-                Console.WriteLine($"Faild to get user cards {e.Message}");
                 throw; // throw the exception
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }

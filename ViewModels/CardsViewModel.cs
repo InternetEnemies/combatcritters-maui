@@ -56,7 +56,7 @@ namespace Combat_Critters_2._0.ViewModels
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
             LoadMoreCommand = new Command(LoadMoreCards);
             _showLoadMoreButton = false;
-            HasCards = false;
+            HasCards = true;
 
 
             //start Loading the user cards.

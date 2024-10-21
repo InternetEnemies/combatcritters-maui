@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using Combat_Critters_2._0.Models;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card.Interfaces;
@@ -13,31 +12,22 @@ namespace Combat_Critters_2._0.ViewModels
     {
         private readonly BackendService _backendService;
         private ObservableCollection<IDeck> _userDecks;
-        private ObservableCollection<Card> _selectedDeckCards; // Stores cards for the selected deck
+        private ObservableCollection<ICard> _selectedDecksCards;
         private IDeck _selectedDeck;
-        private bool _hasDecks = false;
-        private bool _isDeckListVisible = false; // Controls the visibility of the dropdown menu
+        public ICommand CreateDeckCommand { get; }
+        public ICommand DeckSelectedCommand { get; set; }
 
-        public ObservableCollection<IDeck> UserDecks
+        private bool _hasDecks;
+
+        public ObservableCollection<ICard> SelectedDecksCards
         {
-            get => _userDecks;
+            get => _selectedDecksCards;
             set
             {
-                _userDecks = value;
-                OnPropertyChanged(nameof(UserDecks));
+                _selectedDecksCards = value;
+                OnPropertyChanged(nameof(SelectedDecksCards));
             }
         }
-
-        public ObservableCollection<Card> SelectedDeckCards
-        {
-            get => _selectedDeckCards;
-            set
-            {
-                _selectedDeckCards = value;
-                OnPropertyChanged(nameof(SelectedDeckCards));
-            }
-        }
-
         public IDeck SelectedDeck
         {
             get => _selectedDeck;
@@ -47,18 +37,20 @@ namespace Combat_Critters_2._0.ViewModels
                 {
                     _selectedDeck = value;
                     OnPropertyChanged(nameof(SelectedDeck));
-
-                    // Update the cards for the selected deck
-                    if (_selectedDeck != null)
-                    {
-                        SelectedDeckCards = null;
-                        IsDeckListVisible = false; // Hide the dropdown after selection
-                    }
-                    else
-                    {
-                        SelectedDeckCards.Clear();
-                    }
                 }
+
+                if (DeckSelectedCommand.CanExecute(_selectedDeck))
+                    DeckSelectedCommand.Execute(_selectedDeck);
+            }
+        }
+        public ObservableCollection<IDeck> UserDecks
+        {
+            get => _userDecks;
+            set
+            {
+                _userDecks = value;
+                Console.Write("UserDecks property changed");
+                OnPropertyChanged(nameof(UserDecks));
             }
         }
 
@@ -72,33 +64,54 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-        public bool IsDeckListVisible
+        public DeckViewModel()
         {
-            get => _isDeckListVisible;
-            set
+            _userDecks = new ObservableCollection<IDeck>();
+            _selectedDecksCards = new ObservableCollection<ICard>();
+            _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
+            CreateDeckCommand = new Command(OnCreateDeckCommand);
+            DeckSelectedCommand = new Command<IDeck>(OnDeckSelected);
+            _hasDecks = false;
+
+            //start Loading the user decks.
+            Task.Run(async () => await InitializeViewModelAsync());
+        }
+
+        private async void OnDeckSelected(IDeck selectedDeck)
+        {
+            if (selectedDeck != null)
             {
-                _isDeckListVisible = value;
-                OnPropertyChanged(nameof(IsDeckListVisible));
+                try
+                {
+                    Console.WriteLine($"Fetching cards for deck: {selectedDeck.Name}");
+                    var deckCards = await selectedDeck.GetCards();
+                    if (deckCards != null)
+                    {
+                        SelectedDecksCards = new ObservableCollection<ICard>((IEnumerable<ICard>)deckCards);
+                        Console.WriteLine($"Loaded {deckCards.Count} cards for deck: {selectedDeck.Name}");
+                    }
+                    else
+                    {
+                        SelectedDecksCards = new ObservableCollection<ICard>();
+                        Console.WriteLine($"No cards found for deck: {selectedDeck.Name}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error loading deck cards: {ex.Message}");
+                }
+
             }
         }
 
-        // Command for toggling the dropdown menu visibility
-        public ICommand ToggleDeckListCommand { get; }
-
-        public DeckViewModel()
+        private void OnCreateDeckCommand(object obj)
         {
-            // Initialize _userDecks with an empty collection of Decks
-            _userDecks = new ObservableCollection<IDeck>();
+            throw new NotImplementedException();
+        }
 
-            // Initialize _selectedDeckCards with an empty collection of Cards
-            _selectedDeckCards = new ObservableCollection<Card>();
-
-            ToggleDeckListCommand = new Command(ToggleDeckList);
-            UserDecks = new ObservableCollection<IDeck>();
-            SelectedDeckCards = new ObservableCollection<Card>();
-
-            _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
-            
+        private async Task InitializeViewModelAsync()
+        {
+            await LoadUserDecks();
         }
 
         // Load the user's decks from the backend
@@ -106,19 +119,23 @@ namespace Combat_Critters_2._0.ViewModels
         {
             try
             {
-                var userCards = await _backendService.GetDecksAsync();
+                var userDecks = await _backendService.GetDecksAsync();
 
-                if (userCards == null)
+
+                if (userDecks != null)
                 {
-                    HasDecks = false; 
+                    UserDecks = new ObservableCollection<IDeck>(userDecks);
+                    HasDecks = true;
+                    Console.Write($"Had deck is {HasDecks}");
                 }
                 else
                 {
-                    UserDecks = new ObservableCollection<IDeck>(UserDecks);
-                    HasDecks = true;
+                    Console.WriteLine("In here; fail");
+                    //User has no decks
+                    HasDecks = false;
                 }
             }
-            catch(RestException ex)
+            catch (RestException ex)
             {
                 HasDecks = false;
                 Console.WriteLine(ex.Message);
@@ -128,11 +145,6 @@ namespace Combat_Critters_2._0.ViewModels
                 HasDecks = false;
                 Console.WriteLine($"General error occurred: {ex.Message}");
             }
-        }
-
-        private void ToggleDeckList()
-        {
-            IsDeckListVisible = !IsDeckListVisible; // Toggle visibility
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

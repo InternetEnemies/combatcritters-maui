@@ -2,92 +2,130 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.DeckPage">
 
-    <Grid Padding="20">
+    <Grid Padding="20"
+          ColumnSpacing="20"
+          RowSpacing="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="0.8*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*"/>
+            <ColumnDefinition Width="0.7*"/>
+        </Grid.ColumnDefinitions>
 
-        <!-- Custom Dropdown for Deck Selection -->
-        <StackLayout Grid.Row="0"
-                     HorizontalOptions="FillAndExpand"
-                     VerticalOptions="Start">
-            <!-- Dropdown button -->
-            <Button Text="Choose a Deck"
-                    Style="{StaticResource ButtonStyle}"
-                    Command="{Binding ToggleDeckListCommand}"
-                    FontSize="Large"
-                    HorizontalOptions="Center"/>
+        <Label
+            Text="Your Deck"
+            Grid.Row="0"
+            Grid.Column="0"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"/>
 
-            <!-- Custom dropdown list (CollectionView) -->
-            <CollectionView ItemsSource="{Binding UserDecks}"
-                            IsVisible="{Binding IsDeckListVisible}"
-                            SelectionMode="Single"
-                            SelectedItem="{Binding SelectedDeck}">
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical"
-                                     Span="1"
-                                     VerticalItemSpacing="20"
-                                     HorizontalItemSpacing="20"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Label Text="{Binding Name}"
-                               Padding="10"
-                               FontSize="Medium"
-                               VerticalOptions="Center"
-                               HorizontalOptions="Center"/>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </StackLayout>
+        <ContentView Grid.Column="0"
+                     Grid.Row="1">
+            <ContentView.Triggers>
+                <!-- Show the CollectionView when HasDecks is true -->
+                <DataTrigger TargetType="ContentView"
+                             Binding="{Binding HasDecks}"
+                             Value="true">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <!-- CollectionView for displaying decks -->
+                            <CollectionView ItemsSource="{Binding UserDecks}"
+                                            SelectedItem="{Binding SelectedDeck}"
+                                            SelectionMode="Single">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Frame BackgroundColor="White"
+                                               BorderColor="Gray"
+                                               CornerRadius="10"
+                                               Margin="10,5"
+                                               Padding="10"
+                                               HasShadow="True">
+                                            <StackLayout Orientation="Vertical">
+                                                <Label Text="{Binding Name}"
+                                                       FontSize="16"
+                                                       FontAttributes="Bold"
+                                                       TextColor="Black"
+                                                       HorizontalOptions="Start"/>
+                                            </StackLayout>
+                                        </Frame>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Vertical"
+                                                       ItemSpacing="20"/>
+                                </CollectionView.ItemsLayout>
+                            </CollectionView>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
 
-        <!-- Deck View -->
-        <StackLayout Grid.Row="1"
-                     Padding="10"
-                     HorizontalOptions="Center"
-                     VerticalOptions="Center">
+                <!-- Show the "No decks available" view when HasDecks is false -->
+                <DataTrigger TargetType="ContentView"
+                             Binding="{Binding HasDecks}"
+                             Value="false">
+                    <Setter Property="Content">
+                        <Setter.Value>
 
-            <!-- Cards display -->
-            <CollectionView ItemsSource="{Binding SelectedDeckCards}"
-                            IsVisible="{Binding HasDecks}">
-                <CollectionView.ItemsLayout>
-                    <!-- Set the grid span to 5 columns -->
-                    <GridItemsLayout Orientation="Vertical"
-                                     Span="5"
-                                     VerticalItemSpacing="20"
-                                     HorizontalItemSpacing="20"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Background="{StaticResource CommonGradient}"
-                               Style="{DynamicResource CardFrameStyle}"
-                               HorizontalOptions="Center"
-                               VerticalOptions="Center">
-                            <StackLayout>
-                                <Label Text="{Binding Name}"
-                                       FontFamily="MtgBold"
-                                       FontSize="14"
-                                       TextColor="White"/>
-                                <Image Source="{Binding Image}"/>
+                            <Label Text="No decks available"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   TextColor="Black"/>
 
-                                <StackLayout Orientation="Horizontal"
-                                             HorizontalOptions="Start">
-                                    <Image Source="ability0.jpg"
-                                           WidthRequest="30"
-                                           HeightRequest="30"/>
-                                    <Image Source="ability1.jpg"
-                                           WidthRequest="30"
-                                           HeightRequest="30"/>
-                                    <Image Source="ability2.jpg"
-                                           WidthRequest="30"
-                                           HeightRequest="30"/>
-                                </StackLayout>
-                            </StackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </StackLayout>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </ContentView.Triggers>
+        </ContentView>
+
+
+        <!-- Display cards from the selected deck -->
+        <CollectionView ItemsSource="{Binding SelectedDecksCards}"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Background="{StaticResource PageBackground}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                                 Span="4"
+                                 VerticalItemSpacing="30"
+                                 HorizontalItemSpacing="30"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Background="{StaticResource CommonGradient}"
+                           Style="{DynamicResource CardFrameStyle}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center">
+                        <StackLayout Orientation="Vertical">
+                            <Frame Padding="5"
+                                   BackgroundColor="Black"
+                                   Margin="0,0,0,1"
+                                   HasShadow="False">
+                                <Label
+                                    Text="{Binding Name}"
+                                    FontFamily="MtgBold"
+                                    FontSize="14"
+                                    TextColor="White"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"/>
+                            </Frame>
+                            <Frame Padding="10"
+                                   HasShadow="False"
+                                   BackgroundColor="Transparent">
+                                <Image Source="testimage.jpeg"/>
+                            </Frame>
+
+                            <Frame BorderColor="Black">
+                                <Label
+                                    Text="{Binding Description}"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"/>
+                            </Frame>
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 </ContentPage>
