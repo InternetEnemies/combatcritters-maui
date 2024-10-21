@@ -68,6 +68,10 @@ namespace Combat_Critters_2._0.ViewModels
         {
             _userDecks = new ObservableCollection<IDeck>();
             _selectedDecksCards = new ObservableCollection<ICard>();
+
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+            _selectedDeck = new Deck(null, null, -1, "");
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
             CreateDeckCommand = new Command(OnCreateDeckCommand);
             DeckSelectedCommand = new Command<IDeck>(OnDeckSelected);
