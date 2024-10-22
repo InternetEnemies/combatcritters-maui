@@ -20,11 +20,13 @@
 
         <!--FEATURED DECK SECTION-->
         <Frame Grid.Row="0"
-               Grid.ColumnSpan="2">
+               Grid.ColumnSpan="2"
+               HasShadow="False"
+               BorderColor="Purple">
 
             <StackLayout>
                 <!--Frame to section header-->
-                <Frame>
+                <Frame HasShadow="false">
                     <Label Text="Featured Deck"
                            TextColor="Black"
                            FontFamily="HeaderText"
@@ -34,8 +36,12 @@
                 </Frame>
 
                 <!--Frame to hold featured deck name -->
-                <Frame BackgroundColor="Black">
-                    <Label Text="This will bind to featured deck name"
+                <Frame BackgroundColor="Black"
+                       WidthRequest="300"
+                       HeightRequest="50"
+                       Margin="0,5,0,5">
+                    <Label Text="Deck Name"
+                           TextColor="White"
                            HorizontalOptions="Center"
                            VerticalOptions="Center"/>
                 </Frame>
@@ -75,13 +81,14 @@
 
         <!--USER SECTION-->
         <Frame Grid.Row="1"
-               Grid.Column="0">
+               Grid.Column="0"
+               HasShadow="False"
+               BorderColor="Purple">
 
-            <StackLayout HorizontalOptions="Center"
-                         VerticalOptions="Center">
+            <StackLayout>
 
                 <!-- Frame to hold section header -->
-                <Frame>
+                <Frame HasShadow="False">
                     <Label Text="User"
                            FontFamily="HeaderText"
                            FontSize="24"/>
@@ -120,13 +127,14 @@
 
         <!-- USER PROFILE SECTION -->
         <Frame Grid.Row="1"
-               Grid.Column="1">
+               Grid.Column="1"
+               HasShadow="False"
+               BorderColor="Purple">
 
-            <StackLayout HorizontalOptions="Center"
-                         VerticalOptions="Center">
+            <StackLayout>
 
                 <!-- Frame to hold section header -->
-                <Frame>
+                <Frame HasShadow="false">
                     <Label Text="User Profile"
                            TextColor="Black"
                            FontFamily="HeaderText"
