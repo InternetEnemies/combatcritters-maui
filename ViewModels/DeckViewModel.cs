@@ -6,7 +6,6 @@ using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.deck;
 using CommunityToolkit.Maui.Alerts;
-using Microsoft.Toolkit.Uwp.Notifications;
 
 namespace Combat_Critters_2._0.ViewModels
 {

@@ -3,194 +3,164 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.ProfilePage">
 
-    <!-- <ContentView>
-           <Button
-            Text="Share"
-            Style="{DynamicResource ButtonStyle}"
-            HorizontalOptions="End"
-            VerticalOptions="Center"
-            Clicked="OnShareClicked"/> 
-        </ContentView> -->
+    <Grid Padding="20"
+          RowSpacing="6"
+          ColumnSpacing="6">
 
-    <Grid Padding="20">
-        <!--Profile has a 3 by 2 grid-->
+        <!--Profile has a 2 by 2 grid-->
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.4*"/>
             <RowDefinition Height="0.6*"/>
-            <RowDefinition Height="0.3*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="0.3*"/>
+            <ColumnDefinition Width="0.7*"/>
         </Grid.ColumnDefinitions>
 
+        <!--FEATURED DECK SECTION-->
+        <Frame Grid.Row="0"
+               Grid.ColumnSpan="2">
 
-        <Label
-            Grid.Row="0"
-            Grid.Column="0"
-            Text="Critter Profile"
-            FontFamily="HeaderText"
-            FontSize="24"
-            HorizontalOptions="Center"
-            VerticalOptions="Center"/>
+            <StackLayout>
+                <!--Frame to section header-->
+                <Frame>
+                    <Label Text="Featured Deck"
+                           TextColor="Black"
+                           FontFamily="HeaderText"
+                           FontSize="24"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+                </Frame>
 
-        <Button
-            Grid.Row="0"
-            Grid.Column="1"
-            Text="SHARE"
-            Style="{StaticResource ButtonStyle}"
-            HorizontalOptions="Center"
-            VerticalOptions="Center"
-            Clicked="OnShareClicked"/>
+                <!--Frame to hold featured deck name -->
+                <Frame BackgroundColor="Black">
+                    <Label Text="This will bind to featured deck name"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+                </Frame>
 
+                <!--Content view with triggers for featured deck display -->
+                <ContentView>
+                    <ContentView.Triggers>
+                        <!-- Show the collection view when user has featured a deck -->
+                        <DataTrigger TargetType="ContentView"
+                                     Binding="This will bind to the bool<has featured deck>"
+                                     Value="true">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <!-- Put a collection view her for the featured deck-->
+                                </Setter.Value>
+                            </Setter>
+
+                        </DataTrigger>
+
+                        <!-- Show the "No featured deck." -->
+                        <DataTrigger TargetType="ContentView"
+                                     Binding="This will bind to the bool<has_featured_deck>"
+                                     Value="false">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Label Text="No featured Deck"/>
+                                </Setter.Value>
+                            </Setter>
+
+                        </DataTrigger>
+                    </ContentView.Triggers>
+                </ContentView>
+
+            </StackLayout>
+        </Frame>
+
+        <!--USER SECTION-->
         <Frame Grid.Row="1"
-               Grid.ColumnSpan="2"
-               BorderColor="Black"
-               HasShadow="True"
-               HorizontalOptions="Fill"
-               VerticalOptions="Fill">
-            
+               Grid.Column="0">
 
-            <Grid HorizontalOptions="Fill" VerticalOptions="Fill" RowSpacing="10" ColumnSpacing="5">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="0.1*"/>
-                    <RowDefinition Height="0.9*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.2*"/>
-                    <ColumnDefinition Width="0.8*"/>
-                </Grid.ColumnDefinitions>
-                
-                <Button
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Text="Deck List"
-                    TextColor="Black"
-                    FontFamily="HeaderText"
-                    FontSize="20"
-                    BackgroundColor="Red"
-                    IsVisible="True"
-                    HorizontalOptions="Start"
-                    Command="{Binding ShowDeckListCommand}"
-                />
-                
-                
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Text="FEATURED DECK"
-                    FontFamily="HeaderText"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Center"
-                    FontSize="24"
-                    />
-            
-                <Image
-                    Grid.Row ="1"
-                    Grid.Column="0"
-                    Source="testIcon.jpg"
-                    IsVisible="{Binding DeckListButtonClicked, Converter={StaticResource InverseBooleanConverter}}"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    />
-            
-                <ListView
-                    IsVisible="{Binding DeckListButtonClicked}"
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    ItemsSource="{Binding UserDecks}"
-                    SelectedItem="{Binding SelectedDeck}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <StackLayout>
-                                    <Label Text="{Binding Name}" 
-                                        TextColor="Black" 
-                                        FontFamily="HeaderText"
-                                        FontAttributes="Bold"  
-                                        FontSize="16" />
-                                </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+            <StackLayout HorizontalOptions="Center"
+                         VerticalOptions="Center">
 
-                <CollectionView Grid.Row="1"
-                    Grid.Column="1"
-                    ItemsSource="{Binding SelectedDeckCards}"
-                    IsVisible="{Binding SelectedDeck}"
-                    VerticalOptions ="Center"
-                    HorizontalOptions="Center">
-                    
-                    <CollectionView.ItemsLayout>
-                    <!-- Set the grid span to 5 columns -->
-                        <GridItemsLayout Orientation="Vertical"
-                                        Span="5"
-                                        VerticalItemSpacing="20"
-                                        HorizontalItemSpacing="20"/>
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame Background="{StaticResource CommonGradient}"
-                                Style="{DynamicResource CardFrameStyle}"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center">
-                                <StackLayout>
-                                    <Label Text="{Binding Name}"
-                                        FontFamily="MtgBold"
-                                        FontSize="14"
-                                        TextColor="White"/>
-                                        <Image Source="{Binding Image}"/>
+                <!-- Frame to hold section header -->
+                <Frame>
+                    <Label Text="User"
+                           FontFamily="HeaderText"
+                           FontSize="24"/>
+                </Frame>
 
-                                <StackLayout
-                                            Orientation="Horizontal"
-                                            HorizontalOptions="Start">
-                                            <Image Source="ability0.jpg"
-                                            WidthRequest="30"
-                                            HeightRequest="30"/>
-                                            <Image Source="ability1.jpg"
-                                            WidthRequest="30"
-                                            HeightRequest="30"/>
-                                            <Image Source="ability2.jpg"
-                                            WidthRequest="30"
-                                            HeightRequest="30"/>
-                                </StackLayout>
-                                </StackLayout>
-                            </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
+                <!-- content view with triggers to display users -->
+                <ContentView>
+                    <ContentView.Triggers>
+                        <!-- show the user profile list -->
+                        <DataTrigger TargetType="ContentView"
+                                     Binding="This will bind to the bool<has users>"
+                                     Value="true">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <!--add a collecion view here for user profile list-->
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
 
-                </CollectionView>
+                        <!-- show default content for no users -->
+                        <DataTrigger TargetType="ContentView"
+                                     Binding="This will bind to the bool<has users>"
+                                     Value="false">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Label Text="No Users"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
 
-                
-            </Grid>
+                    </ContentView.Triggers>
+                </ContentView>
+            </StackLayout>
         </Frame>
 
-        <Frame Grid.Row="2"
-               Grid.Column="0"
-               BorderColor="Black"
-               HasShadow="True"
-               HorizontalOptions="Fill"
-               VerticalOptions="Fill">
+        <!-- USER PROFILE SECTION -->
+        <Frame Grid.Row="1"
+               Grid.Column="1">
 
-            <Label
-                Text="Feature 2 crittery card"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"/>
-        </Frame>
+            <StackLayout HorizontalOptions="Center"
+                         VerticalOptions="Center">
 
-        <Frame Grid.Row="2"
-               Grid.Column="1"
-               BorderColor="Black"
-               HasShadow="True"
-               HorizontalOptions="Fill"
-               VerticalOptions="Fill">
+                <!-- Frame to hold section header -->
+                <Frame>
+                    <Label Text="User Profile"
+                           TextColor="Black"
+                           FontFamily="HeaderText"
+                           FontSize="24"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+                </Frame>
 
-            <Label
-                Text="Rank!"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"/>
+                <ContentView>
+                    <ContentView.Triggers>
+                        <!-- show the selected user profile -->
+                        <DataTrigger TargetType="ContentView"
+                                     Binding="This will bind to the bool<hasusers and selectedUser>"
+                                     Value="true">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <!-- put the user profile fetured deck here -->
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+
+                        <!-- show default content for no user profile -->
+                        <DataTrigger TargetType="ContentView"
+                                     Binding="This will bind to the bool<has users and selected user>"
+                                     Value="false">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Label Text="No selected User"/>
+                                </Setter.Value>
+                            </Setter>
+
+                        </DataTrigger>
+                    </ContentView.Triggers>
+                </ContentView>
+
+            </StackLayout>
         </Frame>
     </Grid>
 
