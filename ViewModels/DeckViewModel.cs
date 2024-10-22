@@ -1,39 +1,35 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using Combat_Critters_2._0.Models;
+using Combat_Critters_2._0.Services;
+using CombatCrittersSharp.exception;
+using CombatCrittersSharp.objects.card.Interfaces;
+using CombatCrittersSharp.objects.deck;
+using CombatCrittersSharp.rest;
 
 namespace Combat_Critters_2._0.ViewModels
 {
     public class DeckViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<Deck> _userDecks;
-        private ObservableCollection<Card> _selectedDeckCards; // Stores cards for the selected deck
-        private Deck _selectedDeck;
-        private bool _hasDecks = false;
-        private bool _isDeckListVisible = false; // Controls the visibility of the dropdown menu
+        private readonly BackendService _backendService;
+        private ObservableCollection<IDeck> _userDecks;
+        private ObservableCollection<ICard> _selectedDecksCards;
+        private IDeck _selectedDeck;
+        public ICommand CreateDeckCommand { get; }
+        public ICommand DeckSelectedCommand { get; set; }
 
-        public ObservableCollection<Deck> UserDecks
+        private bool _hasDecks;
+
+        public ObservableCollection<ICard> SelectedDecksCards
         {
-            get => _userDecks;
+            get => _selectedDecksCards;
             set
             {
-                _userDecks = value;
-                OnPropertyChanged(nameof(UserDecks));
+                _selectedDecksCards = value;
+                OnPropertyChanged(nameof(SelectedDecksCards));
             }
         }
-
-        public ObservableCollection<Card> SelectedDeckCards
-        {
-            get => _selectedDeckCards;
-            set
-            {
-                _selectedDeckCards = value;
-                OnPropertyChanged(nameof(SelectedDeckCards));
-            }
-        }
-
-        public Deck SelectedDeck
+        public IDeck SelectedDeck
         {
             get => _selectedDeck;
             set
@@ -42,18 +38,20 @@ namespace Combat_Critters_2._0.ViewModels
                 {
                     _selectedDeck = value;
                     OnPropertyChanged(nameof(SelectedDeck));
-
-                    // Update the cards for the selected deck
-                    if (_selectedDeck != null)
-                    {
-                        SelectedDeckCards = new ObservableCollection<Card>(_selectedDeck.Cards);
-                        IsDeckListVisible = false; // Hide the dropdown after selection
-                    }
-                    else
-                    {
-                        SelectedDeckCards.Clear();
-                    }
                 }
+
+                if (DeckSelectedCommand.CanExecute(_selectedDeck))
+                    DeckSelectedCommand.Execute(_selectedDeck);
+            }
+        }
+        public ObservableCollection<IDeck> UserDecks
+        {
+            get => _userDecks;
+            set
+            {
+                _userDecks = value;
+                Console.Write("UserDecks property changed");
+                OnPropertyChanged(nameof(UserDecks));
             }
         }
 
@@ -67,48 +65,107 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-        public bool IsDeckListVisible
+        public DeckViewModel()
         {
-            get => _isDeckListVisible;
-            set
+            _userDecks = new ObservableCollection<IDeck>();
+            _selectedDecksCards = new ObservableCollection<ICard>();
+
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+            _selectedDeck = new Deck(null, null, -1, "");
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+            _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
+            CreateDeckCommand = new Command(OnCreateDeckCommand);
+            DeckSelectedCommand = new Command<IDeck>(OnDeckSelected);
+            _hasDecks = false;
+
+            //start Loading the user decks.
+            Task.Run(async () => await InitializeViewModelAsync());
+        }
+
+        private async void OnDeckSelected(IDeck selectedDeck)
+        {
+            if (selectedDeck != null)
             {
-                _isDeckListVisible = value;
-                OnPropertyChanged(nameof(IsDeckListVisible));
+                try
+                {
+                    Console.WriteLine($"Fetching cards for deck: {selectedDeck.Name}");
+
+                    //Attempt to fetch the cards for the selected deck                    
+                    var deckCards = await selectedDeck.GetCards();
+
+                    if (deckCards != null && deckCards.Count > 0)
+                    {
+                        // Update the SelectedDeckCards collection with the deck's card
+                        SelectedDecksCards = new ObservableCollection<ICard>((IEnumerable<ICard>)deckCards);
+                        Console.WriteLine($"Loaded {deckCards.Count} cards for deck: {selectedDeck.Name}");
+                    }
+                    else
+                    {
+                        // No cards found, clear the collection
+                        SelectedDecksCards.Clear();
+                        Console.WriteLine($"No cards found for deck: {selectedDeck.Name}");
+                    }
+                }
+                catch (RestException)
+                {
+                    if (Application.Current?.MainPage != null)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Error", "Failed to load deck cards. Please try again.", "OK");
+                    }
+                }
+                catch (Exception)
+                {
+                    throw; // bubble up to the general exceptio handler
+                }
+
             }
         }
 
-        // Command for toggling the dropdown menu visibility
-        public ICommand ToggleDeckListCommand { get; }
-
-        public DeckViewModel()
+        private void OnCreateDeckCommand(object obj)
         {
-            // Initialize _userDecks with an empty collection of Decks
-            _userDecks = new ObservableCollection<Deck>();
+            throw new NotImplementedException();
+        }
 
-            // Initialize _selectedDeckCards with an empty collection of Cards
-            _selectedDeckCards = new ObservableCollection<Card>();
-
-            // Initialize _selectedDeck with a default Deck (or use real values if needed)
-            _selectedDeck = new Deck
-            {
-                Name = "Default Deck",
-                Cards = new List<Card>() // Empty card list
-            };
-            ToggleDeckListCommand = new Command(ToggleDeckList);
-            UserDecks = new ObservableCollection<Deck>();
-            SelectedDeckCards = new ObservableCollection<Card>();
-            LoadUserDecks(); // Load user decks
+        private async Task InitializeViewModelAsync()
+        {
+            await LoadUserDecks();
         }
 
         // Load the user's decks from the backend
-        private async Task LoadUserDecks()
+        public async Task LoadUserDecks()
         {
-            
-        }
+            try
+            {
+                //Fetch the user decks from the backend service
+                var userDecks = await _backendService.GetDecksAsync();
 
-        private void ToggleDeckList()
-        {
-            IsDeckListVisible = !IsDeckListVisible; // Toggle visibility
+                //Check if the list of decks is null or empty
+                if (userDecks != null && userDecks.Count > 0)
+                {
+                    UserDecks = new ObservableCollection<IDeck>(userDecks);
+                    HasDecks = true;
+                }
+                else
+                {
+                    //No decks found
+                    HasDecks = false;
+                    UserDecks.Clear();
+                }
+            }
+            catch (RestException)
+            {
+                HasDecks = false;
+
+                if (Application.Current?.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to load user decks. Please try again.", "OK");
+                }
+            }
+            catch (Exception)
+            {
+                HasDecks = false;
+                throw; // bubble up to the global exception handler
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

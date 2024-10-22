@@ -5,7 +5,8 @@
        <Grid Padding="20">
               <Grid.RowDefinitions>
                      <RowDefinition Height="0.1*"/>
-                     <RowDefinition Height="0.9*"/>
+                     <RowDefinition Height="0.8*"/>
+                     <RowDefinition Height="0.1*"/>
               </Grid.RowDefinitions>
 
               <Grid.ColumnDefinitions>
@@ -20,64 +21,78 @@
                      FontFamily="HeaderText"
                      FontSize="24"
                      HorizontalOptions="Center"
-                     VerticalOptions="Center"
-                     />
-              
-              <Frame Grid.Row="1" Grid.ColumnSpan="2" Padding="5">
-                     <ContentView>
+                     VerticalOptions="Center"/>
+
+              <Frame Grid.Row="1"
+                     Grid.ColumnSpan="2"
+                     Padding="5"
+                     Background="{StaticResource PageBackground}">
+                     <ContentView Padding="20">
                             <ContentView.Triggers>
-                                   <DataTrigger TargetType="ContentView" Binding="{Binding HasCards}" Value="False">
+                                   <DataTrigger TargetType="ContentView"
+                                                Binding="{Binding HasCards}"
+                                                Value="False">
                                           <Setter Property="Content">
                                                  <Setter.Value>
                                                         <Label
                                                                Text="Too bad you have no cards"
                                                                HorizontalOptions="Center"
-                                                               VerticalOptions="Center"
-                                                               />
+                                                               VerticalOptions="Center"/>
                                                  </Setter.Value>
                                           </Setter>
                                    </DataTrigger>
 
-                                   <DataTrigger TargetType="ContentView" Binding="{Binding HasCards}" Value="True">
+                                   <DataTrigger TargetType="ContentView"
+                                                Binding="{Binding HasCards}"
+                                                Value="True">
                                           <Setter Property="Content">
                                                  <Setter.Value>
                                                         <ScrollView>
-                                                               <CollectionView ItemsSource="{Binding UserCards}">
+                                                               <CollectionView ItemsSource="{Binding UserCards}"
+                                                                               RemainingItemsThreshold="5"
+                                                                               RemainingItemsThresholdReached="OnRemainingItemsThresholdReached">
                                                                       <CollectionView.ItemsLayout>
                                                                              <GridItemsLayout Orientation="Vertical"
-                                                                                    Span="5"
-                                                                                    VerticalItemSpacing="20"
-                                                                                    HorizontalItemSpacing="20"/>
+                                                                                              Span="4"
+                                                                                              VerticalItemSpacing="30"
+                                                                                              HorizontalItemSpacing="30"/>
                                                                       </CollectionView.ItemsLayout>
                                                                       <CollectionView.ItemTemplate>
                                                                              <DataTemplate>
-                                          <Frame Background="{StaticResource CommonGradient}"
-                                                 Style="{DynamicResource CardFrameStyle}"
-                                                 HorizontalOptions="Center"
-                                                 VerticalOptions="Center">
-                                                 <StackLayout>
-                                                        <Label
-                                                               Text="{Binding Name}"
-                                                               FontFamily="MtgBold"
-                                                               FontSize="14"
-                                                               TextColor="White"/>
-                                                        <Image Source="{Binding Image}"/>
+                                                                                    <Frame Background="{StaticResource CommonGradient}"
+                                                                                           Style="{DynamicResource CardFrameStyle}"
+                                                                                           HorizontalOptions="Center"
+                                                                                           VerticalOptions="Center">
 
-                                                        <StackLayout Orientation="Horizontal"
-                                                                     HorizontalOptions="Start">
-                                                               <Image Source="ability0.jpg"
-                                                                      WidthRequest="30"
-                                                                      HeightRequest="30"/>
-                                                               <Image Source="ability1.jpg"
-                                                                      WidthRequest="30"
-                                                                      HeightRequest="30"/>
-                                                               <Image Source="ability2.jpg"
-                                                                      WidthRequest="30"
-                                                                      HeightRequest="30"/>
-                                                        </StackLayout>
-                                                 </StackLayout>
-                                          </Frame>
-                                   </DataTemplate>
+                                                                                           <StackLayout Orientation="Vertical">
+                                                                                                  <Frame Padding="5"
+                                                                                                         BackgroundColor="Black"
+                                                                                                         Margin="0,0,0,1"
+                                                                                                         HasShadow="False">
+                                                                                                         <Label
+                                                                                                                Text="{Binding Name}"
+                                                                                                                FontFamily="MtgBold"
+                                                                                                                FontSize="14"
+                                                                                                                TextColor="White"
+                                                                                                                HorizontalOptions="Center"
+                                                                                                                VerticalOptions="Center"/>
+                                                                                                  </Frame>
+                                                                                                  <Frame Padding="10"
+                                                                                                         HasShadow="False"
+                                                                                                         BackgroundColor="Transparent">
+                                                                                                         <Image Source="testimage.jpeg"/>
+                                                                                                  </Frame>
+
+                                                                                                  <Frame BorderColor="Black">
+                                                                                                         <Label
+                                                                                                                Text="{Binding Description}"
+                                                                                                                HorizontalOptions="Center"
+                                                                                                                VerticalOptions="Center"/>
+                                                                                                  </Frame>
+
+                                                                                           </StackLayout>
+                                                                                    </Frame>
+                                                                             </DataTemplate>
                                                                       </CollectionView.ItemTemplate>
                                                                </CollectionView>
                                                         </ScrollView>
@@ -88,6 +103,16 @@
                             </ContentView.Triggers>
                      </ContentView>
               </Frame>
+
+              <Button
+                     Style="{StaticResource RedButtonStyle}"
+                     Text="Load More..."
+                     Grid.Row="2"
+                     Grid.ColumnSpan="2"
+                     IsVisible="{Binding ShowLoadMoreButton}"
+                     HorizontalOptions="Fill"
+                     VerticalOptions="Center"
+                     Command="{Binding LoadMoreCommand}"/>
        </Grid>
 
 </ContentPage>

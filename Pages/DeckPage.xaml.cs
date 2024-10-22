@@ -9,5 +9,6 @@ namespace Combat_Critters_2._0.Pages
             InitializeComponent();
             BindingContext = new DeckViewModel();
         }
+
     }
 }

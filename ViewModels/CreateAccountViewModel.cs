@@ -79,24 +79,25 @@ public class CreateAccountViewModel : INotifyPropertyChanged
     {
         try
         {
-            await _backendService.CreateAccountAsync(new UserCredentials{
+            // Call the backend services to create a new account
+            await _backendService.CreateAccountAsync(new UserCredentials
+            {
                 Username = Username,
                 Password = Password
             });
- 
-            //Navigate to Login page
+
+            // On success Navigate back to Login page
             await _navigation.PopAsync();
-           
+
         }
-        catch (RestException ex)
+        catch (RestException)
         {
-            if (Application.Current?.MainPage !=  null)
-                await Application.Current.MainPage.DisplayAlert("Register Failed", ex.Message, "OK");
+            if (Application.Current?.MainPage != null)
+                await Application.Current.MainPage.DisplayAlert("Register Failed", "Failed to register. Please check your credentials and try again.", "OK");
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            if (Application.Current?.MainPage !=  null)
-                await Application.Current.MainPage.DisplayAlert("Error", $"An unexpected error occured{ex.Message}. Please try again.", "OK");
+            throw; //bubble up to the global exception handler
         }
     }
 
