@@ -45,11 +45,12 @@
                     <ContentView.Triggers>
                         <!-- Show the collection view when user has featured a deck -->
                         <DataTrigger TargetType="ContentView"
-                                     Binding="This will bind to the bool<has featured deck>"
+                                     Binding="{Binding HasFeaturedDeck}"
                                      Value="true">
                             <Setter Property="Content">
                                 <Setter.Value>
                                     <!-- Put a collection view her for the featured deck-->
+                                    <Label Text="Dummy label for now"/>
                                 </Setter.Value>
                             </Setter>
 
@@ -57,7 +58,7 @@
 
                         <!-- Show the "No featured deck." -->
                         <DataTrigger TargetType="ContentView"
-                                     Binding="This will bind to the bool<has_featured_deck>"
+                                     Binding="{Binding HasFeaturedDeck}"
                                      Value="false">
                             <Setter Property="Content">
                                 <Setter.Value>
@@ -91,18 +92,19 @@
                     <ContentView.Triggers>
                         <!-- show the user profile list -->
                         <DataTrigger TargetType="ContentView"
-                                     Binding="This will bind to the bool<has users>"
+                                     Binding="{Binding HasUsers}"
                                      Value="true">
                             <Setter Property="Content">
                                 <Setter.Value>
                                     <!--add a collecion view here for user profile list-->
+                                    <Label Text="Dummy label for now"/>
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
 
                         <!-- show default content for no users -->
                         <DataTrigger TargetType="ContentView"
-                                     Binding="This will bind to the bool<has users>"
+                                     Binding="{Binding HasUsers}"
                                      Value="false">
                             <Setter Property="Content">
                                 <Setter.Value>
@@ -137,18 +139,19 @@
                     <ContentView.Triggers>
                         <!-- show the selected user profile -->
                         <DataTrigger TargetType="ContentView"
-                                     Binding="This will bind to the bool<hasusers and selectedUser>"
+                                     Binding="{Binding HasUser}"
                                      Value="true">
                             <Setter Property="Content">
                                 <Setter.Value>
                                     <!-- put the user profile fetured deck here -->
+                                    <Label Text="Dummy label for now"/>
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
 
                         <!-- show default content for no user profile -->
                         <DataTrigger TargetType="ContentView"
-                                     Binding="This will bind to the bool<has users and selected user>"
+                                     Binding="{Binding HasUser}"
                                      Value="false">
                             <Setter Property="Content">
                                 <Setter.Value>

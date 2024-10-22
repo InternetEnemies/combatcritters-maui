@@ -79,7 +79,6 @@ namespace Combat_Critters_2._0.ViewModels
 
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
 
-
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
