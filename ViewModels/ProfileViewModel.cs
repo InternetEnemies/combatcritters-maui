@@ -1,108 +1,85 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using Combat_Critters_2._0.Models;
+using Combat_Critters_2._0.Services;
+using CombatCrittersSharp.objects.deck;
+using CombatCrittersSharp.objects.user;
 
 namespace Combat_Critters_2._0.ViewModels
 {
     public class ProfileViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<Deck> _userDecks;
-        public ICommand ShowDeckListCommand { get; set; } //Command for Deck List button
-        private bool _hasDecks = false;
-        private bool _deckListButtonClicked;
+        private BackendService _backendService;
+        private IDeck _featuredDeck;
+        private bool _hasFeaturedDeck; //boolean for content triggers
 
-        private Deck _selectedDeck;
+        private ObservableCollection<IUser> _users;
+        private bool _hasUsers; //boolean for content triggers
 
-        private ObservableCollection<Card> _selectedDeckCards;
+        private IUser _selectedUser;
 
 
-        public ObservableCollection<Deck> UserDecks
+        public IDeck FeaturedDeck
         {
-            get => _userDecks;
+            get => _featuredDeck;
             set
             {
-                _userDecks = value;
-                OnPropertyChanged(nameof(UserDecks));
+                _featuredDeck = value;
+                OnPropertyChanged(nameof(FeaturedDeck));
+            }
+        }
+        public bool HasFeaturedDeck
+        {
+            get => _hasFeaturedDeck;
+            set
+            {
+                _hasFeaturedDeck = value;
+                OnPropertyChanged(nameof(HasFeaturedDeck));
             }
         }
 
-        public bool HasDecks
+        public ObservableCollection<IUser> Users
         {
-            get => _hasDecks;
+            get => _users;
             set
             {
-                _hasDecks = value;
-                OnPropertyChanged(nameof(HasDecks));
+                _users = value;
+                OnPropertyChanged(nameof(Users));
             }
         }
 
-        public bool DeckListButtonClicked
+        public bool HasUsers
         {
-            get => _deckListButtonClicked;
+            get => _hasUsers;
             set
             {
-                _deckListButtonClicked = value;
-                OnPropertyChanged(nameof(DeckListButtonClicked)); // Fixing the property name here
-            }
-        }
-        public Deck SelectedDeck
-        {
-            get => _selectedDeck;
-            set{
-                _selectedDeck=value;
-                OnPropertyChanged(nameof(SelectedDeck));
-
-                //Update the cards from the selected deck
-                if(_selectedDeck != null)
-                {
-                    SelectedDeckCards = new ObservableCollection<Card>(_selectedDeck.Cards);
-                }
+                _hasUsers = value;
+                OnPropertyChanged(nameof(HasUsers));
             }
         }
 
-        public ObservableCollection<Card> SelectedDeckCards
+        public IUser SelectedUser
         {
-            get => _selectedDeckCards;
+            get => _selectedUser;
             set
             {
-                _selectedDeckCards = value;
-                OnPropertyChanged(nameof(SelectedDeckCards));
+                _selectedUser = value;
+                OnPropertyChanged(nameof(SelectedUser));
             }
         }
 
         public ProfileViewModel()
         {
 
-            //Initialization
-            _userDecks = new ObservableCollection<Deck>();
-            // Initialize _selectedDeck with a required Name and an empty Cards collection
-            _selectedDeck = new Deck
-            {
-                Name = " ",
-                Cards = new List<Card>()  // Provide an empty collection for the cards
-            };
-            _selectedDeckCards = new ObservableCollection<Card>();
+            //_featuredDeck = new IDeck();
+            _hasFeaturedDeck = false;
+            _users = new ObservableCollection<IUser>();
+            _hasUsers = false;
+            //_selectedUser = new User();
 
-            DeckListButtonClicked = true; //Initially Set to true
-            ShowDeckListCommand = new Command(OnDeckListButtonClicked); // Initialize the Button command
-            LoadUserDeck(); // Load the user's deck list asynchronously
-        }
+            _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
 
-        /*
-            This method handles when the Deck list button is clicked
-            The deck list becomes visible or hidden.
-        */
-        private void OnDeckListButtonClicked()
-        {
-            // Toggle the visibility of the deck list
-            DeckListButtonClicked = !DeckListButtonClicked;
-        }
 
-        // This method retrieves the user deck list asynchronously
-        private async Task LoadUserDeck()
-        {
-            
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
