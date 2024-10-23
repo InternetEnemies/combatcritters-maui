@@ -90,6 +90,9 @@ namespace Combat_Critters_2._0.ViewModels
         {
             HasFeaturedDeck = true;
             FeaturedDeck = featuredDeck; //Update this to reflect the change
+
+            //Notify the UI that the FeaturedDeck has changed
+            OnPropertyChanged(nameof(FeaturedDeck));
         }
         private async Task InitializeProfileAsync()
         {
