@@ -56,7 +56,49 @@
                             <Setter Property="Content">
                                 <Setter.Value>
                                     <!-- Put a collection view her for the featured deck-->
-                                    <Label Text="Dummy label for now"/>
+                                    <CollectionView ItemsSource="{Binding FeaturedDeckCards}">
+                                        <CollectionView.ItemsLayout>
+                                            <GridItemsLayout Orientation="Vertical"
+                                                             Span="4"
+                                                             VerticalItemSpacing="30"
+                                                             HorizontalItemSpacing="30"/>
+                                        </CollectionView.ItemsLayout>
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Frame Background="{StaticResource CommonGradient}"
+                                                       Style="{DynamicResource CardFrameStyle}"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center">
+                                                    <StackLayout Orientation="Vertical">
+                                                        <Frame Padding="5"
+                                                               BackgroundColor="Black"
+                                                               Margin="0,0,0,1"
+                                                               HasShadow="False">
+                                                            <Label
+                                                                Text="{Binding Name}"
+                                                                FontFamily="MtgBold"
+                                                                FontSize="14"
+                                                                TextColor="White"
+                                                                HorizontalOptions="Center"
+                                                                VerticalOptions="Center"/>
+                                                        </Frame>
+                                                        <Frame Padding="10"
+                                                               HasShadow="False"
+                                                               BackgroundColor="Transparent">
+                                                            <Image Source="testimage.jpeg"/>
+                                                        </Frame>
+
+                                                        <Frame BorderColor="Black">
+                                                            <Label
+                                                                Text="{Binding Description}"
+                                                                HorizontalOptions="Center"
+                                                                VerticalOptions="Center"/>
+                                                        </Frame>
+                                                    </StackLayout>
+                                                </Frame>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
                                 </Setter.Value>
                             </Setter>
 
