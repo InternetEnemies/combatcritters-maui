@@ -73,10 +73,10 @@
                                                     <FlyoutBase.ContextFlyout>
                                                         <MenuFlyout>
                                                             <MenuFlyoutItem Text="Feature on Profile"
-                                                                            Command="{Binding FeatureOnProfileCommand}"
+                                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.FeatureOnProfileCommand}"
                                                                             CommandParameter="{Binding .}"/>
                                                             <MenuFlyoutItem Text="Delete Deck"
-                                                                            Command="{Binding DeleteDeckCommand}"/>
+                                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteDeckCommand}"/>
                                                         </MenuFlyout>
                                                     </FlyoutBase.ContextFlyout>
                                                 </Button>

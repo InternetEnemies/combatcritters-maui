@@ -9,8 +9,8 @@
 
         <!--Profile has a 2 by 2 grid-->
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.4*"/>
-            <RowDefinition Height="0.6*"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -40,7 +40,7 @@
                        WidthRequest="300"
                        HeightRequest="50"
                        Margin="0,5,0,5">
-                    <Label Text="Deck Name"
+                    <Label Text="{Binding FeaturedDeck.Name}"
                            TextColor="White"
                            HorizontalOptions="Center"
                            VerticalOptions="Center"/>
