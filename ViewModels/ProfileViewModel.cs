@@ -2,8 +2,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using Combat_Critters_2._0.Services;
+using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.deck;
 using CombatCrittersSharp.objects.user;
+using CombatCrittersSharp.rest;
 
 namespace Combat_Critters_2._0.ViewModels
 {
@@ -79,8 +81,40 @@ namespace Combat_Critters_2._0.ViewModels
 
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
 
+            Task.Run(async () => await InitializeProfileAsync());
         }
 
+        private async Task InitializeProfileAsync()
+        {
+            await LoadFeaturedDeck();
+        }
+
+        private async Task LoadFeaturedDeck()
+        {
+            try
+            {
+                var deck = await _backendService.GetFeaturedDeckAsync();
+                if (deck != null)
+                {
+                    FeaturedDeck = deck;
+                }
+                else
+                {
+                    HasFeaturedDeck = false; //User has not set a featured deck
+                }
+            }
+            catch (RestException ex)
+            {
+                if (Application.Current?.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", $"Failed to load featured deck: {ex.Message}", "OK");
+                }
+            }
+            catch (Exception)
+            {
+                throw; // bubble up to the global exception handler
+            }
+        }
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)

@@ -110,31 +110,31 @@ namespace Combat_Critters_2._0.Services
 
         public async Task FeatureDeckOnProfileAsync(IDeck deck)
         {
-            // await ExecuteBackendOperationAsync(async () =>
-            // {
-            //     if (_client.User == null)
-            //         throw new Exception("Invalid user");
-            //     await _client.User.Profile.SetDeck(deck);
-            // }, "Failed to feature the deck on the profile.");
+            await ExecuteBackendOperationAsync(async () =>
+            {
+                if (_client.User == null)
+                    throw new Exception("Invalid user");
+
+                await _client.User.Profile.SetDeck(deck);
+
+                return Task.CompletedTask;
+            }, "Failed to feature the deck on the profile.");
         }
 
         public async Task<IDeck?> GetFeaturedDeckAsync()
         {
-            return null; //Remove this after integration with backend. 
+            return await ExecuteBackendOperationAsync(async () =>
+            {
+                if (_client.User == null)
+                    throw new Exception("Invalid user");
 
+                var featuredDeck = await _client.User.Profile.GetDeck();
 
-            // return await ExecuteBackendOperationAsync(async () =>
-            // {
-            //     if (_client.User == null)
-            //         throw new Exception("Invalid user");
+                if (featuredDeck == null)
+                    return null; //No Deck has been featured
 
-            //     var featuredDeck = await _client.User.Profile.GetDeck();
-
-            //     if (featuredDeck == null)
-            //         return null; //No Deck has been featured
-
-            //     return featuredDeck;
-            // }, "Failed to retrieve the featured deck.");
+                return featuredDeck;
+            }, "Failed to retrieve the featured deck.");
         }
     }
 }

@@ -21,6 +21,8 @@ namespace Combat_Critters_2._0.ViewModels
         public ICommand DeleteDeckCommand { get; }
         private bool _hasDecks;
 
+        //static event to be raised when user feature a deck
+        public static event Action<IDeck>? FeaturedDeckChanged;
         public ObservableCollection<ICard> SelectedDecksCards
         {
             get => _selectedDecksCards;
@@ -85,6 +87,7 @@ namespace Combat_Critters_2._0.ViewModels
             //start Loading the user decks.
             Task.Run(async () => await InitializeViewModelAsync());
         }
+
 
         private async void FeatureOnProfile(IDeck deck)
         {
