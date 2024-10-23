@@ -99,6 +99,9 @@ namespace Combat_Critters_2._0.ViewModels
                     await _backendService.FeatureDeckOnProfileAsync(deck);
                     Console.WriteLine($"Deck {deck.Name} has been featured on the profile");
 
+                    //Raise the FeaturedDeckChanged event to notify profile page
+                    FeaturedDeckChanged?.Invoke(deck);
+
                     //Display confirmation UI
                     var toast = Toast.Make($"Deck '{deck.Name}' has been featured on your profile.", CommunityToolkit.Maui.Core.ToastDuration.Short);
                     await toast.Show();
