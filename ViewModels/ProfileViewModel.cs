@@ -79,11 +79,18 @@ namespace Combat_Critters_2._0.ViewModels
             _hasUsers = false;
             //_selectedUser = new User();
 
+            //Subscribe to the FeaturedDeckChanged event
+            DeckViewModel.FeaturedDeckChanged += OnFeaturedDeckChanged;
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
 
             Task.Run(async () => await InitializeProfileAsync());
         }
 
+        private void OnFeaturedDeckChanged(IDeck featuredDeck)
+        {
+            HasFeaturedDeck = true;
+            FeaturedDeck = featuredDeck; //Update this to reflect the change
+        }
         private async Task InitializeProfileAsync()
         {
             await LoadFeaturedDeck();
