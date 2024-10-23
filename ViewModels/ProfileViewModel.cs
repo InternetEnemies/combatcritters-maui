@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
+using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.deck;
 using CombatCrittersSharp.objects.user;
 using CombatCrittersSharp.rest;
@@ -13,6 +14,8 @@ namespace Combat_Critters_2._0.ViewModels
     {
         private BackendService _backendService;
         private IDeck _featuredDeck;
+        private ObservableCollection<ICard> _featuredDeckCard;
+
         private bool _hasFeaturedDeck; //boolean for content triggers
 
         private ObservableCollection<IUser> _users;
@@ -20,6 +23,15 @@ namespace Combat_Critters_2._0.ViewModels
 
         private IUser _selectedUser;
 
+        public ObservableCollection<ICard> FeaturedDeckCards
+        {
+            get => _featuredDeckCard;
+            set
+            {
+                _featuredDeckCard = value;
+                OnPropertyChanged(nameof(FeaturedDeckCards));
+            }
+        }
 
         public IDeck FeaturedDeck
         {
@@ -77,6 +89,7 @@ namespace Combat_Critters_2._0.ViewModels
             _hasFeaturedDeck = false;
             _users = new ObservableCollection<IUser>();
             _hasUsers = false;
+            _featuredDeckCard = new ObservableCollection<ICard>();
             //_selectedUser = new User();
 
             //Subscribe to the FeaturedDeckChanged event
@@ -86,14 +99,53 @@ namespace Combat_Critters_2._0.ViewModels
             Task.Run(async () => await InitializeProfileAsync());
         }
 
-        private void OnFeaturedDeckChanged(IDeck featuredDeck)
+        private async Task LoadFeaturedDeckCards()
         {
+            if (FeaturedDeck != null)
+            {
+                try
+                {
+                    var deckCards = await FeaturedDeck.GetCards();
+
+                    if (deckCards != null && deckCards.Count > 0)
+                    {
+                        FeaturedDeckCards = new ObservableCollection<ICard>((IEnumerable<ICard>)deckCards);
+                    }
+                    else
+                    {
+                        //no cards found, clear the collection
+                        FeaturedDeckCards.Clear();
+                    }
+                }
+                catch (RestException ex)
+                {
+                    if (Application.Current?.MainPage != null)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Error", $"Failed to load cards for featured deck: {ex.Message}", "OK");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw; //bubble up the exception to the global handler
+                }
+            }
+        }
+
+        private async void OnFeaturedDeckChanged(IDeck featuredDeck)
+        {
+            //Update the featured deck 
             HasFeaturedDeck = true;
             FeaturedDeck = featuredDeck; //Update this to reflect the change
+
+            //Get the featured deck cards
+            await LoadFeaturedDeckCards();
+
         }
         private async Task InitializeProfileAsync()
         {
+            //Fetch the user featured deck and deck cards
             await LoadFeaturedDeck();
+            await LoadFeaturedDeckCards();
         }
 
         private async Task LoadFeaturedDeck()
