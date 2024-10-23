@@ -5,7 +5,7 @@ using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.deck;
-using CombatCrittersSharp.rest;
+using CommunityToolkit.Maui.Alerts;
 
 namespace Combat_Critters_2._0.ViewModels
 {
@@ -17,9 +17,12 @@ namespace Combat_Critters_2._0.ViewModels
         private IDeck _selectedDeck;
         public ICommand CreateDeckCommand { get; }
         public ICommand DeckSelectedCommand { get; set; }
-
+        public ICommand FeatureOnProfileCommand { get; }
+        public ICommand DeleteDeckCommand { get; }
         private bool _hasDecks;
 
+        //static event to be raised when user feature a deck
+        public static event Action<IDeck>? FeaturedDeckChanged;
         public ObservableCollection<ICard> SelectedDecksCards
         {
             get => _selectedDecksCards;
@@ -74,12 +77,61 @@ namespace Combat_Critters_2._0.ViewModels
             _selectedDeck = new Deck(null, null, -1, "");
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
+
             CreateDeckCommand = new Command(OnCreateDeckCommand);
             DeckSelectedCommand = new Command<IDeck>(OnDeckSelected);
+            FeatureOnProfileCommand = new Command<IDeck>(FeatureOnProfile);
+            DeleteDeckCommand = new Command(DeleteDeck);
             _hasDecks = false;
 
             //start Loading the user decks.
             Task.Run(async () => await InitializeViewModelAsync());
+        }
+
+
+        private async void FeatureOnProfile(IDeck deck)
+        {
+            if (deck != null)
+            {
+                try
+                {
+                    Console.WriteLine($"Featuring deck {deck.Name} on profile...");
+                    await _backendService.FeatureDeckOnProfileAsync(deck);
+                    Console.WriteLine($"Deck {deck.Name} has been featured on the profile");
+
+                    //Raise the FeaturedDeckChanged event to notify profile page
+                    FeaturedDeckChanged?.Invoke(deck);
+
+                    //Display confirmation UI
+                    var toast = Toast.Make($"Deck '{deck.Name}' has been featured on your profile.", CommunityToolkit.Maui.Core.ToastDuration.Short);
+                    await toast.Show();
+                }
+                catch (RestException ex)
+                {
+                    if (Application.Current?.MainPage != null)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Error", $"Failed to feature deck: {ex.Message}", "OK");
+                    }
+                }
+                catch (Exception)
+                {
+                    throw; // bubble up to the global exception handler
+                }
+            }
+            else
+            {
+                //No deck selected or invalid deck
+                if (Application.Current?.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Open the deck you wish to feature first", "OK");
+                }
+            }
+
+        }
+
+        private void DeleteDeck()
+        {
+            //Logic to delete the selected deck
         }
 
         private async void OnDeckSelected(IDeck selectedDeck)

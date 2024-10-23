@@ -1,110 +1,179 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using Combat_Critters_2._0.Models;
+using Combat_Critters_2._0.Services;
+using CombatCrittersSharp.exception;
+using CombatCrittersSharp.objects.card.Interfaces;
+using CombatCrittersSharp.objects.deck;
+using CombatCrittersSharp.objects.user;
+using CombatCrittersSharp.rest;
 
 namespace Combat_Critters_2._0.ViewModels
 {
     public class ProfileViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<Deck> _userDecks;
-        public ICommand ShowDeckListCommand { get; set; } //Command for Deck List button
-        private bool _hasDecks = false;
-        private bool _deckListButtonClicked;
+        private BackendService _backendService;
+        private IDeck _featuredDeck;
+        private ObservableCollection<ICard> _featuredDeckCard;
 
-        private Deck _selectedDeck;
+        private bool _hasFeaturedDeck; //boolean for content triggers
 
-        private ObservableCollection<Card> _selectedDeckCards;
+        private ObservableCollection<IUser> _users;
+        private bool _hasUsers; //boolean for content triggers
 
+        private IUser _selectedUser;
 
-        public ObservableCollection<Deck> UserDecks
+        public ObservableCollection<ICard> FeaturedDeckCards
         {
-            get => _userDecks;
+            get => _featuredDeckCard;
             set
             {
-                _userDecks = value;
-                OnPropertyChanged(nameof(UserDecks));
+                _featuredDeckCard = value;
+                OnPropertyChanged(nameof(FeaturedDeckCards));
             }
         }
 
-        public bool HasDecks
+        public IDeck FeaturedDeck
         {
-            get => _hasDecks;
+            get => _featuredDeck;
             set
             {
-                _hasDecks = value;
-                OnPropertyChanged(nameof(HasDecks));
+                _featuredDeck = value;
+                OnPropertyChanged(nameof(FeaturedDeck));
+            }
+        }
+        public bool HasFeaturedDeck
+        {
+            get => _hasFeaturedDeck;
+            set
+            {
+                _hasFeaturedDeck = value;
+                OnPropertyChanged(nameof(HasFeaturedDeck));
             }
         }
 
-        public bool DeckListButtonClicked
+        public ObservableCollection<IUser> Users
         {
-            get => _deckListButtonClicked;
+            get => _users;
             set
             {
-                _deckListButtonClicked = value;
-                OnPropertyChanged(nameof(DeckListButtonClicked)); // Fixing the property name here
-            }
-        }
-        public Deck SelectedDeck
-        {
-            get => _selectedDeck;
-            set{
-                _selectedDeck=value;
-                OnPropertyChanged(nameof(SelectedDeck));
-
-                //Update the cards from the selected deck
-                if(_selectedDeck != null)
-                {
-                    SelectedDeckCards = new ObservableCollection<Card>(_selectedDeck.Cards);
-                }
+                _users = value;
+                OnPropertyChanged(nameof(Users));
             }
         }
 
-        public ObservableCollection<Card> SelectedDeckCards
+        public bool HasUsers
         {
-            get => _selectedDeckCards;
+            get => _hasUsers;
             set
             {
-                _selectedDeckCards = value;
-                OnPropertyChanged(nameof(SelectedDeckCards));
+                _hasUsers = value;
+                OnPropertyChanged(nameof(HasUsers));
+            }
+        }
+
+        public IUser SelectedUser
+        {
+            get => _selectedUser;
+            set
+            {
+                _selectedUser = value;
+                OnPropertyChanged(nameof(SelectedUser));
             }
         }
 
         public ProfileViewModel()
         {
 
-            //Initialization
-            _userDecks = new ObservableCollection<Deck>();
-            // Initialize _selectedDeck with a required Name and an empty Cards collection
-            _selectedDeck = new Deck
+            //_featuredDeck = new IDeck();
+            _hasFeaturedDeck = false;
+            _users = new ObservableCollection<IUser>();
+            _hasUsers = false;
+            _featuredDeckCard = new ObservableCollection<ICard>();
+            //_selectedUser = new User();
+
+            //Subscribe to the FeaturedDeckChanged event
+            DeckViewModel.FeaturedDeckChanged += OnFeaturedDeckChanged;
+            _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
+
+            Task.Run(async () => await InitializeProfileAsync());
+        }
+
+        private async Task LoadFeaturedDeckCards()
+        {
+            if (FeaturedDeck != null)
             {
-                Name = " ",
-                Cards = new List<Card>()  // Provide an empty collection for the cards
-            };
-            _selectedDeckCards = new ObservableCollection<Card>();
+                try
+                {
+                    var deckCards = await FeaturedDeck.GetCards();
 
-            DeckListButtonClicked = true; //Initially Set to true
-            ShowDeckListCommand = new Command(OnDeckListButtonClicked); // Initialize the Button command
-            LoadUserDeck(); // Load the user's deck list asynchronously
+                    if (deckCards != null && deckCards.Count > 0)
+                    {
+                        FeaturedDeckCards = new ObservableCollection<ICard>((IEnumerable<ICard>)deckCards);
+                    }
+                    else
+                    {
+                        //no cards found, clear the collection
+                        FeaturedDeckCards.Clear();
+                    }
+                }
+                catch (RestException ex)
+                {
+                    if (Application.Current?.MainPage != null)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Error", $"Failed to load cards for featured deck: {ex.Message}", "OK");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw; //bubble up the exception to the global handler
+                }
+            }
         }
 
-        /*
-            This method handles when the Deck list button is clicked
-            The deck list becomes visible or hidden.
-        */
-        private void OnDeckListButtonClicked()
+        private async void OnFeaturedDeckChanged(IDeck featuredDeck)
         {
-            // Toggle the visibility of the deck list
-            DeckListButtonClicked = !DeckListButtonClicked;
-        }
+            //Update the featured deck 
+            HasFeaturedDeck = true;
+            FeaturedDeck = featuredDeck; //Update this to reflect the change
 
-        // This method retrieves the user deck list asynchronously
-        private async Task LoadUserDeck()
+            //Get the featured deck cards
+            await LoadFeaturedDeckCards();
+
+        }
+        private async Task InitializeProfileAsync()
         {
-            
+            //Fetch the user featured deck and deck cards
+            await LoadFeaturedDeck();
+            await LoadFeaturedDeckCards();
         }
 
+        private async Task LoadFeaturedDeck()
+        {
+            try
+            {
+                var deck = await _backendService.GetFeaturedDeckAsync();
+                if (deck != null)
+                {
+                    FeaturedDeck = deck;
+                }
+                else
+                {
+                    HasFeaturedDeck = false; //User has not set a featured deck
+                }
+            }
+            catch (RestException ex)
+            {
+                if (Application.Current?.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", $"Failed to load featured deck: {ex.Message}", "OK");
+                }
+            }
+            catch (Exception)
+            {
+                throw; // bubble up to the global exception handler
+            }
+        }
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)

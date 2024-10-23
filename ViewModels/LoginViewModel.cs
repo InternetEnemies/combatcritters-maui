@@ -77,7 +77,7 @@ public class LoginViewModel : INotifyPropertyChanged
         }
         catch (Exception)
         {
-            throw; // bubble up to the global exception
+            throw;
         }
 
     }
