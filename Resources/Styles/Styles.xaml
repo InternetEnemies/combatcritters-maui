@@ -4,6 +4,20 @@
         xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+        <Style x:Key="VerticalDividerStyle"
+               TargetType="BoxView">
+                <Setter Property="BackgroundColor"
+                        Value="#FF4F4E4E"/>
+                <Setter Property="HorizontalOptions"
+                        Value="End"/>
+                <Setter Property="VerticalOptions"
+                        Value="Center"/>
+                <Setter Property="HeightRequest"
+                        Value="80"/>
+                <Setter Property="WidthRequest"
+                        Value="2"/>
+        </Style>
+
         <!-- Gradient Background Style -->
         <LinearGradientBrush x:Key="PageBackground"
                              StartPoint="0,0"

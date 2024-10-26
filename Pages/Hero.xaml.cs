@@ -7,5 +7,25 @@ namespace Combat_Critters_2._0.Pages
         {
             InitializeComponent();
         }
+
+        private void OnDashboardClicked(object sender, EventArgs e)
+        {
+            //ContentArea.Content = new Dashboard();
+        }
+
+        private void OnCardsClicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OnPacksClicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OnMarketplaceClicked(object sender, EventArgs e)
+        {
+
+        }
     }
 }
