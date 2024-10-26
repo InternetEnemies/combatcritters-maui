@@ -13,6 +13,8 @@ namespace Combat_Critters_2._0
 			// Global exvceptio handling
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 			TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+
+
 			// Set the Loginpage as the initial page
 			MainPage = new NavigationPage(new LoginPage());
 		}
@@ -43,10 +45,10 @@ namespace Combat_Critters_2._0
 		}
 
 		// This method is called after a successful login
-		public void NavigateToAppShell()
+		public void NavigateToHeroPage()
 		{
-			// Set AppShell as the main page after login
-			MainPage = new AppShell();
+			// Set MainPage to Hero after Login
+			MainPage = new Hero();
 		}
 
 		// This method is called when the user logs out
