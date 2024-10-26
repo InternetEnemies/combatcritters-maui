@@ -1,8 +1,24 @@
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Combat_Critters_2._0.Pages.CardPage">
+             x:Class="Combat_Critters_2._0.Pages.CardsPage">
 
-       <Grid Padding="20">
+
+
+       <VerticalStackLayout Margin="20"
+                            Spacing="10">
+
+              <!-- Header Text -->
+              <Label Text="CARDS"
+                     FontFamily="HeaderText"
+                     HorizontalOptions="Start"
+                     FontSize="Large"
+                     FontAttributes="Bold"
+                     TextDecorations="Underline"/>
+
+
+
+       </VerticalStackLayout>
+       <!-- <Grid Padding="20">
               <Grid.RowDefinitions>
                      <RowDefinition Height="0.1*"/>
                      <RowDefinition Height="0.8*"/>
@@ -113,6 +129,6 @@
                      HorizontalOptions="Fill"
                      VerticalOptions="Center"
                      Command="{Binding LoadMoreCommand}"/>
-       </Grid>
+       </Grid> -->
 
-</ContentPage>
+</ContentView>
