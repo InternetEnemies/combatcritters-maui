@@ -2,16 +2,40 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.DashboardPage">
 
-    <VerticalStackLayout Margin="20"
-                         Spacing="10">
+    <Grid RowDefinitions="Auto, Auto, *"
+          ColumnDefinitions="*, *">
 
-        <!-- Header Text -->
-        <Label Text="Admin Dashboard"
-               FontFamily="HeaderText"
-               HorizontalOptions="Start"
-               FontSize="Large"
-               FontAttributes="Bold"
-               TextDecorations="Underline"/>
+        <BoxView Grid.Row="0"
+                 Grid.ColumnSpan="2"
+                 Color="Black"/>
 
-    </VerticalStackLayout>
+        <!--Overview section -->
+        <Frame Grid.Row="0"
+               Grid.Column="0"
+               Padding="10"
+               HasShadow="False"
+               Margin="20">
+
+            <VerticalStackLayout>
+                <Label Text="OVERVIEW"
+                       FontSize="Large"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+
+
+                <Label Text="Total Cards: 100"
+                       FontSize="Medium"/>
+                <Label Text="Total Packs: 50"
+                       FontSize="Medium"/>
+                <Label Text="Active Users: 200"
+                       FontSize="Medium"/>
+                <Label Text="Marketplace Items: 30"
+                       FontSize="Medium"/>
+            </VerticalStackLayout>
+        </Frame>
+
+
+
+    </Grid>
 </ContentView>
