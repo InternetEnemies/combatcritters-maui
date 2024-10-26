@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
+using CombatCrittersSharp.managers;
 using CombatCrittersSharp.objects.card;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.user;
@@ -12,13 +13,11 @@ namespace Combat_Critters_2._0.ViewModels
 {
     public class CardsViewModel : INotifyPropertyChanged
     {
-        private readonly BackendService _backendService;
-        private ObservableCollection<ICard> _userCards;
-        private List<ICard> _allUserCards;
-        private const int _batchSize = 10; //Number of cards to display at a time
-        private bool _hasCards; //Does a user have any card?
-        private bool _showLoadMoreButton;
 
+        private ObservableCollection<ICard> _gameCards;
+        private bool _hasCards; //Does a user have any card?
+
+        private readonly BackendService _backendService;
 
         public bool HasCards
         {
@@ -29,36 +28,22 @@ namespace Combat_Critters_2._0.ViewModels
                 OnPropertyChanged(nameof(HasCards));
             }
         }
-
-        public bool ShowLoadMoreButton
+        public ObservableCollection<ICard> GameCards
         {
-            get => _showLoadMoreButton;
+            get => _gameCards;
             set
             {
-                _showLoadMoreButton = value;
-                OnPropertyChanged(nameof(ShowLoadMoreButton));
-            }
-        }
-        public ObservableCollection<ICard> UserCards
-        {
-            get => _userCards;
-            set
-            {
-                _userCards = value;
-                OnPropertyChanged(nameof(UserCards));
+                _gameCards = value;
+                OnPropertyChanged(nameof(GameCards));
             }
         }
 
-        public ICommand LoadMoreCommand { get; }
+        //Constructor
         public CardsViewModel()
         {
-            _userCards = new ObservableCollection<ICard>();
-            _allUserCards = new List<ICard>();
+            _gameCards = new ObservableCollection<ICard>();
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
-            LoadMoreCommand = new Command(LoadMoreCards);
-            _showLoadMoreButton = false;
-            HasCards = true;
-
+            HasCards = false;
 
             //start Loading the user cards.
             Task.Run(async () => await InitializeViewModelAsync());
@@ -69,40 +54,26 @@ namespace Combat_Critters_2._0.ViewModels
             await LoadUserCards();
         }
 
-        /// <summary>
-        /// This loads the card  page with user cards, if any
-        /// </summary>
-        /// <returns></returns>
         public async Task LoadUserCards()
         {
             try
             {
-                //Default query for all cards
-                var userCards = await _backendService.GetCardsAsync(new CardQueryBuilder().Build());
+                var cards = await _backendService.GetCardsAsync(new CardQueryBuilder().Build());
 
-                // Check if the list is null or empty
-                if (userCards != null && userCards.Count != 0)
+                if (cards != null && cards.Count > 0)
                 {
                     HasCards = true;
-
-                    _allUserCards = userCards.Select(stack => stack.Item).ToList();
-
-
-                    //Shoe the Load More button if user has cards there are more than 15 cards
-                    ShowLoadMoreButton = (HasCards && (_allUserCards.Count > _batchSize));
-
-                    //Display only the first batch of cards
-                    var cardsToDisplay = _allUserCards.Take(_batchSize).ToList();
-                    UserCards = new ObservableCollection<ICard>(cardsToDisplay);
+                    GameCards = new ObservableCollection<ICard>((IEnumerable<ICard>)cards);
                 }
                 else
                 {
-                    //User has no cards
+                    //Game has no Cards
                     HasCards = false;
 
-                    //Clear the UserCards collection 
-                    UserCards.Clear();
+                    GameCards.Clear();
+
                 }
+
             }
             catch (RestException)
             {
@@ -116,28 +87,6 @@ namespace Combat_Critters_2._0.ViewModels
                 HasCards = false;
 
                 throw; //bubble up to the global exception
-            }
-
-        }
-
-        /// <summary>
-        /// Call to load next batch of cards on display
-        /// </summary>
-        public void LoadMoreCards()
-        {
-            var currentCardCount = UserCards.Count;
-            if (currentCardCount < _allUserCards.Count)
-            {
-                var nextBatch = new List<ICard>();
-                nextBatch = _allUserCards.Skip(currentCardCount).Take(_batchSize).ToList();
-
-                foreach (var card in nextBatch)
-                {
-                    UserCards.Add(card);
-                }
-
-                ShowLoadMoreButton = HasCards & (UserCards.Count < _allUserCards.Count);
-
             }
         }
 

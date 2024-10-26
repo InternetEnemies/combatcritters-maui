@@ -7,7 +7,7 @@ namespace Combat_Critters_2._0.Pages
         public CardsPage()
         {
             InitializeComponent();
-            //BindingContext = new CardsViewModel();
+            BindingContext = new CardsViewModel();
         }
 
         // private void OnRemainingItemsThresholdReached(object sender, EventArgs e)
