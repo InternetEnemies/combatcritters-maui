@@ -61,12 +61,15 @@
                                BorderColor="#FF504D4D"
                                Padding="0">
 
-                                <!--Content Area-->
-                                <ContentView x:Name="ContentArea"
-                                             Grid.Row="1"
-                                             Padding="0">
+                                <ScrollView>
+                                        <!--Content Area-->
+                                        <ContentView x:Name="ContentArea"
+                                                     Grid.Row="1"
+                                                     Padding="0">
 
-                                </ContentView>
+                                        </ContentView>
+                                </ScrollView>
+
                         </Frame>
 
 

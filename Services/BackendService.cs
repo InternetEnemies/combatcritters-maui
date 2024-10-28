@@ -24,7 +24,7 @@ namespace Combat_Critters_2._0.Services
             try
             {
                 //Excute the operation
-                return await operation();
+                return await operation().ConfigureAwait(false);
             }
             catch (RestException ex)
             {
@@ -86,7 +86,10 @@ namespace Combat_Critters_2._0.Services
 
                 var cardsManager = _client.User.Cards;
                 Console.WriteLine("Attempting to get user cards");
-                var cards = await cardsManager.GetCards(query);
+                Console.WriteLine($"User Id is: {_client.User.Id}");
+
+                var cards = await cardsManager.GetCards(query).ConfigureAwait(false);
+                Console.WriteLine($"Retrieved {cards.Count} cards");
                 return cards; //return cards
             }, "Failed to fetch user cards");
         }

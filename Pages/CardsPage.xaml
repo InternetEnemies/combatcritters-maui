@@ -15,77 +15,75 @@
                      FontAttributes="Bold"
                      TextDecorations="Underline"/>
 
-              <Frame Style="{StaticResource CardFrameStyle}"
+              <!-- <Frame Style="{StaticResource CardFrameStyle}"
                      HorizontalOptions="Start">
                      <Label Text=" + "
                             HorizontalOptions="Center"
                             VerticalOptions="Center"
                             FontSize="Large"/>
-              </Frame>
+              </Frame> -->
 
-              <Grid RowDefinitions="Auto, *"
-                    VerticalOptions="Fill">
 
-                     <!-- Header Row -->
-                     <Border Grid.Row="0"
-                             BackgroundColor="{StaticResource Primary}"
-                             Padding="10">
-                            <Label Text="GAME CARDS"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center"
-                                   FontSize="Title"
-                                   FontAttributes="Bold"
-                                   TextColor="White"/>
-                     </Border>
+              <!-- Scrollable Content Row -->
+              <Border
+                     VerticalOptions="Fill">
 
-                     <!-- Scrollable Content Row -->
-                     <Border Grid.Row="1"
-                             VerticalOptions="Fill">
-                            <ContentView>
-                                   <ContentView.Triggers>
-                                          <!--Data trigger for No game cards -->
-                                          <DataTrigger TargetType="ContentView"
-                                                       Binding="{Binding HasCards}"
-                                                       Value="False">
-                                                 <Setter Property="Content">
-                                                        <Setter.Value>
-                                                               <Label Text="Game has not cards!"
-                                                                      HorizontalOptions="Center"
-                                                                      VerticalOptions="Center"/>
-                                                        </Setter.Value>
-                                                 </Setter>
-                                          </DataTrigger>
+                     <!-- <CollectionView ItemsSource="{Binding GameCards}">
+                            <CollectionView.ItemsLayout>
+                                   <GridItemsLayout Orientation="Vertical"
+                                                    Span="4"
+                                                    VerticalItemSpacing="30"
+                                                    HorizontalItemSpacing="30"/>
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                   <StaticResource Key="CardTemplate"/>
+                            </CollectionView.ItemTemplate>
+                     </CollectionView> -->
 
-                                          <!-- Data trigger for available game cards -->
-                                          <DataTrigger TargetType="ContentView"
-                                                       Binding="{Binding HasCards}"
-                                                       Value="True">
-                                                 <Setter Property="Content">
-                                                        <Setter.Value>
-                                                               <ScrollView>
-                                                                      <CollectionView ItemsSource="{Binding GameCards}">
-                                                                             <CollectionView.ItemsLayout>
-                                                                                    <GridItemsLayout Orientation="Vertical"
-                                                                                                     Span="4"
-                                                                                                     VerticalItemSpacing="30"
-                                                                                                     HorizontalItemSpacing="30"/>
-                                                                             </CollectionView.ItemsLayout>
-                                                                             <CollectionView.ItemTemplate>
-                                                                                    <StaticResource Key="CardTemplate"/>
-                                                                             </CollectionView.ItemTemplate>
+                     <ContentView>
+                            <ContentView.Triggers>
 
-                                                                      </CollectionView>
-                                                               </ScrollView>
-                                                        </Setter.Value>
-                                                 </Setter>
+                                   <DataTrigger TargetType="ContentView"
+                                                Binding="{Binding HasCards}"
+                                                Value="False">
+                                          <Setter Property="Content">
+                                                 <Setter.Value>
+                                                        <Label Text="Game has no cards!"
+                                                               HorizontalOptions="Center"
+                                                               VerticalOptions="Center"/>
+                                                 </Setter.Value>
+                                          </Setter>
+                                   </DataTrigger>
 
-                                          </DataTrigger>
 
-                                   </ContentView.Triggers>
-                            </ContentView>
+                                   <DataTrigger TargetType="ContentView"
+                                                Binding="{Binding HasCards}"
+                                                Value="True">
+                                          <Setter Property="Content">
+                                                 <Setter.Value>
+                                                        <ScrollView>
+                                                               <CollectionView ItemsSource="{Binding GameCards}">
+                                                                      <CollectionView.ItemsLayout>
+                                                                             <GridItemsLayout Orientation="Vertical"
+                                                                                              Span="4"
+                                                                                              VerticalItemSpacing="30"
+                                                                                              HorizontalItemSpacing="30"/>
+                                                                      </CollectionView.ItemsLayout>
+                                                                      <CollectionView.ItemTemplate>
+                                                                             <StaticResource Key="CardTemplate"/>
+                                                                      </CollectionView.ItemTemplate>
 
-                     </Border>
+                                                               </CollectionView>
+                                                        </ScrollView>
+                                                 </Setter.Value>
+                                          </Setter>
 
-              </Grid>
+                                   </DataTrigger>
+
+                            </ContentView.Triggers>
+                     </ContentView>
+
+              </Border>
+
        </VerticalStackLayout>
 </ContentView>

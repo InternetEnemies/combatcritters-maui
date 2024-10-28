@@ -7,6 +7,7 @@ using CombatCrittersSharp.managers;
 using CombatCrittersSharp.objects.card;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.user;
+using UIKit;
 
 
 namespace Combat_Critters_2._0.ViewModels
@@ -59,11 +60,17 @@ namespace Combat_Critters_2._0.ViewModels
             try
             {
                 var cards = await _backendService.GetCardsAsync(new CardQueryBuilder().Build());
-
+                Console.WriteLine($"Received {cards.Count} cards from backend");
                 if (cards != null && cards.Count > 0)
                 {
-                    HasCards = true;
-                    GameCards = new ObservableCollection<ICard>((IEnumerable<ICard>)cards);
+
+                    Application.Current?.Dispatcher.Dispatch(() =>
+                    {
+                        GameCards = new ObservableCollection<ICard>(cards.Select(stack => stack.Item).ToList());
+                        HasCards = true;
+                    });
+
+                    Console.WriteLine($"Number of cards loaded: {GameCards.Count}");
                 }
                 else
                 {
