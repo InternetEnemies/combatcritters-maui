@@ -58,7 +58,7 @@
                         <Frame Grid.Row="1"
                                Grid.ColumnSpan="3"
                                HasShadow="False"
-                               BorderColor="#FF504D4D"
+                               BorderColor="Transparent"
                                Padding="0">
 
                                 <ScrollView>

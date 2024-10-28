@@ -1,11 +1,16 @@
+using CombatCrittersSharp.objects.card;
+
 namespace Combat_Critters_2._0.Pages
 {
     public partial class Hero : ContentPage
     {
-        public Hero()
+        private CardsPage? _cardsPage;
+        private readonly string _username;
+
+        public Hero(string username)
         {
             InitializeComponent();
-
+            _username = username;
             //Automatically navigate to the Dashboard on page load
             NavigateToDashboard();
         }
@@ -17,12 +22,19 @@ namespace Combat_Critters_2._0.Pages
         }
         private void OnDashboardClicked(object sender, EventArgs e)
         {
-            ContentArea.Content = new DashboardPage();
+            ContentArea.Content = new DashboardPage(_username);
         }
 
         private void OnCardsClicked(object sender, EventArgs e)
         {
-            ContentArea.Content = new CardsPage();
+
+            //Initialize CardsPage only once
+            if (_cardsPage == null)
+            {
+                _cardsPage = new CardsPage();
+            }
+
+            ContentArea.Content = _cardsPage;
         }
 
         private void OnPacksClicked(object sender, EventArgs e)

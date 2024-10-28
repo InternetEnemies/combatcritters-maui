@@ -66,7 +66,7 @@ public class LoginViewModel : INotifyPropertyChanged
             });
 
             // On success, Navigate to User Profile page
-            (Application.Current as App)?.NavigateToHeroPage();
+            (Application.Current as App)?.NavigateToHeroPage(Username);
 
         }
         catch (RestException)

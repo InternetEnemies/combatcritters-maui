@@ -45,10 +45,10 @@ namespace Combat_Critters_2._0
 		}
 
 		// This method is called after a successful login
-		public void NavigateToHeroPage()
+		public void NavigateToHeroPage(string username)
 		{
 			// Set MainPage to Hero after Login
-			MainPage = new Hero();
+			MainPage = new NavigationPage(new Hero(username));
 		}
 
 		// This method is called when the user logs out

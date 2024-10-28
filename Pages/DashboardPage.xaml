@@ -2,40 +2,74 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.DashboardPage">
 
-    <Grid RowDefinitions="Auto, Auto, *"
-          ColumnDefinitions="*, *">
+    <Grid RowDefinitions="0.3*, 0.8*"
+          ColumnDefinitions="*"
+          VerticalOptions="Fill"
+          HorizontalOptions="Fill">
 
-        <BoxView Grid.Row="0"
-                 Grid.ColumnSpan="2"
-                 Color="Black"/>
-
-        <!--Overview section -->
         <Frame Grid.Row="0"
-               Grid.Column="0"
-               Padding="10"
-               HasShadow="False"
+               BackgroundColor="Black"
+               HorizontalOptions="Fill"
+               VerticalOptions="Fill"
+               Padding="20"
                Margin="20">
 
-            <VerticalStackLayout>
-                <Label Text="OVERVIEW"
-                       FontSize="Large"
-                       FontAttributes="Bold"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"/>
+            <Label Text="{Binding Username, StringFormat='Hello Admin&#x0a;{0}!'}"
+                   FontSize="35"
+                   FontFamily="DashboardHeadersFontStyle"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start"
+                   TextColor=" White"
+                   Margin="0"/>
 
-
-                <Label Text="Total Cards: 100"
-                       FontSize="Medium"/>
-                <Label Text="Total Packs: 50"
-                       FontSize="Medium"/>
-                <Label Text="Active Users: 200"
-                       FontSize="Medium"/>
-                <Label Text="Marketplace Items: 30"
-                       FontSize="Medium"/>
-            </VerticalStackLayout>
         </Frame>
 
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*, *"
+              VerticalOptions="Fill"
+              HorizontalOptions="Fill">
 
+            <!-- Overview Frame -->
+            <Frame Grid.Column="0"
+                   CornerRadius="10"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill"
+                   Margin="20"
+                   Padding="10"
+                   BorderColor="Purple">
 
+                <VerticalStackLayout>
+
+                    <Label Text="OVERVIEW"
+                           TextColor="Black"
+                           FontAttributes="Bold"
+                           FontSize="30"
+                           HorizontalOptions="Center"
+                           FontFamily="DashboardHeadersFontStyle"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--Links Frame-->
+            <Frame Grid.Column="1"
+                   CornerRadius="10"
+                   Padding="10"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill"
+                   BorderColor="Purple"
+                   Margin="20">
+
+                <VerticalStackLayout>
+                    <Label Text="LINKS"
+                           TextColor="Black"
+                           FontAttributes="Bold"
+                           FontSize="30"
+                           HorizontalOptions="Center"
+                           FontFamily="DashboardHeadersFontStyle"/>
+                </VerticalStackLayout>
+
+            </Frame>
+        </Grid>
     </Grid>
+
 </ContentView>

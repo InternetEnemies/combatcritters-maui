@@ -19,6 +19,7 @@ namespace Combat_Critters_2._0.ViewModels
         private bool _hasCards; //Does a user have any card?
 
         private readonly BackendService _backendService;
+        public ICommand ReloadCommand { get; }
 
         public bool HasCards
         {
@@ -45,6 +46,10 @@ namespace Combat_Critters_2._0.ViewModels
             _gameCards = new ObservableCollection<ICard>();
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
             HasCards = false;
+
+
+            //Initialize Reload Command to reload the cards on button click LoadUserCards
+            ReloadCommand = new Command(async () => await LoadUserCards());
 
             //start Loading the user cards.
             Task.Run(async () => await InitializeViewModelAsync());
