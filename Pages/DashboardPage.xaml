@@ -55,7 +55,6 @@
                    CornerRadius="10"
                    Padding="10"
                    HorizontalOptions="Fill"
-                   VerticalOptions="Fill"
                    BorderColor="Purple"
                    Margin="20">
 
@@ -66,6 +65,17 @@
                            FontSize="30"
                            HorizontalOptions="Center"
                            FontFamily="DashboardHeadersFontStyle"/>
+
+                    <Button Text="Manage Users"
+                            TextColor="white"
+                            Margin="0,5"
+                            Clicked="OnManageUsersClicked"/>
+                    <Button Text="Create Cards"
+                            TextColor="white"
+                            Margin="0,5"/>
+                    <Button Text="Create Packs"
+                            TextColor="White"
+                            Margin="0,5"/>
                 </VerticalStackLayout>
 
             </Frame>

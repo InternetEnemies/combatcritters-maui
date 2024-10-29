@@ -7,8 +7,10 @@ using System.Reflection.Emit;
 using Combat_Critters_2._0.Models;
 using CombatCrittersSharp;
 using CombatCrittersSharp.exception;
+using CombatCrittersSharp.managers;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.deck;
+using CombatCrittersSharp.objects.user;
 namespace Combat_Critters_2._0.Services
 {
     public class BackendService
@@ -57,6 +59,26 @@ namespace Combat_Critters_2._0.Services
             }, "Login failed");
         }
 
+        /// <summary>
+        /// This method gets all users
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<IUser>> GetUsersAsync()
+        {
+            return await ExecuteBackendOperationAsync(async () =>
+            {
+                Console.WriteLine("Attempting to get all users");
+
+                var userManager = new UserManager(_client, _client.User);
+
+                var users = await userManager.GetAllUsersWithProfiles();
+
+                Console.WriteLine($"Retrieved {users.Count} users");
+                return users;
+
+
+            }, "Failed to fetch users");
+        }
         public async Task CreateAccountAsync(UserCredentials credentials)
         {
 
@@ -68,6 +90,7 @@ namespace Combat_Critters_2._0.Services
                 return Task.CompletedTask;
             }, "User registrationn failed");
         }
+
 
         /// <summary>
         /// This

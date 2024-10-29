@@ -59,7 +59,7 @@
                                                                <CollectionView ItemsSource="{Binding GameCards}">
                                                                       <CollectionView.ItemsLayout>
                                                                              <GridItemsLayout Orientation="Vertical"
-                                                                                              Span="4"
+                                                                                              Span="5"
                                                                                               VerticalItemSpacing="30"
                                                                                               HorizontalItemSpacing="30"/>
                                                                       </CollectionView.ItemsLayout>
