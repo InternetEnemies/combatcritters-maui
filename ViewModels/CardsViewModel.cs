@@ -62,6 +62,7 @@ namespace Combat_Critters_2._0.ViewModels
 
         public async Task LoadUserCards()
         {
+            bool hasCards = false; // function scoped variable
             try
             {
                 var cards = await _backendService.GetCardsAsync(new CardQueryBuilder().Build());
@@ -72,7 +73,7 @@ namespace Combat_Critters_2._0.ViewModels
                     Application.Current?.Dispatcher.Dispatch(() =>
                     {
                         GameCards = new ObservableCollection<ICard>(cards.Select(stack => stack.Item).ToList());
-                        HasCards = true;
+                        hasCards = true;
                     });
 
                     Console.WriteLine($"Number of cards loaded: {GameCards.Count}");
@@ -80,8 +81,6 @@ namespace Combat_Critters_2._0.ViewModels
                 else
                 {
                     //Game has no Cards
-                    HasCards = false;
-
                     GameCards.Clear();
 
                 }
@@ -89,16 +88,14 @@ namespace Combat_Critters_2._0.ViewModels
             }
             catch (RestException)
             {
-                HasCards = false;
-
                 if (Application.Current?.MainPage != null)
                     await Application.Current.MainPage.DisplayAlert("Error", "Failed to load user cards. Please try again.", "OK");
             }
-            catch (Exception)
-            {
-                HasCards = false;
 
-                throw; //bubble up to the global exception
+            finally
+            {
+                //Set HasCards based on result of operation
+                HasCards = hasCards;
             }
         }
 

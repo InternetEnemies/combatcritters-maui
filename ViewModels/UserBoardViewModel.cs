@@ -64,6 +64,7 @@ namespace Combat_Critters_2._0.ViewModels
         /// <returns></returns>
         private async Task LoadUsers()
         {
+            bool hasUsers = false; //function scoped variable
             try
             {
                 var users = await _backendService.GetUsersAsync(); //get all users from backendf
@@ -73,28 +74,29 @@ namespace Combat_Critters_2._0.ViewModels
                     Application.Current?.Dispatcher.Dispatch(() =>
                     {
                         AllUsers = new ObservableCollection<IUser>(users);
-                        HasUsers = true;
+                        hasUsers = true;
                     });
                 }
                 else
                 {
                     //Game has no Users
-                    HasUsers = false;
                     AllUsers.Clear();
                 }
 
             }
             catch (RestException)
             {
-                HasUsers = false;
-
                 if (Application.Current?.MainPage != null)
                     await Application.Current.MainPage.DisplayAlert("Error", "Failed to load users. Please try again.", "OK");
             }
             catch (Exception)
             {
-                HasUsers = false;
                 throw; //bubble up to the global exception
+            }
+            finally
+            {
+                // Set HasUsers.
+                HasUsers = hasUsers;
             }
 
         }
