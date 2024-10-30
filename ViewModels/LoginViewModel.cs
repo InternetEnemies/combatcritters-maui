@@ -75,10 +75,7 @@ public class LoginViewModel : INotifyPropertyChanged
             if (Application.Current?.MainPage != null)
                 await Application.Current.MainPage.DisplayAlert("Login Failed", "Incorrect username or password. Please try again.", "OK");
         }
-        catch (Exception)
-        {
-            throw;
-        }
+
 
     }
     private async void OnCreateAccount()

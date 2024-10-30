@@ -89,10 +89,7 @@ namespace Combat_Critters_2._0.ViewModels
                 if (Application.Current?.MainPage != null)
                     await Application.Current.MainPage.DisplayAlert("Error", "Failed to load users. Please try again.", "OK");
             }
-            catch (Exception)
-            {
-                throw; //bubble up to the global exception
-            }
+
             finally
             {
                 // Set HasUsers.

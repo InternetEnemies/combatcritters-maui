@@ -95,10 +95,6 @@ public class CreateAccountViewModel : INotifyPropertyChanged
             if (Application.Current?.MainPage != null)
                 await Application.Current.MainPage.DisplayAlert("Register Failed", "Failed to register. Please check your credentials and try again.", "OK");
         }
-        catch (Exception)
-        {
-            throw; //bubble up to the global exception handler
-        }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
