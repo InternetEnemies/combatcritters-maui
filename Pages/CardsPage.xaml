@@ -15,14 +15,6 @@
                      FontAttributes="Bold"
                      TextDecorations="Underline"/>
 
-              <!-- <Frame Style="{StaticResource CardFrameStyle}"
-                     HorizontalOptions="Start">
-                     <Label Text=" + "
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center"
-                            FontSize="Large"/>
-              </Frame> -->
-
               <!-- Reload Button -->
               <Button Text="Reload cards"
                       Command="{Binding ReloadCommand}"
