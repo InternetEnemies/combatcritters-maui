@@ -7,35 +7,35 @@ on:
 
 jobs:
   deploy:
-  runs-on: ${{ matrix.os }}
-  strategy:
-    matrix:
-      os: [macos-14, macos-15]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-14, macos-15]
 
-  steps:
-    - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
 
-    - name: Restore Workload
-      run: dotnet workload restore
+      - name: Restore Workload
+        run: dotnet workload restore
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: Publish Mac Catalyst app
-      run: dotnet publish Combat-Critters_2.0.csproj -c Release -f net8.0-maccatalyst -o ./output
+      - name: Publish Mac Catalyst app
+        run: dotnet publish Combat-Critters_2.0.csproj -c Release -f net8.0-maccatalyst -o ./output
 
-    - name: Create .dmg file
-      run: |
-        mkdir -p ./dmg
-        hdiutil create ./dmg/CombatCritters2.dmg -volname "CombatCritters2" -srcfolder ./output -ov -format UDZO
+      - name: Create .dmg file
+        run: |
+          mkdir -p ./dmg
+          hdiutil create ./dmg/CombatCritters2.dmg -volname "CombatCritters2" -srcfolder ./output -ov -format UDZO
 
-    - name: Upload .dmg Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: CombatCritters2.dmg
-        path: ./dmg/CombatCritters2.dmg
+      - name: Upload .dmg Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: CombatCritters2.dmg
+          path: ./dmg/CombatCritters2.dmg
