@@ -1,8 +1,11 @@
 
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using AuthenticationServices;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
+using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.user;
 
 namespace Combat_Critters_2._0.ViewModels
@@ -13,6 +16,42 @@ namespace Combat_Critters_2._0.ViewModels
         private ObservableCollection<IUser> _allUsers;
         private bool _hasUsers;
         private ObservableCollection<IUser> _filteredUser;
+        private ObservableCollection<ICard> _selectedUserProfileDeckCards;
+        private IUser _selectedUser;
+
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+
+        public IUser SelectedUser
+        {
+            get => _selectedUser;
+            set
+            {
+                _selectedUser = value;
+                OnPropertyChanged(nameof(SelectedUser));
+
+                //Load the selected user's profile deck cards
+                LoadSelectedUserProfileDeckCards();
+            }
+        }
+
+        public ObservableCollection<ICard> SelectedUserProfileDeckCards
+        {
+            get => _selectedUserProfileDeckCards;
+            set
+            {
+                _selectedUserProfileDeckCards = value;
+                OnPropertyChanged(nameof(SelectedUserProfileDeckCards));
+            }
+        }
 
         public bool HasUsers
         {
@@ -48,6 +87,7 @@ namespace Combat_Critters_2._0.ViewModels
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
             _allUsers = new ObservableCollection<IUser>();
             _filteredUser = new ObservableCollection<IUser>();
+            _selectedUserProfileDeckCards = new ObservableCollection<ICard>();
             HasUsers = false;
             //start Loading the user cards.
             Task.Run(async () => await InitializeViewModelAsync());
@@ -64,6 +104,8 @@ namespace Combat_Critters_2._0.ViewModels
         /// <returns></returns>
         private async Task LoadUsers()
         {
+            IsLoading = true;
+
             bool hasUsers = false; //function scoped variable
             try
             {
@@ -71,11 +113,11 @@ namespace Combat_Critters_2._0.ViewModels
 
                 if (users != null && users.Count > 0)
                 {
-                    Application.Current?.Dispatcher.Dispatch(() =>
-                    {
-                        AllUsers = new ObservableCollection<IUser>(users);
-                        hasUsers = true;
-                    });
+
+                    AllUsers = new ObservableCollection<IUser>(users);
+                    FilteredUser = new ObservableCollection<IUser>(users);
+                    hasUsers = true;
+
                 }
                 else
                 {
@@ -94,8 +136,41 @@ namespace Combat_Critters_2._0.ViewModels
             {
                 // Set HasUsers.
                 HasUsers = hasUsers;
+                IsLoading = false; //Turn off loading indicator
             }
 
+        }
+
+        /// <summary>
+        /// Load the user profile deck cards when a user a selected
+        /// </summary>
+        private async void LoadSelectedUserProfileDeckCards()
+        {
+            if (SelectedUser?.ProfileDeck != null)
+            {
+                IsLoading = true;
+                try
+                {
+                    Console.WriteLine("Getting user profile deck...");
+                    var cards = await SelectedUser.ProfileDeck.GetCards();
+                    Console.WriteLine($"{cards.Count} cards on profile");
+                    SelectedUserProfileDeckCards = new ObservableCollection<ICard>(cards);
+                    Console.WriteLine("UI Updated");
+                }
+                catch (RestException)
+                {
+                    if (Application.Current?.MainPage != null)
+                        await Application.Current.MainPage.DisplayAlert("Error", "Failed to loading users profile. Please try again.", "OK");
+                }
+                finally
+                {
+                    IsLoading = false;
+                }
+            }
+            else
+            {
+                SelectedUserProfileDeckCards.Clear();
+            }
         }
 
         /// <summary>

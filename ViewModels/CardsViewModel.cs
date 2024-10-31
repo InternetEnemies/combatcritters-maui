@@ -19,7 +19,7 @@ namespace Combat_Critters_2._0.ViewModels
         private bool _hasCards; //Does a user have any card?
 
         private readonly BackendService _backendService;
-        public ICommand ReloadCommand { get; }
+        // public ICommand ReloadCommand { get; }
 
         public bool HasCards
         {
@@ -49,7 +49,7 @@ namespace Combat_Critters_2._0.ViewModels
 
 
             //Initialize Reload Command to reload the cards on button click LoadUserCards
-            ReloadCommand = new Command(async () => await LoadUserCards());
+            // ReloadCommand = new Command(async () => await LoadUserCards());
 
             //start Loading the user cards.
             Task.Run(async () => await InitializeViewModelAsync());
@@ -65,16 +65,18 @@ namespace Combat_Critters_2._0.ViewModels
             bool hasCards = false; // function scoped variable
             try
             {
-                var cards = await _backendService.GetCardsAsync(new CardQueryBuilder().Build());
+                CardQueryBuilder filteredBuild = new CardQueryBuilder();
+                filteredBuild.SetOwned(true);
+                var cards = await _backendService.GetCardsAsync(filteredBuild.Build());
                 Console.WriteLine($"Received {cards.Count} cards from backend");
                 if (cards != null && cards.Count > 0)
                 {
 
-                    Application.Current?.Dispatcher.Dispatch(() =>
-                    {
-                        GameCards = new ObservableCollection<ICard>(cards.Select(stack => stack.Item).ToList());
-                        hasCards = true;
-                    });
+                    // Application.Current?.Dispatcher.Dispatch(() =>
+                    // {
+                    GameCards = new ObservableCollection<ICard>(cards.Select(stack => stack.Item).ToList());
+                    hasCards = true;
+                    // });
 
                     Console.WriteLine($"Number of cards loaded: {GameCards.Count}");
                 }

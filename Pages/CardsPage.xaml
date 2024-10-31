@@ -16,10 +16,10 @@
                      TextDecorations="Underline"/>
 
               <!-- Reload Button -->
-              <Button Text="Reload cards"
+              <!-- <Button Text="Reload cards"
                       Command="{Binding ReloadCommand}"
                       HorizontalOptions="End"
-                      Margin="0,10,0,10"/>
+                      Margin="0,10,0,10"/> -->
 
 
               <!-- Scrollable Content Row -->

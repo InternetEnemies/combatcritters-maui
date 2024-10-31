@@ -147,14 +147,14 @@ namespace Combat_Critters_2._0.Services
             }, "Failed to feature the deck on the profile.");
         }
 
-        public async Task<IDeck?> GetFeaturedDeckAsync()
+        public async Task<IDeck?> GetFeaturedDeckAsync(IUser user)
         {
             return await ExecuteBackendOperationAsync(async () =>
             {
-                if (_client.User == null)
+                if (user == null)
                     throw new Exception("Invalid user");
 
-                var featuredDeck = await _client.User.Profile.GetDeck();
+                var featuredDeck = await user.Profile.GetDeck();
 
                 if (featuredDeck == null)
                     return null; //No Deck has been featured

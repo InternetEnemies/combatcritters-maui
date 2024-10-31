@@ -38,7 +38,37 @@
 
         <!--Selected User Profile-->
 
+        <Label Grid.Row="0"
+               Grid.Column="1"
+               Text="USER PROFILE"
+               FontFamily="DashboardHeadersFontStyle"
+               TextColor="Black"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"/>
 
+        <CollectionView Grid.Column="1"
+                        Grid.Row="1"
+                        ItemsSource="{Binding SelectedUserProfileDeckCards}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                                 Span="2"
+                                 VerticalItemSpacing="10"
+                                 HorizontalItemSpacing="10"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <StaticResource Key="CardTemplate"/>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <ActivityIndicator
+            x:Name="LoadingIndicator"
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}"
+            Color="DarkBlue"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"/>
 
     </Grid>
 
