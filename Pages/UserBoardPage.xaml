@@ -27,9 +27,40 @@
                                CornerRadius="8"
                                BorderColor="LightGray"
                                HasShadow="False">
-                            <Label Text="{Binding Username}"
-                                   FontSize="Medium"
-                                   VerticalOptions="Center"/>
+
+                            <Grid
+                                HorizontalOptions="Fill"
+                                VerticalOptions="Center">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Text="{Binding Username}"
+                                       FontSize="Medium"
+                                       HorizontalOptions="Start"
+                                       VerticalOptions="Center"
+                                       Grid.Column="0"/>
+
+                                <!-- Ellipsis Button for Options Menu -->
+                                <Button Text="…"
+                                        TextColor="Black"
+                                        FontSize="Large"
+                                        FontAttributes="Bold"
+                                        HorizontalOptions="End"
+                                        BackgroundColor="Transparent"
+                                        Grid.Column="1">
+
+                                    <FlyoutBase.ContextFlyout>
+                                        <MenuFlyout>
+                                            <MenuFlyoutItem Text="Remove User"
+                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteUserCommand}"
+                                                            CommandParameter="{Binding .}"/>
+                                        </MenuFlyout>
+                                    </FlyoutBase.ContextFlyout>
+                                </Button>
+                            </Grid>
                         </Frame>
                     </ViewCell>
                 </DataTemplate>

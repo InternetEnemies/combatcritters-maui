@@ -2,7 +2,9 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows.Input;
 using AuthenticationServices;
+using AVFoundation;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card.Interfaces;
@@ -18,6 +20,8 @@ namespace Combat_Critters_2._0.ViewModels
         private ObservableCollection<IUser> _filteredUser;
         private ObservableCollection<ICard> _selectedUserProfileDeckCards;
         private IUser _selectedUser;
+
+        public ICommand DeleteUserCommand { get; }
 
         private bool _isLoading;
         public bool IsLoading
@@ -89,8 +93,21 @@ namespace Combat_Critters_2._0.ViewModels
             _filteredUser = new ObservableCollection<IUser>();
             _selectedUserProfileDeckCards = new ObservableCollection<ICard>();
             HasUsers = false;
+
+            DeleteUserCommand = new Command<IUser>(DeleteUser);
             //start Loading the user cards.
             Task.Run(async () => await InitializeViewModelAsync());
+        }
+
+        private async void DeleteUser(IUser user)
+        {
+            // if (user != null)
+            // {
+            //     try
+            //     {
+            //         await _backendService.DeleteUserAsync(user.Id);
+            //     }
+            // }
         }
 
         private async Task InitializeViewModelAsync()
