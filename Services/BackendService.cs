@@ -11,6 +11,7 @@ using CombatCrittersSharp.managers;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.deck;
 using CombatCrittersSharp.objects.user;
+using Foundation;
 namespace Combat_Critters_2._0.Services
 {
     public class BackendService
@@ -69,6 +70,9 @@ namespace Combat_Critters_2._0.Services
             {
                 Console.WriteLine("Attempting to get all users");
 
+                if (_client.User == null)
+                    throw new Exception("Invalid user");
+
                 var userManager = new UserManager(_client, _client.User);
 
                 var users = await userManager.GetAllUsersWithProfiles();
@@ -77,11 +81,34 @@ namespace Combat_Critters_2._0.Services
                 return users;
 
 
+
             }, "Failed to fetch users");
+        }
+
+        /// <summary>
+        /// Request deletion of a user
+        /// </summary>
+        /// <param name="id"> user id</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task DeleteUserAsync(int id)
+        {
+            await ExecuteBackendOperationAsync(async () =>
+            {
+                if (_client.User == null)
+                    throw new Exception("Invalid user");
+
+                Console.WriteLine("Attempting to delete User");
+                var userManager = new UserManager(_client, _client.User);
+                await userManager.DeleteUser(id);
+                Console.WriteLine($"Successfully Removed user {id}");
+
+
+                return Task.CompletedTask;
+            }, "Failed to Remove user");
         }
         public async Task CreateAccountAsync(UserCredentials credentials)
         {
-
             await ExecuteBackendOperationAsync(async () =>
             {
                 Console.WriteLine("Attempting to register user...");

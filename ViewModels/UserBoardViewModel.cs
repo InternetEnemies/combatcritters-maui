@@ -1,14 +1,13 @@
 
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows.Input;
-using AuthenticationServices;
-using AVFoundation;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.user;
+using CommunityToolkit.Maui.Alerts;
+
 
 namespace Combat_Critters_2._0.ViewModels
 {
@@ -19,7 +18,7 @@ namespace Combat_Critters_2._0.ViewModels
         private bool _hasUsers;
         private ObservableCollection<IUser> _filteredUser;
         private ObservableCollection<ICard> _selectedUserProfileDeckCards;
-        private IUser _selectedUser;
+        private IUser? _selectedUser;
 
         public ICommand DeleteUserCommand { get; }
 
@@ -34,7 +33,7 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-        public IUser SelectedUser
+        public IUser? SelectedUser
         {
             get => _selectedUser;
             set
@@ -94,20 +93,41 @@ namespace Combat_Critters_2._0.ViewModels
             _selectedUserProfileDeckCards = new ObservableCollection<ICard>();
             HasUsers = false;
 
+
             DeleteUserCommand = new Command<IUser>(DeleteUser);
             //start Loading the user cards.
             Task.Run(async () => await InitializeViewModelAsync());
         }
 
+        /// <summary>
+        /// Delete a selected user
+        /// </summary>
+        /// <param name="user"></param>
         private async void DeleteUser(IUser user)
         {
-            // if (user != null)
-            // {
-            //     try
-            //     {
-            //         await _backendService.DeleteUserAsync(user.Id);
-            //     }
-            // }
+            if (user != null)
+            {
+                try
+                {
+                    await _backendService.DeleteUserAsync(user.Id);
+
+                    //Reload User List
+                    await LoadUsers();
+
+                    var toast = Toast.Make($"{user.Username} has been removed from Combat Critters", CommunityToolkit.Maui.Core.ToastDuration.Short);
+                    await toast.Show();
+                }
+                catch (RestException)
+                {
+                    if (Application.Current?.MainPage != null)
+                        await Application.Current.MainPage.DisplayAlert("Error", "Failed to Delete user. Please try again.", "OK");
+                }
+            }
+            else
+            {
+                var toast = Toast.Make($"{user} does not exist", CommunityToolkit.Maui.Core.ToastDuration.Short);
+                await toast.Show();
+            }
         }
 
         private async Task InitializeViewModelAsync()

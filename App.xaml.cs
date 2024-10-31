@@ -38,10 +38,14 @@ namespace Combat_Critters_2._0
 			Console.WriteLine($"Global Exception Caught: {ex.Message}");
 
 			// Display a global error UI alert
-			Application.Current.MainPage?.Dispatcher.Dispatch(async () =>
+			if (Application.Current != null)
 			{
-				await Application.Current.MainPage.DisplayAlert("Error", "An unexpected error occurred. Please try again later.", "OK");
-			});
+				Application.Current.MainPage?.Dispatcher.Dispatch(async () =>
+				{
+					await Application.Current.MainPage.DisplayAlert("Error", "An unexpected error occurred. Please try again later.", "OK");
+				});
+			}
+
 		}
 
 		// This method is called after a successful login
