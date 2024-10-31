@@ -4,17 +4,22 @@
 
 
 
-    <VerticalStackLayout Margin="20"
-                         Spacing="10">
+      <Grid>
+            <Grid.RowDefinitions>
+                  <RowDefinition/>
+                  <RowDefinition/>
+                  <RowDefinition/>
+                  <RowDefinition/>
+                  <RowDefinition/>
+            </Grid.RowDefinitions>
 
-        <!-- Header Text -->
-        <Label Text="PACKS"
-               FontFamily="HeaderText"
-               HorizontalOptions="Start"
-               FontSize="Large"
-               FontAttributes="Bold"
-               TextDecorations="Underline"/>
+            <Grid.ColumnDefinitions>
+                  <ColumnDefinition/>
+                  <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-    </VerticalStackLayout>
+
+
+      </Grid>
 
 </ContentView>
