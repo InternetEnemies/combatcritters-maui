@@ -4,13 +4,14 @@
 
 
 
-      <Grid>
+      <Grid RowSpacing="10"
+            ColumnSpacing="10">
             <Grid.RowDefinitions>
-                  <RowDefinition/>
-                  <RowDefinition/>
-                  <RowDefinition/>
-                  <RowDefinition/>
-                  <RowDefinition/>
+                  <RowDefinition Height="0.2*"/>
+                  <RowDefinition Height="0.1*"/>
+                  <RowDefinition Height="0.5*"/>
+                  <RowDefinition Height="0.1*"/>
+                  <RowDefinition Height="0.4*"/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -18,6 +19,119 @@
                   <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
+            <Frame Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill"
+                   BackgroundColor="Black"
+                   Padding="20"
+                   Margin="20">
+
+                  <Label Text="PACKS"
+                         FontSize="35"
+                         FontFamily="DashboardHeadersFontStyle"
+                         FontAttributes="Bold"
+                         VerticalOptions="Center"
+                         HorizontalOptions="Start"
+                         TextColor=" White"
+                         Margin="0"/>
+            </Frame>
+
+            <VerticalStackLayout  Grid.Row="1"
+                                  Grid.Column="0"
+                                  Spacing="5">
+                  <Label Text="GAME PACKS"
+                         FontSize="28"
+                         FontFamily="DashboardHeadersFontStyle"
+                         HorizontalOptions="Start"/>
+
+                  <Label Text="Search and view in game packs"
+                         FontSize="20"
+                         FontFamily="DashboardHeadersFontStyle"
+                         HorizontalOptions="Start"/>
+            </VerticalStackLayout>
+
+            <Frame Grid.Row="2"
+                   Grid.Column="0"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill"
+                   HasShadow="False"
+                   BorderColor="Purple">
+
+                  <Grid RowDefinitions="0.1*, 0.9*"
+                        ColumnDefinitions="0.9*, 0.1*"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill">
+                        <Label Text="Packs search goes here"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               Grid.Row="0"
+                               Grid.Column="0"/>
+
+                        <Button Text="Reload"
+                                Grid.Row="0"
+                                Grid.Column="1"/>
+
+                        <Label Text="Packs list goes here"
+                               Grid.Row="1"
+                               Grid.ColumnSpan="2"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+
+                  </Grid>
+
+            </Frame>
+
+
+            <Frame Grid.Row="2"
+                   Grid.Column="1"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill"
+                   HasShadow="False"
+                   BorderColor="Purple">
+
+                  <Grid RowDefinitions="0.8*, 0.2*"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill">
+                        <Label Text="Selected pack image goes here"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               Grid.Row="0"/>
+
+                        <Button Grid.Row="1"
+                                Text="Open Pack"
+                                VerticalOptions="Center"
+                                HorizontalOptions="End"/>
+                  </Grid>
+
+            </Frame>
+
+            <VerticalStackLayout  Grid.Row="3"
+                                  Grid.Column="0"
+                                  Spacing="5">
+                  <Label Text="PACKS CREATOR"
+                         FontSize="28"
+                         FontFamily="DashboardHeadersFontStyle"
+                         HorizontalOptions="Start"/>
+
+                  <Label Text="Create Packs and Add to Game"
+                         FontSize="20"
+                         FontFamily="DashboardHeadersFontStyle"
+                         HorizontalOptions="Start"/>
+            </VerticalStackLayout>
+
+            <Frame Grid.Row="4"
+                   Grid.Column="0"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill"
+                   HasShadow="False"
+                   BorderColor="Purple">
+
+                  <Label Text="+"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center"/>
+
+            </Frame>
 
 
       </Grid>
