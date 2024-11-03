@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using Combat_Critters_2._0.Services;
+using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.pack;
 using CommunityToolkit.Maui.Views;
 
