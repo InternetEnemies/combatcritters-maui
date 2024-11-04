@@ -66,7 +66,7 @@ namespace Combat_Critters_2._0.ViewModels
             try
             {
                 CardQueryBuilder filteredBuild = new CardQueryBuilder();
-                //filteredBuild.SetOwned(true);
+                filteredBuild.SetOwned(true);
                 var cards = await _backendService.GetCardsAsync(filteredBuild.Build());
                 Console.WriteLine($"Received {cards?.Count} cards from backend");
                 if (cards != null && cards.Count > 0)

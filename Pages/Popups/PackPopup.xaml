@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="Combat_Critters_2._0.Pages.Popups.PackPopup">
+
+    <StackLayout Padding="20"
+                 BackgroundColor="Black"
+                 Opacity="0.9">
+        <Label Text="Pack Contents"
+               FontSize="Large"
+               FontAttributes="Bold"
+               TextColor="White"
+               HorizontalOptions="Center"/>
+        <ScrollView>
+            <CollectionView ItemsSource="{Binding SelectedPackCards}"
+                            Margin="10">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                                     Span="5"
+                                     VerticalItemSpacing="30"
+                                     HorizontalItemSpacing="30"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <!-- Assuming StaticResource 'CardTemplate' is defined somewhere in resources -->
+                    <StaticResource Key="CardTemplate"/>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+    </StackLayout>
+
+</toolkit:Popup>

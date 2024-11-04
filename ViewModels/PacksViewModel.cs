@@ -1,8 +1,10 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using Combat_Critters_2._0.Pages.Popups;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
+using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.pack;
 using CommunityToolkit.Maui.Views;
 
@@ -13,9 +15,21 @@ namespace Combat_Critters_2._0.ViewModels
         private BackendService _backendService;
         private ObservableCollection<IPack> _allPacks;
         private ObservableCollection<IPack> _filteredPacks;
+        private IPack _selectedPack;
 
         private bool _hasPacks;
         private bool _isLoading;
+
+
+        public IPack SelectedPack
+        {
+            get => _selectedPack;
+            set
+            {
+                _selectedPack = value;
+                OnPropertyChanged(nameof(SelectedPack));
+            }
+        }
         public bool IsLoading
         {
             get => _isLoading;
@@ -123,14 +137,39 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-        private void OpenPack()
+        private async void OpenPack()
         {
-            // var popup = new MaximizedCollectionViewPopup
-            // {
-            //     BindingContext = new PackCardViewModel()
-            // };
+            if (Application.Current?.MainPage != null)
+            {
 
-            // Application.Current.MainPage.ShowPopup(popup);
+                if (SelectedPack == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "No pack selected.", "OK");
+                    return;
+                }
+
+                try
+                {
+                    //Fetch cards in the selected pack
+                    Console.WriteLine("Opening pack..");
+
+                    var cards = await SelectedPack.GetPackContentsAsync();
+                    Console.WriteLine($"Opening pack..{cards.Count}");
+
+                    //Create and show the popup with the selected cards
+                    var popup = new PackPopup(new ObservableCollection<ICard>(cards));
+                    await Application.Current.MainPage.ShowPopupAsync(popup);
+
+
+                }
+                catch (RestException)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to open pack. Please try again.", "OK");
+                }
+
+            }
+
+
 
         }
 

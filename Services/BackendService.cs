@@ -84,8 +84,6 @@ namespace Combat_Critters_2._0.Services
                 Console.WriteLine($"Retrieved {users.Count} users");
                 return users;
 
-
-
             }, "Failed to fetch users");
         }
 

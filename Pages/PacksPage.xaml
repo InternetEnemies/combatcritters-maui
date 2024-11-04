@@ -9,9 +9,7 @@
               <Grid.RowDefinitions>
                      <RowDefinition Height="0.2*"/>
                      <RowDefinition Height="0.1*"/>
-                     <RowDefinition Height="0.5*"/>
-                     <RowDefinition Height="0.1*"/>
-                     <RowDefinition Height="0.4*"/>
+                     <RowDefinition Height="0.7*"/>
               </Grid.RowDefinitions>
 
               <Grid.ColumnDefinitions>
@@ -78,6 +76,8 @@
                                       Grid.ColumnSpan="2"
                                       VerticalOptions="Fill"
                                       ItemsSource="{Binding FilteredPacks}"
+                                      SelectionMode="Single"
+                                      SelectedItem="{Binding SelectedPack}"
                                       HasUnevenRows="True">
                                    <ListView.ItemTemplate>
                                           <DataTemplate>
@@ -114,10 +114,16 @@
                      <Grid RowDefinitions="0.8*, 0.2*"
                            HorizontalOptions="Fill"
                            VerticalOptions="Fill">
-                            <Label Text="Selected pack image goes here"
+
+                            <Image Grid.Row="0"
+                                   Source="pack.png"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"
-                                   Grid.Row="0"/>
+                                   Aspect="AspectFit"/>
+                            <Label Grid.Row="0"
+                                   Text="{Binding SelectedPack.Name}"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"/>
 
                             <Button Grid.Row="1"
                                     Text="Open Pack"
@@ -127,35 +133,6 @@
                      </Grid>
 
               </Frame>
-
-              <VerticalStackLayout  Grid.Row="3"
-                                    Grid.Column="0"
-                                    Spacing="5">
-                     <Label Text="PACKS CREATOR"
-                            FontSize="28"
-                            FontFamily="DashboardHeadersFontStyle"
-                            HorizontalOptions="Start"/>
-
-                     <Label Text="Create Packs and Add to Game"
-                            FontSize="20"
-                            FontFamily="DashboardHeadersFontStyle"
-                            HorizontalOptions="Start"/>
-              </VerticalStackLayout>
-
-              <Frame Grid.Row="4"
-                     Grid.Column="0"
-                     HorizontalOptions="Fill"
-                     VerticalOptions="Fill"
-                     HasShadow="False"
-                     BorderColor="Purple">
-
-                     <Label Text="+"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center"/>
-
-              </Frame>
-
-
        </Grid>
 
 </ContentView>
