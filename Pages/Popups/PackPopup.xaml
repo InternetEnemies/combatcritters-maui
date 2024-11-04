@@ -8,7 +8,7 @@
     <StackLayout Padding="20"
                  BackgroundColor="Black"
                  Opacity="0.9">
-        <Label Text="Pack Contents"
+        <Label Text="Pack Content"
                FontSize="Large"
                FontAttributes="Bold"
                TextColor="White"
@@ -23,7 +23,6 @@
                                      HorizontalItemSpacing="30"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
-                    <!-- Assuming StaticResource 'CardTemplate' is defined somewhere in resources -->
                     <StaticResource Key="CardTemplate"/>
                 </CollectionView.ItemTemplate>
             </CollectionView>
