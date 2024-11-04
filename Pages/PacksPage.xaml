@@ -4,17 +4,135 @@
 
 
 
-    <VerticalStackLayout Margin="20"
-                         Spacing="10">
+       <Grid RowSpacing="10"
+             ColumnSpacing="10">
+              <Grid.RowDefinitions>
+                     <RowDefinition Height="0.2*"/>
+                     <RowDefinition Height="0.1*"/>
+                     <RowDefinition Height="0.7*"/>
+              </Grid.RowDefinitions>
 
-        <!-- Header Text -->
-        <Label Text="PACKS"
-               FontFamily="HeaderText"
-               HorizontalOptions="Start"
-               FontSize="Large"
-               FontAttributes="Bold"
-               TextDecorations="Underline"/>
+              <Grid.ColumnDefinitions>
+                     <ColumnDefinition/>
+                     <ColumnDefinition/>
+              </Grid.ColumnDefinitions>
 
-    </VerticalStackLayout>
+              <Frame Grid.Row="0"
+                     Grid.ColumnSpan="2"
+                     HorizontalOptions="Fill"
+                     VerticalOptions="Fill"
+                     BackgroundColor="Black"
+                     Padding="20"
+                     Margin="20">
+
+                     <Label Text="PACKS"
+                            FontSize="35"
+                            FontFamily="DashboardHeadersFontStyle"
+                            FontAttributes="Bold"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Start"
+                            TextColor=" White"
+                            Margin="0"/>
+              </Frame>
+
+              <VerticalStackLayout  Grid.Row="1"
+                                    Grid.Column="0"
+                                    Spacing="5">
+                     <Label Text="GAME PACKS"
+                            FontSize="28"
+                            FontFamily="DashboardHeadersFontStyle"
+                            HorizontalOptions="Start"/>
+
+                     <Label Text="Search and view in game packs"
+                            FontSize="20"
+                            FontFamily="DashboardHeadersFontStyle"
+                            HorizontalOptions="Start"/>
+              </VerticalStackLayout>
+
+              <Frame Grid.Row="2"
+                     Grid.Column="0"
+                     HorizontalOptions="Fill"
+                     VerticalOptions="Fill"
+                     HasShadow="False"
+                     BorderColor="Purple">
+
+                     <Grid RowDefinitions="0.1*, 0.9*"
+                           ColumnDefinitions="0.9*, 0.1*"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="Fill">
+
+                            <SearchBar Grid.Row="0"
+                                       Grid.Column="0"
+                                       Placeholder="Search Pack by Name"
+                                       TextChanged="OnTextChanged"
+                                       HorizontalOptions="Fill"
+                                       VerticalOptions="Start"/>
+
+                            <Button Text="Reload"
+                                    Grid.Row="0"
+                                    Grid.Column="1"/>
+
+                            <ListView Grid.Row="1"
+                                      Grid.ColumnSpan="2"
+                                      VerticalOptions="Fill"
+                                      ItemsSource="{Binding FilteredPacks}"
+                                      SelectionMode="Single"
+                                      SelectedItem="{Binding SelectedPack}"
+                                      HasUnevenRows="True">
+                                   <ListView.ItemTemplate>
+                                          <DataTemplate>
+                                                 <ViewCell>
+                                                        <Frame Padding="10"
+                                                               Margin="5"
+                                                               CornerRadius="8"
+                                                               BorderColor="LightGray"
+                                                               HasShadow="False">
+
+                                                               <Label Text="{Binding Name}"
+                                                                      FontSize="Medium"
+                                                                      HorizontalOptions="Start"
+                                                                      VerticalOptions="Center"/>
+                                                        </Frame>
+                                                 </ViewCell>
+                                          </DataTemplate>
+
+                                   </ListView.ItemTemplate>
+
+                            </ListView>
+                     </Grid>
+
+              </Frame>
+
+
+              <Frame Grid.Row="2"
+                     Grid.Column="1"
+                     HorizontalOptions="Fill"
+                     VerticalOptions="Fill"
+                     HasShadow="False"
+                     BorderColor="Purple">
+
+                     <Grid RowDefinitions="0.8*, 0.2*"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="Fill">
+
+                            <Image Grid.Row="0"
+                                   Source="pack.png"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   Aspect="AspectFit"/>
+                            <Label Grid.Row="0"
+                                   Text="{Binding SelectedPack.Name}"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"/>
+
+                            <Button Grid.Row="1"
+                                    Text="Open Pack"
+                                    VerticalOptions="Center"
+                                    HorizontalOptions="End"
+                                    Command="{Binding OpenPackCommand}"/>
+                     </Grid>
+
+              </Frame>
+       </Grid>
 
 </ContentView>

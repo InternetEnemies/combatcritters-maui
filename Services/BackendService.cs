@@ -10,6 +10,7 @@ using CombatCrittersSharp.exception;
 using CombatCrittersSharp.managers;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.deck;
+using CombatCrittersSharp.objects.pack;
 using CombatCrittersSharp.objects.user;
 using Foundation;
 namespace Combat_Critters_2._0.Services
@@ -82,14 +83,15 @@ namespace Combat_Critters_2._0.Services
                 if (_client.User == null)
                     throw new Exception("Invalid user");
 
-                var userManager = new UserManager(_client, _client.User);
+
+                var userManager = _client.Users;
+                if (userManager == null)
+                    throw new Exception("Invalid user");
 
                 var users = await userManager.GetAllUsersWithProfiles();
 
                 Console.WriteLine($"Retrieved {users.Count} users");
                 return users;
-
-
 
             }, "Failed to fetch users");
         }
@@ -108,7 +110,11 @@ namespace Combat_Critters_2._0.Services
                     throw new Exception("Invalid user");
 
                 Console.WriteLine("Attempting to delete User");
-                var userManager = new UserManager(_client, _client.User);
+                var userManager = _client.Users;
+
+                if (userManager == null)
+                    throw new Exception("Invalid user");
+
                 await userManager.DeleteUser(id);
                 Console.WriteLine($"Successfully Removed user {id}");
 
@@ -151,6 +157,21 @@ namespace Combat_Critters_2._0.Services
                 Console.WriteLine($"Retrieved {cards.Count} cards");
                 return cards; //return cards
             }, "Failed to fetch user cards");
+        }
+
+        public async Task<List<Pack>?> GetPacksAsync()
+        {
+            return await ExecuteBackendOperationAsync(async () =>
+            {
+                if (_client.User == null)
+                    throw new Exception("Invalid User");
+                var packsManager = _client.User.Packs;
+
+                Console.WriteLine("Attempting to get game packs");
+                var packs = await packsManager.GetAllPacksAsync();
+                Console.WriteLine($"Retrieved: {packs?.Count}");
+                return packs;
+            }, "Failed to fetch packs");
         }
 
         public async Task<List<IDeck>> GetDecksAsync()
