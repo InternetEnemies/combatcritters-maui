@@ -37,9 +37,40 @@
         <!-- Data template for cards -->
         <DataTemplate x:Key="CardTemplate">
                 <Frame Style="{StaticResource CardFrameStyle}"
-                       Background="{StaticResource CommonGradient}"
                        HorizontalOptions="Center"
                        VerticalOptions="Center">
+                        <Frame.Triggers>
+                                <DataTrigger TargetType="Frame"
+                                             Binding="{Binding Rarity}"
+                                             Value="0">
+                                        <Setter Property="Background"
+                                                Value="{StaticResource CommonGradient}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame"
+                                             Binding="{Binding Rarity}"
+                                             Value="1">
+                                        <Setter Property="Background"
+                                                Value="{StaticResource UncommonGradient}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame"
+                                             Binding="{Binding Rarity}"
+                                             Value="2">
+                                        <Setter Property="Background"
+                                                Value="{StaticResource RareGradient}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame"
+                                             Binding="{Binding Rarity}"
+                                             Value="3">
+                                        <Setter Property="Background"
+                                                Value="{StaticResource EpicGradient}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame"
+                                             Binding="{Binding Rarity}"
+                                             Value="4">
+                                        <Setter Property="Background"
+                                                Value="{StaticResource LegendaryGradient}"/>
+                                </DataTrigger>
+                        </Frame.Triggers>
                         <StackLayout Orientation="Vertical">
 
                                 <!-- Card Name -->
