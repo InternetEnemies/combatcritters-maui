@@ -1,0 +1,85 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Combat_Critters_2._0.Pages.Hero">
+
+        <!--Global frame for page-->
+        <Frame Margin="6"
+               HasShadow="False"
+               BorderColor="Black">
+
+                <!-- Grid with 2 rows and 3 columns -->
+
+                <Grid RowDefinitions="0.1*,0.9*"
+                      RowSpacing="10">
+                        <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.1*"/>
+                                <ColumnDefinition Width="0.8*"/>
+                                <ColumnDefinition Width="0.1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Text="COMBAT CRITTERS"
+                               Grid.Row="0"
+                               Grid.Column="0"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Start"/>
+
+                        <BoxView Grid.Row="0"
+                                 Grid.Column="0"
+                                 Style="{StaticResource VerticalDividerStyle}"/>
+
+                        <!-- Stack layout for navigation option on top -->
+                        <HorizontalStackLayout Grid.Row="0"
+                                               Grid.Column="1"
+                                               Margin="20"
+                                               Spacing="10">
+
+                                <Button Text="Dashboard"
+                                        Clicked="OnDashboardClicked"
+                                        HeightRequest="30"/>
+
+                                <Button Text="Cards"
+                                        Clicked="OnCardsClicked"
+                                        HeightRequest="30"/>
+
+                                <Button Text="Packs"
+                                        Clicked="OnPacksClicked"
+                                        HeightRequest="30"/>
+
+                                <Button Text="Marketplace"
+                                        Clicked="OnMarketplaceClicked"
+                                        HeightRequest="30"/>
+
+                        </HorizontalStackLayout>
+
+                        <BoxView Grid.Row="0"
+                                 Grid.Column="1"
+                                 Style="{StaticResource VerticalDividerStyle}"/>
+
+                        <Frame Grid.Row="1"
+                               Grid.ColumnSpan="3"
+                               HasShadow="False"
+                               BorderColor="Transparent"
+                               Padding="0">
+
+                                <ScrollView>
+                                        <!--Content Area-->
+                                        <ContentView x:Name="ContentArea"
+                                                     Grid.Row="1"
+                                                     Padding="0">
+
+                                        </ContentView>
+                                </ScrollView>
+
+                        </Frame>
+
+
+
+                </Grid>
+
+
+
+
+        </Frame>
+
+
+</ContentPage>

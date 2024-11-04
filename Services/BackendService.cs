@@ -7,8 +7,11 @@ using System.Reflection.Emit;
 using Combat_Critters_2._0.Models;
 using CombatCrittersSharp;
 using CombatCrittersSharp.exception;
+using CombatCrittersSharp.managers;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.deck;
+using CombatCrittersSharp.objects.user;
+using Foundation;
 namespace Combat_Critters_2._0.Services
 {
     public class BackendService
@@ -33,7 +36,7 @@ namespace Combat_Critters_2._0.Services
             try
             {
                 //Excute the operation
-                return await operation();
+                return await operation().ConfigureAwait(false);
             }
             catch (RestException ex)
             {
@@ -66,9 +69,55 @@ namespace Combat_Critters_2._0.Services
             }, "Login failed");
         }
 
+        /// <summary>
+        /// This method gets all users
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<IUser>> GetUsersAsync()
+        {
+            return await ExecuteBackendOperationAsync(async () =>
+            {
+                Console.WriteLine("Attempting to get all users");
+
+                if (_client.User == null)
+                    throw new Exception("Invalid user");
+
+                var userManager = new UserManager(_client, _client.User);
+
+                var users = await userManager.GetAllUsersWithProfiles();
+
+                Console.WriteLine($"Retrieved {users.Count} users");
+                return users;
+
+
+
+            }, "Failed to fetch users");
+        }
+
+        /// <summary>
+        /// Request deletion of a user
+        /// </summary>
+        /// <param name="id"> user id</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task DeleteUserAsync(int id)
+        {
+            await ExecuteBackendOperationAsync(async () =>
+            {
+                if (_client.User == null)
+                    throw new Exception("Invalid user");
+
+                Console.WriteLine("Attempting to delete User");
+                var userManager = new UserManager(_client, _client.User);
+                await userManager.DeleteUser(id);
+                Console.WriteLine($"Successfully Removed user {id}");
+
+
+                return Task.CompletedTask;
+            }, "Failed to Remove user");
+        }
         public async Task CreateAccountAsync(UserCredentials credentials)
         {
-
             await ExecuteBackendOperationAsync(async () =>
             {
                 Console.WriteLine("Attempting to register user...");
@@ -77,6 +126,7 @@ namespace Combat_Critters_2._0.Services
                 return Task.CompletedTask;
             }, "User registrationn failed");
         }
+
 
         /// <summary>
         /// This
@@ -95,7 +145,10 @@ namespace Combat_Critters_2._0.Services
 
                 var cardsManager = _client.User.Cards;
                 Console.WriteLine("Attempting to get user cards");
-                var cards = await cardsManager.GetCards(query);
+                Console.WriteLine($"User Id is: {_client.User.Id}");
+
+                var cards = await cardsManager.GetCards(query).ConfigureAwait(false);
+                Console.WriteLine($"Retrieved {cards.Count} cards");
                 return cards; //return cards
             }, "Failed to fetch user cards");
         }
@@ -115,6 +168,35 @@ namespace Combat_Critters_2._0.Services
                 Console.WriteLine("got decks");
                 return decks;
             }, "Failed to fetch user decks");
+        }
+
+        public async Task FeatureDeckOnProfileAsync(IDeck deck)
+        {
+            await ExecuteBackendOperationAsync(async () =>
+            {
+                if (_client.User == null)
+                    throw new Exception("Invalid user");
+
+                await _client.User.Profile.SetDeck(deck);
+
+                return Task.CompletedTask;
+            }, "Failed to feature the deck on the profile.");
+        }
+
+        public async Task<IDeck?> GetFeaturedDeckAsync(IUser user)
+        {
+            return await ExecuteBackendOperationAsync(async () =>
+            {
+                if (user == null)
+                    throw new Exception("Invalid user");
+
+                var featuredDeck = await user.Profile.GetDeck();
+
+                if (featuredDeck == null)
+                    return null; //No Deck has been featured
+
+                return featuredDeck;
+            }, "Failed to retrieve the featured deck.");
         }
     }
 }

@@ -13,6 +13,8 @@ namespace Combat_Critters_2._0
 			// Global exvceptio handling
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 			TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+
+
 			// Set the Loginpage as the initial page
 			MainPage = new NavigationPage(new LoginPage());
 		}
@@ -38,17 +40,21 @@ namespace Combat_Critters_2._0
 			Console.WriteLine($"Global Exception Caught: {ex.Message}");
 
 			// Display a global error UI alert
-			Application.Current.MainPage?.Dispatcher.Dispatch(async () =>
+			if (Application.Current != null)
 			{
-				await Application.Current.MainPage.DisplayAlert("Error", "An unexpected error occurred. Please try again later.", "OK");
-			});
+				Application.Current.MainPage?.Dispatcher.Dispatch(async () =>
+				{
+					await Application.Current.MainPage.DisplayAlert("Error", "An unexpected error occurred. Please try again later.", "OK");
+				});
+			}
+
 		}
 
 		// This method is called after a successful login
-		public void NavigateToAppShell()
+		public void NavigateToHeroPage(string username)
 		{
-			// Set AppShell as the main page after login
-			MainPage = new AppShell();
+			// Set MainPage to Hero after Login
+			MainPage = new NavigationPage(new Hero(username));
 		}
 
 		// This method is called when the user logs out

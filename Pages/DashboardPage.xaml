@@ -1,0 +1,85 @@
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Combat_Critters_2._0.Pages.DashboardPage">
+
+    <Grid RowDefinitions="0.3*, 0.8*"
+          ColumnDefinitions="*"
+          VerticalOptions="Fill"
+          HorizontalOptions="Fill">
+
+        <Frame Grid.Row="0"
+               BackgroundColor="Black"
+               HorizontalOptions="Fill"
+               VerticalOptions="Fill"
+               Padding="20"
+               Margin="20">
+
+            <Label Text="{Binding Username, StringFormat='Hello Admin&#x0a;{0}!'}"
+                   FontSize="35"
+                   FontFamily="DashboardHeadersFontStyle"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start"
+                   TextColor=" White"
+                   Margin="0"/>
+
+        </Frame>
+
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*, *"
+              VerticalOptions="Fill"
+              HorizontalOptions="Fill">
+
+            <!-- Overview Frame -->
+            <Frame Grid.Column="0"
+                   CornerRadius="10"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill"
+                   Margin="20"
+                   Padding="10"
+                   BorderColor="Purple">
+
+                <VerticalStackLayout>
+
+                    <Label Text="OVERVIEW"
+                           TextColor="Black"
+                           FontAttributes="Bold"
+                           FontSize="30"
+                           HorizontalOptions="Center"
+                           FontFamily="DashboardHeadersFontStyle"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--Links Frame-->
+            <Frame Grid.Column="1"
+                   CornerRadius="10"
+                   Padding="10"
+                   HorizontalOptions="Fill"
+                   BorderColor="Purple"
+                   Margin="20">
+
+                <VerticalStackLayout>
+                    <Label Text="LINKS"
+                           TextColor="Black"
+                           FontAttributes="Bold"
+                           FontSize="30"
+                           HorizontalOptions="Center"
+                           FontFamily="DashboardHeadersFontStyle"/>
+
+                    <Button Text="Manage Users"
+                            TextColor="white"
+                            Margin="0,5"
+                            Clicked="OnManageUsersClicked"/>
+                    <Button Text="Create Cards"
+                            TextColor="white"
+                            Margin="0,5"/>
+                    <Button Text="Create Packs"
+                            TextColor="White"
+                            Margin="0,5"/>
+                </VerticalStackLayout>
+
+            </Frame>
+        </Grid>
+    </Grid>
+
+</ContentView>

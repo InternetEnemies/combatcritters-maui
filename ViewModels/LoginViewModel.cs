@@ -66,7 +66,7 @@ public class LoginViewModel : INotifyPropertyChanged
             });
 
             // On success, Navigate to User Profile page
-            (Application.Current as App)?.NavigateToAppShell();
+            (Application.Current as App)?.NavigateToHeroPage(Username);
 
         }
         catch (RestException)
@@ -75,10 +75,7 @@ public class LoginViewModel : INotifyPropertyChanged
             if (Application.Current?.MainPage != null)
                 await Application.Current.MainPage.DisplayAlert("Login Failed", "Incorrect username or password. Please try again.", "OK");
         }
-        catch (Exception)
-        {
-            throw; // bubble up to the global exception
-        }
+
 
     }
     private async void OnCreateAccount()

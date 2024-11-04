@@ -1,0 +1,75 @@
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Combat_Critters_2._0.Pages.CardsPage">
+
+
+
+       <VerticalStackLayout Margin="20"
+                            Spacing="10">
+
+              <!-- Header Text -->
+              <Label Text="CARDS"
+                     FontFamily="HeaderText"
+                     HorizontalOptions="Start"
+                     FontSize="Large"
+                     FontAttributes="Bold"
+                     TextDecorations="Underline"/>
+
+              <!-- Reload Button -->
+              <Button Text="Reload cards"
+                      Command="{Binding ReloadCommand}"
+                      HorizontalOptions="End"
+                      Margin="0,10,0,10"/>
+
+
+              <!-- Scrollable Content Row -->
+              <Border
+                     VerticalOptions="Fill">
+
+                     <ContentView>
+                            <ContentView.Triggers>
+
+                                   <DataTrigger TargetType="ContentView"
+                                                Binding="{Binding HasCards}"
+                                                Value="False">
+                                          <Setter Property="Content">
+                                                 <Setter.Value>
+                                                        <Label Text="Game has no cards!"
+                                                               HorizontalOptions="Center"
+                                                               VerticalOptions="Center"/>
+                                                 </Setter.Value>
+                                          </Setter>
+                                   </DataTrigger>
+
+
+                                   <DataTrigger TargetType="ContentView"
+                                                Binding="{Binding HasCards}"
+                                                Value="True">
+                                          <Setter Property="Content">
+                                                 <Setter.Value>
+                                                        <ScrollView>
+                                                               <CollectionView ItemsSource="{Binding GameCards}">
+                                                                      <CollectionView.ItemsLayout>
+                                                                             <GridItemsLayout Orientation="Vertical"
+                                                                                              Span="5"
+                                                                                              VerticalItemSpacing="30"
+                                                                                              HorizontalItemSpacing="30"/>
+                                                                      </CollectionView.ItemsLayout>
+                                                                      <CollectionView.ItemTemplate>
+                                                                             <StaticResource Key="CardTemplate"/>
+                                                                      </CollectionView.ItemTemplate>
+
+                                                               </CollectionView>
+                                                        </ScrollView>
+                                                 </Setter.Value>
+                                          </Setter>
+
+                                   </DataTrigger>
+
+                            </ContentView.Triggers>
+                     </ContentView>
+
+              </Border>
+
+       </VerticalStackLayout>
+</ContentView>

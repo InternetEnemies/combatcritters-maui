@@ -3,22 +3,23 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
+using CombatCrittersSharp.managers;
 using CombatCrittersSharp.objects.card;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.user;
+using UIKit;
 
 
 namespace Combat_Critters_2._0.ViewModels
 {
     public class CardsViewModel : INotifyPropertyChanged
     {
-        private readonly BackendService _backendService;
-        private ObservableCollection<ICard> _userCards;
-        private List<ICard> _allUserCards;
-        private const int _batchSize = 10; //Number of cards to display at a time
-        private bool _hasCards; //Does a user have any card?
-        private bool _showLoadMoreButton;
 
+        private ObservableCollection<ICard> _gameCards;
+        private bool _hasCards; //Does a user have any card?
+
+        private readonly BackendService _backendService;
+        public ICommand ReloadCommand { get; }
 
         public bool HasCards
         {
@@ -29,36 +30,26 @@ namespace Combat_Critters_2._0.ViewModels
                 OnPropertyChanged(nameof(HasCards));
             }
         }
-
-        public bool ShowLoadMoreButton
+        public ObservableCollection<ICard> GameCards
         {
-            get => _showLoadMoreButton;
+            get => _gameCards;
             set
             {
-                _showLoadMoreButton = value;
-                OnPropertyChanged(nameof(ShowLoadMoreButton));
-            }
-        }
-        public ObservableCollection<ICard> UserCards
-        {
-            get => _userCards;
-            set
-            {
-                _userCards = value;
-                OnPropertyChanged(nameof(UserCards));
+                _gameCards = value;
+                OnPropertyChanged(nameof(GameCards));
             }
         }
 
-        public ICommand LoadMoreCommand { get; }
+        //Constructor
         public CardsViewModel()
         {
-            _userCards = new ObservableCollection<ICard>();
-            _allUserCards = new List<ICard>();
+            _gameCards = new ObservableCollection<ICard>();
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
-            LoadMoreCommand = new Command(LoadMoreCards);
-            _showLoadMoreButton = false;
-            HasCards = true;
+            HasCards = false;
 
+
+            //Initialize Reload Command to reload the cards on button click LoadUserCards
+            ReloadCommand = new Command(async () => await LoadUserCards());
 
             //start Loading the user cards.
             Task.Run(async () => await InitializeViewModelAsync());
@@ -69,75 +60,44 @@ namespace Combat_Critters_2._0.ViewModels
             await LoadUserCards();
         }
 
-        /// <summary>
-        /// This loads the card  page with user cards, if any
-        /// </summary>
-        /// <returns></returns>
         public async Task LoadUserCards()
         {
+            bool hasCards = false; // function scoped variable
             try
             {
-                //Default query for all cards
-                var userCards = await _backendService.GetCardsAsync(new CardQueryBuilder().Build());
-
-                // Check if the list is null or empty
-                if (userCards != null && userCards.Count != 0)
+                CardQueryBuilder filteredBuild = new CardQueryBuilder();
+                filteredBuild.SetOwned(true);
+                var cards = await _backendService.GetCardsAsync(filteredBuild.Build());
+                Console.WriteLine($"Received {cards?.Count} cards from backend");
+                if (cards != null && cards.Count > 0)
                 {
-                    HasCards = true;
 
-                    _allUserCards = userCards.Select(stack => stack.Item).ToList();
+                    // Application.Current?.Dispatcher.Dispatch(() =>
+                    // {
+                    GameCards = new ObservableCollection<ICard>(cards.Select(stack => stack.Item).ToList());
+                    hasCards = true;
+                    // });
 
-
-                    //Shoe the Load More button if user has cards there are more than 15 cards
-                    ShowLoadMoreButton = (HasCards && (_allUserCards.Count > _batchSize));
-
-                    //Display only the first batch of cards
-                    var cardsToDisplay = _allUserCards.Take(_batchSize).ToList();
-                    UserCards = new ObservableCollection<ICard>(cardsToDisplay);
+                    Console.WriteLine($"Number of cards loaded: {GameCards.Count}");
                 }
                 else
                 {
-                    //User has no cards
-                    HasCards = false;
+                    //Game has no Cards
+                    GameCards.Clear();
 
-                    //Clear the UserCards collection 
-                    UserCards.Clear();
                 }
+
             }
             catch (RestException)
             {
-                HasCards = false;
-
                 if (Application.Current?.MainPage != null)
                     await Application.Current.MainPage.DisplayAlert("Error", "Failed to load user cards. Please try again.", "OK");
             }
-            catch (Exception)
+
+            finally
             {
-                HasCards = false;
-
-                throw; //bubble up to the global exception
-            }
-
-        }
-
-        /// <summary>
-        /// Call to load next batch of cards on display
-        /// </summary>
-        public void LoadMoreCards()
-        {
-            var currentCardCount = UserCards.Count;
-            if (currentCardCount < _allUserCards.Count)
-            {
-                var nextBatch = new List<ICard>();
-                nextBatch = _allUserCards.Skip(currentCardCount).Take(_batchSize).ToList();
-
-                foreach (var card in nextBatch)
-                {
-                    UserCards.Add(card);
-                }
-
-                ShowLoadMoreButton = HasCards & (UserCards.Count < _allUserCards.Count);
-
+                //Set HasCards based on result of operation
+                HasCards = hasCards;
             }
         }
 

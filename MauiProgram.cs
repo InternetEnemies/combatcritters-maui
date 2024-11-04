@@ -1,8 +1,7 @@
-﻿using Combat_Critters_2._0.Pages;
-using Combat_Critters_2._0.Services;
-using CombatCrittersSharp;
+﻿
+using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
-using System.IO;
+
 
 namespace Combat_Critters_2._0;
 
@@ -14,6 +13,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -22,6 +22,7 @@ public static class MauiProgram
                 fonts.AddFont("Roboto-Regular.ttf", "CardFont1");
                 fonts.AddFont("MtgBold.ttf", "CardFront2");
                 fonts.AddFont("Chalkduster.ttf", "FlyoutItemFont");
+                fonts.AddFont("MarkerFelt.ttc", "DashboardHeadersFontStyle");
             });
 
 #if DEBUG
