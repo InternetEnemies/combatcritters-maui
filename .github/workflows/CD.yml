@@ -35,7 +35,7 @@ jobs:
           hdiutil create ./dmg/CombatCritters2.dmg -volname "CombatCritters2" -srcfolder ./output -ov -format UDZO
 
       - name: Upload .dmg Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: CombatCritters2.dmg
           path: ./dmg/CombatCritters2.dmg
