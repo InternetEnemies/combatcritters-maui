@@ -19,12 +19,14 @@ namespace Combat_Critters_2._0
 			MainPage = new NavigationPage(new LoginPage());
 		}
 
+		// This catches exceptions thrown on the main thread but aren't caught by any other try-catch 
 		private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
 			Exception ex = (Exception)e.ExceptionObject;
 			HandleException(ex);
 		}
 
+		// This is a general safeguard for unobserved exceptions that can occur in async tasks
 		private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
 		{
 			HandleException(e.Exception);

@@ -23,6 +23,15 @@ namespace Combat_Critters_2._0.Services
             _client = client; //Client is injected here
         }
 
+        /// <summary>
+        /// This is a local exception handler for backend services
+        /// This is used for logging and to improve readability on methods
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="operation"></param>
+        /// <param name="errorMessage"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         private async Task<T> ExecuteBackendOperationAsync<T>(Func<Task<T>> operation, string errorMessage)
         {
             try
@@ -40,7 +49,7 @@ namespace Combat_Critters_2._0.Services
             {
                 //Catch general errors and throw them up the stack
                 Console.WriteLine($"{errorMessage}", ex.Message);
-                throw new Exception(errorMessage, ex);
+                throw;
             }
         }
 
