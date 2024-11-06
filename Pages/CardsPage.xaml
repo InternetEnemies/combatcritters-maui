@@ -25,29 +25,31 @@
               <!-- Scrollable Content Row -->
               <Border
                      VerticalOptions="Fill">
+                     <ScrollView>
 
-                     <ContentView>
-                            <ContentView.Triggers>
+                            <ContentView BackgroundColor="Black"
+                                         Padding="10">
+                                   <ContentView.Triggers>
 
-                                   <DataTrigger TargetType="ContentView"
-                                                Binding="{Binding HasCards}"
-                                                Value="False">
-                                          <Setter Property="Content">
-                                                 <Setter.Value>
-                                                        <Label Text="Game has no cards!"
-                                                               HorizontalOptions="Center"
-                                                               VerticalOptions="Center"/>
-                                                 </Setter.Value>
-                                          </Setter>
-                                   </DataTrigger>
+                                          <DataTrigger TargetType="ContentView"
+                                                       Binding="{Binding HasCards}"
+                                                       Value="False">
+                                                 <Setter Property="Content">
+                                                        <Setter.Value>
+                                                               <Label Text="Game has no cards!"
+                                                                      HorizontalOptions="Center"
+                                                                      VerticalOptions="Center"/>
+                                                        </Setter.Value>
+                                                 </Setter>
+                                          </DataTrigger>
 
 
-                                   <DataTrigger TargetType="ContentView"
-                                                Binding="{Binding HasCards}"
-                                                Value="True">
-                                          <Setter Property="Content">
-                                                 <Setter.Value>
-                                                        <ScrollView>
+                                          <DataTrigger TargetType="ContentView"
+                                                       Binding="{Binding HasCards}"
+                                                       Value="True">
+                                                 <Setter Property="Content">
+                                                        <Setter.Value>
+
                                                                <CollectionView ItemsSource="{Binding GameCards}">
                                                                       <CollectionView.ItemsLayout>
                                                                              <GridItemsLayout Orientation="Vertical"
@@ -60,14 +62,15 @@
                                                                       </CollectionView.ItemTemplate>
 
                                                                </CollectionView>
-                                                        </ScrollView>
-                                                 </Setter.Value>
-                                          </Setter>
 
-                                   </DataTrigger>
+                                                        </Setter.Value>
+                                                 </Setter>
 
-                            </ContentView.Triggers>
-                     </ContentView>
+                                          </DataTrigger>
+
+                                   </ContentView.Triggers>
+                            </ContentView>
+                     </ScrollView>
 
               </Border>
 

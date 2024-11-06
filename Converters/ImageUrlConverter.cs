@@ -14,7 +14,7 @@ namespace Combat_Critters_2._0.Converters
             return value;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             throw new NotSupportedException("ConvertBack is not supported in ImageUrlConverter.");
         }
