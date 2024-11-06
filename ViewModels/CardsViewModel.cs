@@ -14,8 +14,6 @@ namespace Combat_Critters_2._0.ViewModels
 {
     public class CardsViewModel : INotifyPropertyChanged
     {
-
-        private const string MediaRoot = "https://combatcritters.s3.us-east-1.amazonaws.com";
         private ObservableCollection<ICard> _gameCards;
         private bool _hasCards; //Does a user have any card?
 
