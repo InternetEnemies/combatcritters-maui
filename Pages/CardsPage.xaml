@@ -71,5 +71,12 @@
 
               </Border>
 
+              <ActivityIndicator
+                     x:Name="LoadingIndicator"
+                     IsRunning="{Binding IsLoading}"
+                     IsVisible="{Binding IsLoading}"
+                     Color="DarkBlue"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Center"/>
        </VerticalStackLayout>
 </ContentView>
