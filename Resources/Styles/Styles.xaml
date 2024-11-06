@@ -90,7 +90,7 @@
                                 <Frame Padding="10"
                                        HasShadow="False"
                                        BackgroundColor="Transparent">
-                                        <Image Source="testimage.jpeg"
+                                        <Image Source="{Binding Image}"
                                                Aspect="AspectFit"
                                                HeightRequest="100"/>
                                 </Frame>
