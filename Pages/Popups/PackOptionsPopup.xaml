@@ -9,11 +9,15 @@
            HasShadow="false"
            BorderColor="#E4E0E1">
 
+
         <HorizontalStackLayout Margin="20"
                                Spacing="10">
-            <Button Text="Basic"/>
-            <Button Text="Advanced"/>
-            <Button Text="Premium"/>
+            <Button Text="Basic"
+                    Clicked="OnBasicClicked"/>
+            <Button Text="Advanced"
+                    Clicked="OnAdvancedClicked"/>
+            <Button Text="Premium"
+                    Clicked="OnPremiumClicked"/>
         </HorizontalStackLayout>
     </Frame>
 </toolkit:Popup>

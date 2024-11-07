@@ -1,0 +1,62 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Combat_Critters_2._0.Pages.PackCreationPage">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,6*,Auto"
+          ColumnDefinitions="*, *"
+          Padding="10"
+          ColumnSpacing="30">
+
+        <!--HEADER-->
+        <Label Grid.Row="0"
+               Grid.ColumnSpan="2"
+               Text="{Binding PackType}"
+               HorizontalOptions="Center"/>
+
+        <!--Description-->
+        <Label Grid.Row="1"
+               Grid.ColumnSpan="2"
+               Text="{Binding Description}"
+               HorizontalOptions="Center"/>
+
+        <!--INVENTORY HEADER-->
+        <Label Grid.Row="2"
+               Grid.Column="0"
+               Text="INVENTORY"
+               HorizontalOptions="Center"/>
+
+        <!--PACK HEADER-->
+        <Label Grid.Row="2"
+               Grid.Column="1"
+               Text="PACK"
+               HorizontalOptions="Center"/>
+
+        <!--INVENTORY FRAME-->
+        <Frame Grid.Row="3"
+               Grid.Column="0"
+               HorizontalOptions="Fill"
+               VerticalOptions="Fill">
+            <ScrollView>
+                <Label Text="cards"/>
+            </ScrollView>
+        </Frame>
+
+        <!--PACK Frame-->
+        <Frame Grid.Row="3"
+               Grid.Column="1"
+               HorizontalOptions="Fill"
+               VerticalOptions="Fill">
+            <ScrollView>
+                <Label Text="pack"/>
+            </ScrollView>
+        </Frame>
+
+        <!--Create Button-->
+        <Button Text="Create"
+                Grid.Row="4"
+                Grid.Column="1"
+                HorizontalOptions="End"
+                VerticalOptions="Center"/>
+    </Grid>
+
+</ContentPage>
