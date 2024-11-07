@@ -1,4 +1,6 @@
+using Combat_Critters_2._0.Pages.Popups;
 using Combat_Critters_2._0.ViewModels;
+using CommunityToolkit.Maui.Core;
 
 namespace Combat_Critters_2._0.Pages
 {
@@ -8,6 +10,7 @@ namespace Combat_Critters_2._0.Pages
         public DashboardPage(string username)
         {
             InitializeComponent();
+
             BindingContext = new DashboardViewModel(username);
         }
 

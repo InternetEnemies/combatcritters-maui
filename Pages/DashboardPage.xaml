@@ -75,7 +75,8 @@
                             Margin="0,5"/>
                     <Button Text="Create Packs"
                             TextColor="White"
-                            Margin="0,5"/>
+                            Margin="0,5"
+                            Command="{Binding OpenPackOptionsCommand}"/>
                 </VerticalStackLayout>
 
             </Frame>
