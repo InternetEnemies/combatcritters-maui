@@ -14,12 +14,23 @@ namespace Combat_Critters_2._0.ViewModels
 {
     public class CardsViewModel : INotifyPropertyChanged
     {
-
         private ObservableCollection<ICard> _gameCards;
         private bool _hasCards; //Does a user have any card?
 
         private readonly BackendService _backendService;
         public ICommand ReloadCommand { get; }
+
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+
 
         public bool HasCards
         {
@@ -62,6 +73,7 @@ namespace Combat_Critters_2._0.ViewModels
 
         public async Task LoadUserCards()
         {
+            IsLoading = true;
             bool hasCards = false; // function scoped variable
             try
             {
@@ -73,7 +85,7 @@ namespace Combat_Critters_2._0.ViewModels
                 {
 
                     // Application.Current?.Dispatcher.Dispatch(() =>
-                    // {
+                    // 
                     GameCards = new ObservableCollection<ICard>(cards.Select(stack => stack.Item).ToList());
                     hasCards = true;
                     // });
@@ -98,6 +110,7 @@ namespace Combat_Critters_2._0.ViewModels
             {
                 //Set HasCards based on result of operation
                 HasCards = hasCards;
+                IsLoading = false;
             }
         }
 
