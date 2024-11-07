@@ -2,7 +2,8 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary
         xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:local="clr-namespace:Combat_Critters_2._0.Behaviors">
 
         <!-- Hero page divider style -->
         <Style x:Key="VerticalDividerStyle"
@@ -40,6 +41,7 @@
                        HorizontalOptions="Center"
                        VerticalOptions="Center">
                         <Frame.Triggers>
+
                                 <DataTrigger TargetType="Frame"
                                              Binding="{Binding Rarity}"
                                              Value="0">
@@ -71,6 +73,90 @@
                                                 Value="{StaticResource LegendaryGradient}"/>
                                 </DataTrigger>
                         </Frame.Triggers>
+
+                        <StackLayout Orientation="Vertical">
+
+                                <!-- Card Name -->
+                                <Frame Padding="5"
+                                       BackgroundColor="Black"
+                                       Margin="0,0,0,1"
+                                       HasShadow="False">
+                                        <Label Text="{Binding Name}"
+                                               FontFamily="MtgBold"
+                                               FontSize="14"
+                                               TextColor="White"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"/>
+                                </Frame>
+
+                                <!-- Card Image -->
+                                <Frame Padding="10"
+                                       HasShadow="False"
+                                       BackgroundColor="Transparent">
+                                        <Image Source="{Binding Image, Converter={StaticResource ImageUrlConverter}}"
+                                               Aspect="AspectFit"
+                                               HeightRequest="100"/>
+                                </Frame>
+
+                                <!-- Card Description -->
+                                <Frame BorderColor="Black"
+                                       Padding="5"
+                                       Margin="0,1,0,0"
+                                       HasShadow="False">
+                                        <Label Text="{Binding Description}"
+                                               FontSize="12"
+                                               TextColor="Black"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"/>
+                                </Frame>
+
+                        </StackLayout>
+
+                </Frame>
+        </DataTemplate>
+
+        <!-- Data template for cards -->
+        <DataTemplate x:Key="CardTemplateDragandDrop">
+                <Frame Style="{StaticResource CardFrameStyle}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center">
+                        <Frame.Behaviors>
+                                <local:DragAndDropBehavior/>
+                        </Frame.Behaviors>
+                        <Frame.Triggers>
+
+                                <DataTrigger TargetType="Frame"
+                                             Binding="{Binding Rarity}"
+                                             Value="0">
+                                        <Setter Property="Background"
+                                                Value="{StaticResource CommonGradient}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame"
+                                             Binding="{Binding Rarity}"
+                                             Value="1">
+                                        <Setter Property="Background"
+                                                Value="{StaticResource UncommonGradient}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame"
+                                             Binding="{Binding Rarity}"
+                                             Value="2">
+                                        <Setter Property="Background"
+                                                Value="{StaticResource RareGradient}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame"
+                                             Binding="{Binding Rarity}"
+                                             Value="3">
+                                        <Setter Property="Background"
+                                                Value="{StaticResource EpicGradient}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame"
+                                             Binding="{Binding Rarity}"
+                                             Value="4">
+                                        <Setter Property="Background"
+                                                Value="{StaticResource LegendaryGradient}"/>
+                                </DataTrigger>
+                        </Frame.Triggers>
+
                         <StackLayout Orientation="Vertical">
 
                                 <!-- Card Name -->
