@@ -2,8 +2,7 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary
         xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-        xmlns:local="clr-namespace:Combat_Critters_2._0.Behaviors">
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
         <!-- Hero page divider style -->
         <Style x:Key="VerticalDividerStyle"
@@ -115,16 +114,13 @@
                 </Frame>
         </DataTemplate>
 
-        <!-- Data template for cards -->
-        <DataTemplate x:Key="CardTemplateDragandDrop">
+        <!-- styles.xaml -->
+        <DataTemplate x:Key="CardDataTemplate">
+
                 <Frame Style="{StaticResource CardFrameStyle}"
                        HorizontalOptions="Center"
                        VerticalOptions="Center">
-                        <Frame.Behaviors>
-                                <local:DragAndDropBehavior/>
-                        </Frame.Behaviors>
                         <Frame.Triggers>
-
                                 <DataTrigger TargetType="Frame"
                                              Binding="{Binding Rarity}"
                                              Value="0">
@@ -156,9 +152,7 @@
                                                 Value="{StaticResource LegendaryGradient}"/>
                                 </DataTrigger>
                         </Frame.Triggers>
-
                         <StackLayout Orientation="Vertical">
-
                                 <!-- Card Name -->
                                 <Frame Padding="5"
                                        BackgroundColor="Black"
@@ -192,11 +186,10 @@
                                                HorizontalOptions="Center"
                                                VerticalOptions="Center"/>
                                 </Frame>
-
                         </StackLayout>
-
                 </Frame>
         </DataTemplate>
+
 
         <!-- Gradient Background Style -->
         <LinearGradientBrush x:Key="PageBackground"

@@ -1,6 +1,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Combat_Critters_2._0.Pages.PackCreationPage">
+             x:Class="Combat_Critters_2._0.Pages.PackCreationPage"
+             xmlns:local="clr-namespace:Combat_Critters_2._0.Behaviors">
 
     <Grid RowDefinitions="Auto,Auto,Auto,6*,Auto"
           ColumnDefinitions="*, *"
@@ -37,50 +38,20 @@
                HorizontalOptions="Fill"
                VerticalOptions="Fill">
             <ScrollView>
-                <ContentView BackgroundColor="Black"
-                             Padding="10">
-                    <ContentView.Triggers>
-
-                        <DataTrigger TargetType="ContentView"
-                                     Binding="{Binding HasCards}"
-                                     Value="False">
-                            <Setter Property="Content">
-                                <Setter.Value>
-                                    <Label Text="Game has no cards!"
-                                           HorizontalOptions="Center"
-                                           VerticalOptions="Center"/>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-
-
-                        <DataTrigger TargetType="ContentView"
-                                     Binding="{Binding HasCards}"
-                                     Value="True">
-                            <Setter Property="Content">
-                                <Setter.Value>
-
-                                    <CollectionView x:Name="CardsCollectionView"
-                                                    ItemsSource="{Binding GameCards}">
-                                        <CollectionView.ItemsLayout>
-                                            <GridItemsLayout Orientation="Vertical"
-                                                             Span="4"
-                                                             VerticalItemSpacing="30"
-                                                             HorizontalItemSpacing="30"/>
-                                        </CollectionView.ItemsLayout>
-                                        <CollectionView.ItemTemplate>
-                                            <StaticResource Key="CardTemplateDragandDrop"/>
-                                        </CollectionView.ItemTemplate>
-
-                                    </CollectionView>
-
-                                </Setter.Value>
-                            </Setter>
-
-                        </DataTrigger>
-
-                    </ContentView.Triggers>
-                </ContentView>
+                <CollectionView ItemsSource="{Binding GameCards}"
+                                SelectionMode="Single"
+                                SelectedItem="{Binding SelectedCard, Mode=TwoWay}"
+                                SelectionChanged="OnSelectionChanged">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical"
+                                         Span="4"
+                                         VerticalItemSpacing="30"
+                                         HorizontalItemSpacing="30"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <StaticResource Key="CardTemplate"/>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </ScrollView>
         </Frame>
 
@@ -89,9 +60,20 @@
                Grid.Column="1"
                HorizontalOptions="Fill"
                VerticalOptions="Fill">
+
             <ScrollView>
-                <Label Text="pack"/>
+                <CollectionView ItemsSource="{Binding SelectedCards}"
+                                WidthRequest="200">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical"
+                                           ItemSpacing="10"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <StaticResource Key="CardTemplate"/>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </ScrollView>
+
         </Frame>
 
         <!--Create Button-->
@@ -100,6 +82,14 @@
                 Grid.Column="1"
                 HorizontalOptions="End"
                 VerticalOptions="Center"/>
+
+        <ActivityIndicator
+            x:Name="LoadingIndicator"
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}"
+            Color="DarkBlue"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"/>
     </Grid>
 
 </ContentPage>

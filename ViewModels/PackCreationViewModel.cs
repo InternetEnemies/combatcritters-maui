@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card;
@@ -10,8 +11,13 @@ namespace Combat_Critters_2._0.ViewModels
     public class PackCreationViewModel : INotifyPropertyChanged
     {
         private readonly BackendService _backendService;
+        public ICommand SelectionChangedCommand { get; }
 
-        public bool IsDraggable { get; set; } = true; // Control drag-and-drop functionality
+        // Counters for each card type in the pack
+        private int _commonCount;
+        private int _uncommonCount;
+        private int _rareCount;
+        private int _epicOrLegendaryCount;
 
         private bool _hasCards;
         public bool HasCards
@@ -32,6 +38,17 @@ namespace Combat_Critters_2._0.ViewModels
             {
                 _isLoading = value;
                 OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+
+        private ObservableCollection<ICard> _selectedCards;
+        public ObservableCollection<ICard> SelectedCards
+        {
+            get => _selectedCards;
+            set
+            {
+                _selectedCards = value;
+                OnPropertyChanged(nameof(SelectedCards));
             }
         }
         private ObservableCollection<ICard> _gameCards;
@@ -86,7 +103,16 @@ namespace Combat_Critters_2._0.ViewModels
             _packType = packType;
             _description = "";
             _gameCards = new ObservableCollection<ICard>();
+            _selectedCards = new ObservableCollection<ICard>();
             HasCards = false;
+
+            SelectionChangedCommand = new Command<ICard>(OnCardSelected);
+
+            // Initialize counters
+            _commonCount = 0;
+            _uncommonCount = 0;
+            _rareCount = 0;
+            _epicOrLegendaryCount = 0;
 
             //LoadAvailableCards();
             UpdateDisplay();
@@ -95,6 +121,95 @@ namespace Combat_Critters_2._0.ViewModels
 
         }
 
+        public void OnCardSelected(ICard selectedCard)
+        {
+            if (selectedCard == null || SelectedCards.Contains(selectedCard))
+                return;
+
+            // Enforce total card limit first
+            if (SelectedCards.Count >= CardLimit)
+            {
+                DisplayLimitReachedMessage("Maximum number of cards reached for this pack.");
+                return;
+            }
+            // Determine if the card can be added based on pack type and counters
+            switch (PackType)
+            {
+                case "Basic":
+                    if (_commonCount < 2 && selectedCard.Rarity == Rarity.COMMON)
+                    {
+                        SelectedCards.Add(selectedCard);
+                        _commonCount++;
+                    }
+                    else if (_commonCount >= 2 && _uncommonCount < 1 &&
+                             (selectedCard.Rarity == Rarity.UNCOMMON || selectedCard.Rarity == Rarity.RARE))
+                    {
+                        SelectedCards.Add(selectedCard);
+                        _uncommonCount++;
+                    }
+                    else
+                    {
+                        DisplayLimitReachedMessage("Basic pack requires exactly 2 Common cards and 1 Uncommon or Rare card.");
+                    }
+                    break;
+
+                case "Advanced":
+                    if (_commonCount < 2 && selectedCard.Rarity == Rarity.COMMON)
+                    {
+                        SelectedCards.Add(selectedCard);
+                        _commonCount++;
+                    }
+                    else if (_uncommonCount < 1 && selectedCard.Rarity == Rarity.UNCOMMON)
+                    {
+                        SelectedCards.Add(selectedCard);
+                        _uncommonCount++;
+                    }
+                    else if (_rareCount < 1 && selectedCard.Rarity == Rarity.RARE)
+                    {
+                        SelectedCards.Add(selectedCard);
+                        _rareCount++;
+                    }
+                    else
+                    {
+                        DisplayLimitReachedMessage("Advanced pack requires 2 Common cards, 1 Uncommon card, and 1 Rare card.");
+                    }
+                    break;
+
+                case "Premium":
+                    if (_commonCount < 2 && selectedCard.Rarity == Rarity.COMMON)
+                    {
+                        SelectedCards.Add(selectedCard);
+                        _commonCount++;
+                    }
+                    else if (_uncommonCount < 1 && selectedCard.Rarity == Rarity.UNCOMMON)
+                    {
+                        SelectedCards.Add(selectedCard);
+                        _uncommonCount++;
+                    }
+                    else if (_rareCount < 1 && selectedCard.Rarity == Rarity.RARE)
+                    {
+                        SelectedCards.Add(selectedCard);
+                        _rareCount++;
+                    }
+                    else if (_epicOrLegendaryCount < 1 &&
+                             (selectedCard.Rarity == Rarity.EPIC || selectedCard.Rarity == Rarity.LEGENDARY))
+                    {
+                        SelectedCards.Add(selectedCard);
+                        _epicOrLegendaryCount++;
+                    }
+                    else
+                    {
+                        DisplayLimitReachedMessage("Premium pack requires 2 Common cards, 1 Uncommon card, 1 Rare card, and 1 Epic or Legendary card.");
+                    }
+                    break;
+            }
+        }
+
+        private void DisplayLimitReachedMessage(string message)
+        {
+            if (Application.Current?.MainPage != null)
+                Application.Current.MainPage.DisplayAlert("Limit Reached", message, "OK");
+        }
         private async Task InitializeViewModelAsync()
         {
             await LoadGameCards();
