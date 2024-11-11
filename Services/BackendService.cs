@@ -113,57 +113,10 @@ namespace Combat_Critters_2._0.Services
         }
 
         /// <summary>
-        /// This method gets all users
+        /// Create an account using provided credentials
         /// </summary>
-        /// <returns></returns>
-        public async Task<List<IUser>> GetUsersAsync()
-        {
-            return await ExecuteBackendOperationAsync(async () =>
-            {
-                Console.WriteLine("Attempting to get all users");
-
-                if (_client.User == null)
-                    throw new AuthException("Invalid user");
-
-
-                var userManager = _client.Users;
-                if (userManager == null)
-                    throw new AuthException("User manager is unavailable");
-
-                var users = await userManager.GetAllUsersWithProfiles();
-
-                Console.WriteLine($"Retrieved {users.Count} users");
-                return users;
-
-            }, "Failed to fetch users");
-        }
-
-        /// <summary>
-        /// Request deletion of a user
-        /// </summary>
-        /// <param name="id"> user id</param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public async Task DeleteUserAsync(int id)
-        {
-            await ExecuteBackendOperationAsync(async () =>
-            {
-                if (_client.User == null)
-                    throw new Exception("Invalid user");
-
-                Console.WriteLine("Attempting to delete User");
-                var userManager = _client.Users;
-
-                if (userManager == null)
-                    throw new Exception("Invalid user");
-
-                await userManager.DeleteUser(id);
-                Console.WriteLine($"Successfully Removed user {id}");
-
-
-                return Task.CompletedTask;
-            }, "Failed to Remove user");
-        }
+        /// <param name="credentials">Account creation details (username and password)</param>
+        /// <returns>A task that completes when the account is successfully created</returns>
         public async Task CreateAccountAsync(UserCredentials credentials)
         {
             await ExecuteBackendOperationAsync(async () =>
@@ -175,21 +128,71 @@ namespace Combat_Critters_2._0.Services
             }, "User registrationn failed");
         }
 
+        /// <summary>
+        /// Get all game Users
+        /// </summary>
+        /// <returns>A list of all game users</returns>
+        public async Task<List<IUser>> GetUsersAsync()
+        {
+            return await ExecuteBackendOperationAsync(async () =>
+            {
+                Console.WriteLine("Attempting to get all users");
+
+                if (_client.User == null)
+                    throw new AuthException("Invalid user");
+
+
+                var userManager = _client.Users ?? throw new AuthException("User manager is unavailable");
+                var users = await userManager.GetAllUsersWithProfiles();
+
+                Console.WriteLine($"Retrieved {users.Count} users");
+                return users;
+
+            }, "Failed to fetch users");
+        }
 
         /// <summary>
-        /// This
+        /// Delete a User give using ID
+        /// </summary>
+        /// <param name="id"> user id</param>
+        /// <returns>A task that completes when user is deleted</returns>
+        /// <exception cref="AuthException">
+        /// Thrown if the current user session is invalid or if the user manager is unavailable.
+        /// </exception>
+        /// <exception cref="RestException">Thrown for network or server issues during deletion.</exception>
+        public async Task DeleteUserAsync(int id)
+        {
+            await ExecuteBackendOperationAsync(async () =>
+            {
+                if (_client.User == null)
+                    throw new AuthException("Invalid user");
+
+                Console.WriteLine("Attempting to delete User");
+                var userManager = _client.Users ?? throw new AuthException("User manager is unavailable");
+
+                await userManager.DeleteUser(id);
+                Console.WriteLine($"Successfully Removed user {id}");
+
+                return Task.CompletedTask;
+            }, "Failed to Remove user");
+        }
+
+        /// <summary>
+        /// Retrieves all game cards based on a given query filter. 
         /// </summary>
         /// <param name="query"></param>
-        /// <returns></returns>
+        /// <returns>A list of card stacks matching the filter criteria, or an empty list if no cards are found.</returns>
+        /// <exception cref="AuthException">Thrown when the current user session is invalid or unauthorized.</exception>
+        /// <exception cref="ArgumentException">Thrown when the provided card filter query is null or invalid.</exception>
         public async Task<List<IItemStack<ICard>>?> GetCardsAsync(ICardQuery query)
         {
             return await ExecuteBackendOperationAsync(async () =>
             {
                 if (_client.User == null)
-                    throw new Exception("Invalid user");
+                    throw new AuthException("Invalid user");
 
                 if (query == null)
-                    throw new Exception("Invalid card filter query");
+                    throw new ArgumentException("Invalid card filter query");
 
                 var cardsManager = _client.User.Cards;
                 Console.WriteLine("Attempting to get user cards");
@@ -197,85 +200,69 @@ namespace Combat_Critters_2._0.Services
 
                 var cards = await cardsManager.GetCards(query).ConfigureAwait(false);
                 Console.WriteLine($"Retrieved {cards.Count} cards");
-                return cards; //return cards
+                return cards;
             }, "Failed to fetch user cards");
         }
 
-        public async Task<IPack> CreatePackAsync(List<int> cardIds, Dictionary<int, int> rarityProbabilities, string packName, string packImage)
-        {
-            return await ExecuteBackendOperationAsync(async () =>
-            {
-                if (_client.User == null)
-                    throw new AuthException("Invalid user");
-                var packsManager = _client.User.Packs;
-
-                int slotCount = 5;
-                Console.WriteLine("Attempting to create pack");
-                var pack = await packsManager.CreatePackAsync(cardIds, rarityProbabilities, packName, packImage, slotCount);
-                Console.WriteLine("Success");
-                return pack;
-            }, "Failed to create packs");
-        }
-
+        /// <summary>
+        /// Retrieves a list of all available packs in the game.
+        /// </summary>
+        /// <returns>A list of available packs</returns>
+        /// <exception cref="AuthException">Thrown if the current user session is invalid or unauthorized.</exception>
         public async Task<List<Pack>?> GetPacksAsync()
         {
             return await ExecuteBackendOperationAsync(async () =>
             {
                 if (_client.User == null)
-                    throw new Exception("Invalid User");
-                var packsManager = _client.User.Packs;
+                    throw new AuthException("User session is invalid or unauthorized.");
 
-                Console.WriteLine("Attempting to get game packs");
+                var packsManager = _client.User.Packs;
+                Console.WriteLine("Attempting to get game packs...");
+
                 var packs = await packsManager.GetAllPacksAsync();
                 Console.WriteLine($"Retrieved: {packs?.Count}");
                 return packs;
             }, "Failed to fetch packs");
         }
 
-        public async Task<List<IDeck>> GetDecksAsync()
-        {
-
-            return await ExecuteBackendOperationAsync(async () =>
-            {
-                if (_client.User == null)
-                    throw new Exception("Invalid user");
-
-                Console.WriteLine("Attempting to get user decks");
-                var deckManager = _client.User.Decks;
-                var decks = await deckManager.GetDecks();
-                Console.WriteLine($"User has {decks.Count} decks");
-                Console.WriteLine("got decks");
-                return decks;
-            }, "Failed to fetch user decks");
-        }
-
-        public async Task FeatureDeckOnProfileAsync(IDeck deck)
-        {
-            await ExecuteBackendOperationAsync(async () =>
-            {
-                if (_client.User == null)
-                    throw new Exception("Invalid user");
-
-                await _client.User.Profile.SetDeck(deck);
-
-                return Task.CompletedTask;
-            }, "Failed to feature the deck on the profile.");
-        }
-
-        public async Task<IDeck?> GetFeaturedDeckAsync(IUser user)
+        /// <summary>
+        /// Creates a new pack with specified card selections, rarity probabilities, and other pack details.
+        /// </summary>
+        /// <param name="cardIds">List of card IDs to include as potential contents of the pack.</param>
+        /// <param name="rarityProbabilities">Dictionary defining the probability of each rarity level appearing in the pack.</param>
+        /// <param name="packName">The name of the pack to be created.</param>
+        /// <param name="packImage">The image URL or resource identifier for the pack’s visual representation.</param>
+        /// <returns>The created pack if successful.</returns>
+        /// <exception cref="AuthException">Thrown if the user session is invalid or unauthorized.</exception>
+        /// <exception cref="ArgumentException">Thrown if any argument is invalid, such as an empty list of card IDs.</exception>
+        public async Task<IPack> CreatePackAsync(List<int> cardIds, Dictionary<int, int> rarityProbabilities, string packName, string packImage)
         {
             return await ExecuteBackendOperationAsync(async () =>
             {
-                if (user == null)
-                    throw new Exception("Invalid user");
+                if (_client.User == null)
+                    throw new AuthException("User session is invalid or unauthorized.");
 
-                var featuredDeck = await user.Profile.GetDeck();
+                if (cardIds == null || cardIds.Count == 0)
+                    throw new ArgumentException("At least one card ID must be provided to create a pack.");
 
-                if (featuredDeck == null)
-                    return null; //No Deck has been featured
+                if (string.IsNullOrWhiteSpace(packName))
+                    throw new ArgumentException("Pack name cannot be empty.");
 
-                return featuredDeck;
-            }, "Failed to retrieve the featured deck.");
+                if (string.IsNullOrWhiteSpace(packImage))
+                    throw new ArgumentException("Pack image cannot be empty.");
+
+                var packsManager = _client.User.Packs;
+                int slotCount = 5;
+
+                Console.WriteLine("Attempting to create pack...");
+
+                var pack = await packsManager.CreatePackAsync(cardIds, rarityProbabilities, packName, packImage, slotCount);
+
+                Console.WriteLine("Success");
+                return pack;
+            }, "Failed to create packs");
         }
+
+
     }
 }
