@@ -1,10 +1,13 @@
+
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using Combat_Critters_2._0.Pages;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card;
 using CombatCrittersSharp.objects.card.Interfaces;
+using CombatCrittersSharp.objects.pack;
 
 namespace Combat_Critters_2._0.ViewModels
 {
@@ -12,12 +15,14 @@ namespace Combat_Critters_2._0.ViewModels
     {
         private readonly BackendService _backendService;
         public ICommand SelectionChangedCommand { get; }
+        public ICommand CreatePackCommand { get; }
 
-        // Counters for each card type in the pack
-        private int _commonCount;
-        private int _uncommonCount;
-        private int _rareCount;
-        private int _epicOrLegendaryCount;
+        // Limits for each card type in the pack
+        private int commonLimit;
+        private int uncommonLimit;
+        private int rareLimit;
+        private int epicLimit;
+        private int legendaryLimit;
 
         private bool _hasCards;
         public bool HasCards
@@ -70,7 +75,6 @@ namespace Combat_Critters_2._0.ViewModels
             {
                 _packType = value;
                 OnPropertyChanged(nameof(PackType));
-                UpdateDisplay(); //Update UI based on pack type
             }
         }
 
@@ -85,16 +89,9 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-        private int _cardLimit;
-        public int CardLimit
-        {
-            get => _cardLimit;
-            set
-            {
-                _cardLimit = value;
-                OnPropertyChanged(nameof(CardLimit));
-            }
-        }
+        private readonly int CardLimit = 10;
+        private Dictionary<int, int> _rarityProbabilities;
+
 
 
         public PackCreationViewModel(string packType)
@@ -107,20 +104,133 @@ namespace Combat_Critters_2._0.ViewModels
             HasCards = false;
 
             SelectionChangedCommand = new Command<ICard>(OnCardSelected);
+            CreatePackCommand = new Command(async () => CreatePackAsync());
 
-            // Initialize counters
-            _commonCount = 0;
-            _uncommonCount = 0;
-            _rareCount = 0;
-            _epicOrLegendaryCount = 0;
 
-            //LoadAvailableCards();
-            UpdateDisplay();
+
+            // Initialize raritylimits and rarity probabilities based on initial PackType
+            SetRarityLimits(PackType);
+            _rarityProbabilities = new Dictionary<int, int>
+            {
+                { (int)Rarity.COMMON, 0 },
+                { (int)Rarity.UNCOMMON, 0 },
+                { (int)Rarity.RARE, 0 },
+                { (int)Rarity.EPIC, 0 },
+                { (int)Rarity.LEGENDARY, 0 }
+            };
+            SetRarityProbabilities(PackType);
+
             //start Loading the user cards.
             Task.Run(async () => await InitializeViewModelAsync());
 
         }
 
+        /// <summary>
+        /// Set rarity limits based on pack type
+        /// </summary>
+        /// <param name="packType"></param>
+        /// <exception cref="InvalidOperationException"></exception>
+        private void SetRarityLimits(string packType)
+        {
+            switch (packType)
+            {
+                case "Basic":
+                    commonLimit = 8;
+                    uncommonLimit = 1;
+                    rareLimit = 1;
+                    epicLimit = 0;
+                    legendaryLimit = 0;
+                    break;
+
+                case "Advanced":
+                    commonLimit = 5;
+                    uncommonLimit = 3;
+                    rareLimit = 1;
+                    epicLimit = 1;
+                    legendaryLimit = 0;
+                    break;
+
+                case "Premium":
+                    commonLimit = 3;
+                    uncommonLimit = 2;
+                    rareLimit = 2;
+                    epicLimit = 1;
+                    legendaryLimit = 1;
+                    break;
+
+                default:
+                    throw new InvalidOperationException("Unknown pack type.");
+            }
+        }
+
+        /// <summary>
+        /// Set rarityProbabilities based on card type
+        /// </summary>
+        /// <param name="packType"></param>
+        private void SetRarityProbabilities(string packType)
+        {
+            switch (packType)
+            {
+                case "Basic":
+                    _rarityProbabilities[(int)Rarity.COMMON] = 80;
+                    _rarityProbabilities[(int)Rarity.UNCOMMON] = 15;
+                    _rarityProbabilities[(int)Rarity.RARE] = 5;
+                    break;
+
+                case "Advanced":
+                    _rarityProbabilities[(int)Rarity.COMMON] = 50;
+                    _rarityProbabilities[(int)Rarity.UNCOMMON] = 30;
+                    _rarityProbabilities[(int)Rarity.RARE] = 15;
+                    _rarityProbabilities[(int)Rarity.EPIC] = 5;
+                    break;
+
+                case "Premium":
+                    _rarityProbabilities[(int)Rarity.COMMON] = 30;
+                    _rarityProbabilities[(int)Rarity.UNCOMMON] = 25;
+                    _rarityProbabilities[(int)Rarity.RARE] = 20;
+                    _rarityProbabilities[(int)Rarity.EPIC] = 15;
+                    _rarityProbabilities[(int)Rarity.LEGENDARY] = 10;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Create Pack
+        /// </summary>
+        /// <returns></returns>
+        public async Task CreatePackAsync()
+        {
+            //CardIds
+            List<int> cardIds = SelectedCards.Select(card => card.CardId).ToList();
+
+            //PackName and image
+            string packName = PackType;
+            string packImage = "pack.png";
+
+            try
+            {
+                IPack createdPack = await _backendService.CreatePackAsync(cardIds, _rarityProbabilities, packName, packImage);
+                Console.WriteLine("Pack created successfully!");
+
+                if (Application.Current?.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Success", "Pack created successfully!", "OK");
+                    //await Application.Current.MainPage.Navigation.PushAsync(new DashboardPage());
+                }
+
+            }
+            catch (RestException ex)
+            {
+                Console.WriteLine($"Failed to create pack: {ex.Message}");
+                if (Application.Current?.MainPage != null)
+                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to create pack. Please try again.", "OK");
+            }
+        }
+
+        /// <summary>
+        /// Handles logic for card selection
+        /// </summary>
+        /// <param name="selectedCard"></param>
         public void OnCardSelected(ICard selectedCard)
         {
             if (selectedCard == null || SelectedCards.Contains(selectedCard))
@@ -132,75 +242,47 @@ namespace Combat_Critters_2._0.ViewModels
                 DisplayLimitReachedMessage("Maximum number of cards reached for this pack.");
                 return;
             }
-            // Determine if the card can be added based on pack type and counters
-            switch (PackType)
+
+            // Check if the selected card's rarity limit has been reached
+            switch (selectedCard.Rarity)
             {
-                case "Basic":
-                    if (_commonCount < 2 && selectedCard.Rarity == Rarity.COMMON)
-                    {
+                case Rarity.COMMON:
+                    if (SelectedCards.Count(c => c.Rarity == Rarity.COMMON) < commonLimit)
                         SelectedCards.Add(selectedCard);
-                        _commonCount++;
-                    }
-                    else if (_commonCount >= 2 && _uncommonCount < 1 &&
-                             (selectedCard.Rarity == Rarity.UNCOMMON || selectedCard.Rarity == Rarity.RARE))
-                    {
-                        SelectedCards.Add(selectedCard);
-                        _uncommonCount++;
-                    }
                     else
-                    {
-                        DisplayLimitReachedMessage("Basic pack requires exactly 2 Common cards and 1 Uncommon or Rare card.");
-                    }
+                        DisplayLimitReachedMessage($"Cannot add more than {commonLimit} Common cards.");
                     break;
 
-                case "Advanced":
-                    if (_commonCount < 2 && selectedCard.Rarity == Rarity.COMMON)
-                    {
+                case Rarity.UNCOMMON:
+                    if (SelectedCards.Count(c => c.Rarity == Rarity.UNCOMMON) < uncommonLimit)
                         SelectedCards.Add(selectedCard);
-                        _commonCount++;
-                    }
-                    else if (_uncommonCount < 1 && selectedCard.Rarity == Rarity.UNCOMMON)
-                    {
-                        SelectedCards.Add(selectedCard);
-                        _uncommonCount++;
-                    }
-                    else if (_rareCount < 1 && selectedCard.Rarity == Rarity.RARE)
-                    {
-                        SelectedCards.Add(selectedCard);
-                        _rareCount++;
-                    }
                     else
-                    {
-                        DisplayLimitReachedMessage("Advanced pack requires 2 Common cards, 1 Uncommon card, and 1 Rare card.");
-                    }
+                        DisplayLimitReachedMessage($"Cannot add more than {uncommonLimit} Uncommon cards.");
                     break;
 
-                case "Premium":
-                    if (_commonCount < 2 && selectedCard.Rarity == Rarity.COMMON)
-                    {
+                case Rarity.RARE:
+                    if (SelectedCards.Count(c => c.Rarity == Rarity.RARE) < rareLimit)
                         SelectedCards.Add(selectedCard);
-                        _commonCount++;
-                    }
-                    else if (_uncommonCount < 1 && selectedCard.Rarity == Rarity.UNCOMMON)
-                    {
-                        SelectedCards.Add(selectedCard);
-                        _uncommonCount++;
-                    }
-                    else if (_rareCount < 1 && selectedCard.Rarity == Rarity.RARE)
-                    {
-                        SelectedCards.Add(selectedCard);
-                        _rareCount++;
-                    }
-                    else if (_epicOrLegendaryCount < 1 &&
-                             (selectedCard.Rarity == Rarity.EPIC || selectedCard.Rarity == Rarity.LEGENDARY))
-                    {
-                        SelectedCards.Add(selectedCard);
-                        _epicOrLegendaryCount++;
-                    }
                     else
-                    {
-                        DisplayLimitReachedMessage("Premium pack requires 2 Common cards, 1 Uncommon card, 1 Rare card, and 1 Epic or Legendary card.");
-                    }
+                        DisplayLimitReachedMessage($"Cannot add more than {rareLimit} Rare cards.");
+                    break;
+
+                case Rarity.EPIC:
+                    if (SelectedCards.Count(c => c.Rarity == Rarity.EPIC) < epicLimit)
+                        SelectedCards.Add(selectedCard);
+                    else
+                        DisplayLimitReachedMessage($"Cannot add more than {epicLimit} Epic cards.");
+                    break;
+
+                case Rarity.LEGENDARY:
+                    if (SelectedCards.Count(c => c.Rarity == Rarity.LEGENDARY) < legendaryLimit)
+                        SelectedCards.Add(selectedCard);
+                    else
+                        DisplayLimitReachedMessage($"Cannot add more than {legendaryLimit} Legendary cards.");
+                    break;
+
+                default:
+                    DisplayLimitReachedMessage("Invalid card rarity.");
                     break;
             }
         }
@@ -244,9 +326,7 @@ namespace Combat_Critters_2._0.ViewModels
                 {
                     //Game has no Cards
                     GameCards.Clear();
-
                 }
-
             }
             catch (RestException)
             {
@@ -262,29 +342,6 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-        /// <summary>
-        /// Update the display base on the pack type
-        /// </summary>
-        private void UpdateDisplay()
-        {
-            switch (PackType)
-            {
-                case "Basic":
-                    Description = "A basic pack with limited selection of cards.";
-                    CardLimit = 5;
-                    break;
-
-                case "Advanced":
-                    Description = "An advanced pack";
-                    CardLimit = 4;
-                    break;
-
-                case "Premium":
-                    Description = "A premium pack";
-                    CardLimit = 5;
-                    break;
-            }
-        }
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {

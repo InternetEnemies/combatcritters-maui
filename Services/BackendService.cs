@@ -15,57 +15,99 @@ using CombatCrittersSharp.objects.user;
 using Foundation;
 namespace Combat_Critters_2._0.Services
 {
-    public class BackendService
+    public class BackendService(IClient client)
     {
-        private readonly IClient _client;
-        public BackendService(IClient client)
-        {
-            _client = client; //Client is injected here
-        }
+        private readonly IClient _client = client;
 
         /// <summary>
-        /// This is a local exception handler for backend services
-        /// This is used for logging and to improve readability on methods
+        /// Wraps backend operation with safety net to handle errors gracefully. 
+        /// Ensuring exceptions are caught, logged and rethrown when needed
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="operation"></param>
-        /// <param name="errorMessage"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        private async Task<T> ExecuteBackendOperationAsync<T>(Func<Task<T>> operation, string errorMessage)
+        /// <typeparam name="T">The type of result expected from the backend operation.</typeparam>
+        /// <param name="operation">The Operationto be performed</param>
+        /// <param name="errorMessage">A custom message to provide context in case of an error.</param>
+        /// <returns>The result of the backend operation, if successful.</returns>
+        /// 
+        /// 
+        /// <exception cref="UnauthorizedAccessException">Thrown when an authorization error occurs.</exception>
+        /// <exception cref="HttpRequestException">Thrown for REST-related issues with HTTP details.</exception>
+        /// <exception cref="Exception">Thrown for any other unexpected errors, with a general message.</exception>
+        /// <exception cref="TimeoutException">Thrown for operations that exceed a time limit.</exception>
+        /// <exception cref="ArgumentException">Thrown for invalid arguments passed to backend calls.</exception>
+        private static async Task<T> ExecuteBackendOperationAsync<T>(Func<Task<T>> operation, string errorMessage)
         {
             try
             {
-                //Excute the operation
                 return await operation().ConfigureAwait(false);
+            }
+            catch (AuthException ex)
+            {
+                // Handle authorization errors
+                Console.WriteLine($"{errorMessage}: Authorization Error - {ex.Message}");
+                Console.WriteLine($"Detailed Message: {ex.DetailedMessage}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                throw new UnauthorizedAccessException($"{errorMessage}: {ex.Message}", ex);
             }
             catch (RestException ex)
             {
-                //Log specific RestException
-                Console.WriteLine($"{errorMessage}", ex);
-                throw new Exception(errorMessage, ex);
+                // Handle REST-related errors with HTTP details
+                Console.WriteLine($"{errorMessage}: REST Error - {ex.Message}");
+                Console.WriteLine($"Status Code: {ex.StatusCode}");
+                Console.WriteLine($"Response Content: {ex.ResponseContent ?? "No response content provided"}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+
+                throw new HttpRequestException($"{errorMessage}: {ex.Message} (Status Code: {ex.StatusCode})", ex);
+            }
+            catch (CombatCrittersException ex)
+            {
+                // Handle any other CombatCritters-specific errors
+                Console.WriteLine($"{errorMessage}: Combat Critters Error - {ex.Message}");
+                Console.WriteLine($"Detailed Message: {ex.DetailedMessage}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                throw new Exception($"{errorMessage}: {ex.Message}", ex);
+            }
+            catch (TimeoutException ex)
+            {
+                // Handle timeout errors explicitly
+                Console.WriteLine($"{errorMessage}: Operation Timed Out - {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                throw new TimeoutException($"{errorMessage}: {ex.Message}", ex);
+            }
+            catch (ArgumentException ex)
+            {
+                // Handle argument errors
+                Console.WriteLine($"{errorMessage}: Argument Error - {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+
+                throw new ArgumentException($"{errorMessage}: {ex.Message}", ex);
             }
             catch (Exception ex)
             {
-                //Catch general errors and throw them up the stack
-                Console.WriteLine($"{errorMessage}", ex.Message);
-                throw;
+                // Handle any other unexpected errors
+                Console.WriteLine($"{errorMessage}: Unexpected Error - {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                throw new Exception($"{errorMessage}: An unexpected error occurred.", ex);
             }
         }
 
         /// <summary>
-        /// This method sends a request to the backend for login
-        /// It throws an exception if login fails.
+        /// Logs in a User with provided credentials
         /// </summary>
-        /// <param name="credentials"></param>
-        /// <returns></returns>
+        /// <param name="credentials">User login details (username and password)</param>
+        /// <returns>A Task representing the login process.</returns>
         public async Task LoginAsync(UserCredentials credentials)
         {
             await ExecuteBackendOperationAsync(async () =>
             {
                 Console.Write("Attempting to login...");
                 await _client.Login(credentials.Username, credentials.Password);
-                Console.WriteLine("Login Success...");
+                Console.WriteLine("Login Success!");
                 return Task.CompletedTask;
             }, "Login failed");
         }
@@ -81,12 +123,12 @@ namespace Combat_Critters_2._0.Services
                 Console.WriteLine("Attempting to get all users");
 
                 if (_client.User == null)
-                    throw new Exception("Invalid user");
+                    throw new AuthException("Invalid user");
 
 
                 var userManager = _client.Users;
                 if (userManager == null)
-                    throw new Exception("Invalid user");
+                    throw new AuthException("User manager is unavailable");
 
                 var users = await userManager.GetAllUsersWithProfiles();
 
@@ -157,6 +199,22 @@ namespace Combat_Critters_2._0.Services
                 Console.WriteLine($"Retrieved {cards.Count} cards");
                 return cards; //return cards
             }, "Failed to fetch user cards");
+        }
+
+        public async Task<IPack> CreatePackAsync(List<int> cardIds, Dictionary<int, int> rarityProbabilities, string packName, string packImage)
+        {
+            return await ExecuteBackendOperationAsync(async () =>
+            {
+                if (_client.User == null)
+                    throw new AuthException("Invalid user");
+                var packsManager = _client.User.Packs;
+
+                int slotCount = 5;
+                Console.WriteLine("Attempting to create pack");
+                var pack = await packsManager.CreatePackAsync(cardIds, rarityProbabilities, packName, packImage, slotCount);
+                Console.WriteLine("Success");
+                return pack;
+            }, "Failed to create packs");
         }
 
         public async Task<List<Pack>?> GetPacksAsync()

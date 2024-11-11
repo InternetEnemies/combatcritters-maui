@@ -1,7 +1,6 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Combat_Critters_2._0.Pages.PackCreationPage"
-             xmlns:local="clr-namespace:Combat_Critters_2._0.Behaviors">
+             x:Class="Combat_Critters_2._0.Pages.PackCreationPage">
 
     <Grid RowDefinitions="Auto,Auto,Auto,6*,Auto"
           ColumnDefinitions="*, *"
@@ -81,7 +80,8 @@
                 Grid.Row="4"
                 Grid.Column="1"
                 HorizontalOptions="End"
-                VerticalOptions="Center"/>
+                VerticalOptions="Center"
+                Command="{Binding CreatePackCommand}"/>
 
         <ActivityIndicator
             x:Name="LoadingIndicator"
