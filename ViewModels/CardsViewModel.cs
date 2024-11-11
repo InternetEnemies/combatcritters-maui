@@ -3,19 +3,16 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
-using CombatCrittersSharp.managers;
 using CombatCrittersSharp.objects.card;
 using CombatCrittersSharp.objects.card.Interfaces;
-using CombatCrittersSharp.objects.user;
 using UIKit;
-
 
 namespace Combat_Critters_2._0.ViewModels
 {
     public class CardsViewModel : INotifyPropertyChanged
     {
         private ObservableCollection<ICard> _gameCards;
-        private bool _hasCards; //Does a user have any card?
+        private bool _hasCards;
 
         private readonly BackendService _backendService;
         public ICommand ReloadCommand { get; }
@@ -60,7 +57,7 @@ namespace Combat_Critters_2._0.ViewModels
 
 
             //Initialize Reload Command to reload the cards on button click LoadUserCards
-            ReloadCommand = new Command(async () => await LoadUserCards());
+            ReloadCommand = new Command(async () => await LoadGameCards());
 
             //start Loading the user cards.
             Task.Run(async () => await InitializeViewModelAsync());
@@ -68,35 +65,33 @@ namespace Combat_Critters_2._0.ViewModels
 
         private async Task InitializeViewModelAsync()
         {
-            await LoadUserCards();
+            await LoadGameCards();
         }
 
-        public async Task LoadUserCards()
+        /// <summary>
+        /// Loads game cards using predifined filter
+        /// </summary>
+        public async Task LoadGameCards()
         {
             IsLoading = true;
             bool hasCards = false; // function scoped variable
             try
             {
-                CardQueryBuilder filteredBuild = new CardQueryBuilder();
-                //filteredBuild.SetOwned(true);
-                var cards = await _backendService.GetCardsAsync(filteredBuild.Build());
-                Console.WriteLine($"Received {cards?.Count} cards from backend");
+                var query = new CardQueryBuilder().Build();
+
+                var cards = await _backendService.GetCardsAsync(query);
+
                 if (cards != null && cards.Count > 0)
                 {
-
-                    // Application.Current?.Dispatcher.Dispatch(() =>
-                    // 
                     GameCards = new ObservableCollection<ICard>(cards.Select(stack => stack.Item).ToList());
                     hasCards = true;
-                    // });
-
                     Console.WriteLine($"Number of cards loaded: {GameCards.Count}");
                 }
                 else
                 {
                     //Game has no Cards
                     GameCards.Clear();
-
+                    Console.WriteLine("No cards found for the user.");
                 }
 
             }
@@ -105,7 +100,11 @@ namespace Combat_Critters_2._0.ViewModels
                 if (Application.Current?.MainPage != null)
                     await Application.Current.MainPage.DisplayAlert("Error", "Failed to load user cards. Please try again.", "OK");
             }
-
+            catch (Exception)
+            {
+                if (Application.Current?.MainPage != null)
+                    await Application.Current.MainPage.DisplayAlert("Error", "An unexpected error occurred. Please try again later.", "OK");
+            }
             finally
             {
                 //Set HasCards based on result of operation

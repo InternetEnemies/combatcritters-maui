@@ -6,45 +6,15 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Combat_Critters_2._0.Models;
 using Combat_Critters_2._0.Services;
-using CombatCrittersSharp;
 using CombatCrittersSharp.exception;
 
 public class CreateAccountViewModel : INotifyPropertyChanged
 {
     private readonly BackendService _backendService;
-    private string _firstName = "";
-    private string _lastName = "";
-    private string _email = "";
+
     private string _username = "";
     private string _password = "";
     private readonly INavigation _navigation;
-    public string FirstName
-    {
-        get => _firstName;
-        set
-        {
-            _firstName = value; //Update the backing field with the new value
-            OnPropertyChanged(nameof(FirstName)); //Notify the UI that the property has changed
-        }
-    }
-    public string LastName
-    {
-        get => _lastName;
-        set
-        {
-            _lastName = value; //Update the backing field with the new value
-            OnPropertyChanged(nameof(LastName)); //Notify the UI that the property has changed
-        }
-    }
-    public string Email
-    {
-        get => _email;
-        set
-        {
-            _email = value; //Update the backing field with the new value
-            OnPropertyChanged(nameof(Email)); //Notify the UI that the property has changed
-        }
-    }
     public string Username
     {
         get => _username;
@@ -64,8 +34,8 @@ public class CreateAccountViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(Password));
         }
     }
-    //Command for handling Create Account
-    public ICommand CreateAccountCommand { get; }
+
+    public ICommand CreateAccountCommand { get; } //Command for handling Create Account
 
     public CreateAccountViewModel(INavigation navigation)
     {
@@ -75,6 +45,9 @@ public class CreateAccountViewModel : INotifyPropertyChanged
         _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
     }
 
+    /// <summary>
+    /// Handle Account Creation
+    /// </summary>
     private async void OnCreateAccount()
     {
         try
@@ -90,10 +63,22 @@ public class CreateAccountViewModel : INotifyPropertyChanged
             await _navigation.PopAsync();
 
         }
+        catch (AuthException)
+        {
+            // Authorization-specific message
+            if (Application.Current?.MainPage != null)
+                await Application.Current.MainPage.DisplayAlert("Authorization Error", "You do not have permission to create an account. Please check with support.", "OK");
+        }
         catch (RestException)
         {
             if (Application.Current?.MainPage != null)
                 await Application.Current.MainPage.DisplayAlert("Register Failed", "Failed to register. Please check your credentials and try again.", "OK");
+        }
+        catch (Exception)
+        {
+            // General catch-all for unexpected issues
+            if (Application.Current?.MainPage != null)
+                await Application.Current.MainPage.DisplayAlert("Registration Failed", "An unexpected error occurred. Please try again later.", "OK");
         }
     }
 

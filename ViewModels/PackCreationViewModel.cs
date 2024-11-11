@@ -104,7 +104,7 @@ namespace Combat_Critters_2._0.ViewModels
             HasCards = false;
 
             SelectionChangedCommand = new Command<ICard>(OnCardSelected);
-            CreatePackCommand = new Command(async () => CreatePackAsync());
+            CreatePackCommand = new Command(async () => await CreatePackAsync());
 
 
 
@@ -125,10 +125,55 @@ namespace Combat_Critters_2._0.ViewModels
 
         }
 
+        private async Task InitializeViewModelAsync()
+        {
+            await LoadGameCards();
+        }
+
+        /// <summary>
+        /// Load all available game cards using backend services
+        /// </summary>
+        /// <returns>Task</returns>
+        public async Task LoadGameCards()
+        {
+            IsLoading = true;
+            bool hasCards = false; // function scoped variable
+
+            try
+            {
+                CardQueryBuilder filteredBuild = new();
+                var cards = await _backendService.GetCardsAsync(filteredBuild.Build());
+
+                if (cards != null && cards.Count > 0)
+                {
+                    GameCards = new ObservableCollection<ICard>(cards.Select(stack => stack.Item).ToList());
+                    hasCards = true;
+                    Console.WriteLine($"Number of cards loaded: {GameCards.Count}");
+                }
+                else
+                {
+                    //Game has no Cards
+                    GameCards.Clear();
+                }
+            }
+            catch (RestException)
+            {
+                if (Application.Current?.MainPage != null)
+                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to load game cards. Please try again.", "OK");
+            }
+
+            finally
+            {
+                //Set HasCards based on result of operation
+                HasCards = hasCards;
+                IsLoading = false;
+            }
+        }
+
         /// <summary>
         /// Set rarity limits based on pack type
         /// </summary>
-        /// <param name="packType"></param>
+        /// <param name="packType">Pack Type</param>
         /// <exception cref="InvalidOperationException"></exception>
         private void SetRarityLimits(string packType)
         {
@@ -166,7 +211,7 @@ namespace Combat_Critters_2._0.ViewModels
         /// <summary>
         /// Set rarityProbabilities based on card type
         /// </summary>
-        /// <param name="packType"></param>
+        /// <param name="packType"> pack typw </param>
         private void SetRarityProbabilities(string packType)
         {
             switch (packType)
@@ -215,13 +260,10 @@ namespace Combat_Critters_2._0.ViewModels
                 if (Application.Current?.MainPage != null)
                 {
                     await Application.Current.MainPage.DisplayAlert("Success", "Pack created successfully!", "OK");
-                    //await Application.Current.MainPage.Navigation.PushAsync(new DashboardPage());
                 }
-
             }
-            catch (RestException ex)
+            catch (RestException)
             {
-                Console.WriteLine($"Failed to create pack: {ex.Message}");
                 if (Application.Current?.MainPage != null)
                     await Application.Current.MainPage.DisplayAlert("Error", "Failed to create pack. Please try again.", "OK");
             }
@@ -287,60 +329,12 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-        private void DisplayLimitReachedMessage(string message)
+        private static void DisplayLimitReachedMessage(string message)
         {
             if (Application.Current?.MainPage != null)
                 Application.Current.MainPage.DisplayAlert("Limit Reached", message, "OK");
         }
-        private async Task InitializeViewModelAsync()
-        {
-            await LoadGameCards();
-        }
 
-        /// <summary>
-        /// This method uses th backend services to load all game cards
-        /// </summary>
-        /// <returns>Task</returns>
-        public async Task LoadGameCards()
-        {
-            IsLoading = true;
-            bool hasCards = false; // function scoped variable
-            try
-            {
-                CardQueryBuilder filteredBuild = new CardQueryBuilder();
-                //filteredBuild.SetOwned(true);
-                var cards = await _backendService.GetCardsAsync(filteredBuild.Build());
-                Console.WriteLine($"Received {cards?.Count} cards from backend");
-                if (cards != null && cards.Count > 0)
-                {
-
-                    // Application.Current?.Dispatcher.Dispatch(() =>
-                    // 
-                    GameCards = new ObservableCollection<ICard>(cards.Select(stack => stack.Item).ToList());
-                    hasCards = true;
-                    // });
-
-                    Console.WriteLine($"Number of cards loaded: {GameCards.Count}");
-                }
-                else
-                {
-                    //Game has no Cards
-                    GameCards.Clear();
-                }
-            }
-            catch (RestException)
-            {
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to load game cards. Please try again.", "OK");
-            }
-
-            finally
-            {
-                //Set HasCards based on result of operation
-                HasCards = hasCards;
-                IsLoading = false;
-            }
-        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
