@@ -32,6 +32,7 @@ namespace Combat_Critters_2._0.ViewModels
                 OnPropertyChanged(nameof(IsLoading));
             }
         }
+
         public ObservableCollection<IVendor> GameVendors
         {
             get => _gameVendors;
