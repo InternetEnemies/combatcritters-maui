@@ -2,16 +2,48 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.MarketplacePage">
 
-    <VerticalStackLayout Margin="20"
-                         Spacing="10">
+    <Grid RowSpacing="10"
+          Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="0.8*"/>
+        </Grid.RowDefinitions>
 
-        <!-- Header Text -->
-        <Label Text="MARKETPLACE"
-               FontFamily="HeaderText"
-               HorizontalOptions="Start"
-               FontSize="Large"
-               FontAttributes="Bold"
-               TextDecorations="Underline"/>
+        <Frame Grid.Row="0"
+               HorizontalOptions="Fill"
+               VerticalOptions="Fill"
+               Padding="20"
+               Background="Black">
 
-    </VerticalStackLayout>
+            <Label Text="MARKETPLACE VENDORS"
+                   TextColor="Black"
+                   FontSize="35"
+                   FontFamily="DashboardHeadersFontStyle"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start"/>
+        </Frame>
+
+        <Frame Grid.Row="1"
+               HorizontalOptions="Fill"
+               VerticalOptions="Fill"
+               Padding="20">
+
+            <CollectionView ItemsSource="{Binding GameVendors}"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                                     Span="5"
+                                     VerticalItemSpacing="30"
+                                     HorizontalItemSpacing="30"/>
+                </CollectionView.ItemsLayout>
+
+            </CollectionView>
+
+        </Frame>
+
+
+
+    </Grid>
 </ContentView>

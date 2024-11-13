@@ -120,6 +120,36 @@
                 </ContentView>
         </DataTemplate>
 
+        <!--Data template for Vendors-->
+        <DataTemplate x:Key="VendorTemplate">
+                <ContentView WidthRequest="200"
+                             HeightRequest="300">
+                        <Frame HorizontalOptions="Fill"
+                               VerticalOptions="Fill"
+                               Background="#1E201E"
+                               Padding="30">
+
+                                <Grid RowDefinitions="0.7*, 0.3*"
+                                      HorizontalOptions="Fill"
+                                      VerticalOptions="Fill">
+
+                                        <Image Source="testVendor.webp"
+                                               Aspect="AspectFit"
+                                               Grid.Row="0"/>
+
+                                        <Frame Grid.Row="1"
+                                               HorizontalOptions="Fill"
+                                               VerticalOptions="Fill">
+                                                <Label Text="{Binding Name}"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center"/>
+                                        </Frame>
+                                </Grid>
+
+                        </Frame>
+                </ContentView>
+        </DataTemplate>
+
         <!-- Gradient Background Style -->
         <LinearGradientBrush x:Key="PageBackground"
                              StartPoint="0,0"
