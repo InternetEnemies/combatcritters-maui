@@ -8,8 +8,12 @@ using Combat_Critters_2._0.Models;
 using CombatCrittersSharp;
 using CombatCrittersSharp.exception;
 using CombatCrittersSharp.managers;
+using CombatCrittersSharp.managers.Implementation;
+using CombatCrittersSharp.managers.interfaces;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.deck;
+using CombatCrittersSharp.objects.MarketPlace.Implementations;
+using CombatCrittersSharp.objects.MarketPlace.Interfaces;
 using CombatCrittersSharp.objects.pack;
 using CombatCrittersSharp.objects.user;
 using Foundation;
@@ -235,7 +239,7 @@ namespace Combat_Critters_2._0.Services
         /// <returns>The created pack if successful.</returns>
         /// <exception cref="AuthException">Thrown if the user session is invalid or unauthorized.</exception>
         /// <exception cref="ArgumentException">Thrown if any argument is invalid, such as an empty list of card IDs.</exception>
-        public async Task<IPack> CreatePackAsync(List<int> cardIds, Dictionary<int, int> rarityProbabilities, string packName, string packImage)
+        public async Task<IPack?> CreatePackAsync(List<int> cardIds, Dictionary<int, int> rarityProbabilities, string packName, string packImage)
         {
             return await ExecuteBackendOperationAsync(async () =>
             {
@@ -261,6 +265,20 @@ namespace Combat_Critters_2._0.Services
                 Console.WriteLine("Success");
                 return pack;
             }, "Failed to create packs");
+        }
+
+        public async Task<List<Vendor>> GetVendorsAsync()
+        {
+            return await ExecuteBackendOperationAsync(async () =>
+            {
+                if (_client.User == null)
+                    throw new AuthException("User session is invalid or unauthorized.");
+
+                MarketPlaceManager m = new MarketPlaceManager(_client, _client.User);
+
+                var vendors = await m.GetVendorsAsync();
+                return vendors;
+            }, "Failed to return game vendors");
         }
 
 

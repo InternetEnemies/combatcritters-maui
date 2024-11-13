@@ -133,7 +133,7 @@
                                       HorizontalOptions="Fill"
                                       VerticalOptions="Fill">
 
-                                        <Image Source="testVendor.webp"
+                                        <Image Source="testvendor.webp"
                                                Aspect="AspectFit"
                                                Grid.Row="0"/>
 
