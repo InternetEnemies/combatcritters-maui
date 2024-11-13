@@ -145,7 +145,6 @@
                                                        VerticalOptions="Center"/>
                                         </Frame>
                                 </Grid>
-
                         </Frame>
                 </ContentView>
         </DataTemplate>

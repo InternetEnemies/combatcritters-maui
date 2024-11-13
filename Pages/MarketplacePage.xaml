@@ -38,6 +38,9 @@
                                      VerticalItemSpacing="30"
                                      HorizontalItemSpacing="30"/>
                 </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <StaticResource Key="VendorTemplate"/>
+                </CollectionView.ItemTemplate>
 
             </CollectionView>
 
