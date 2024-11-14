@@ -7,16 +7,12 @@ using System.Reflection.Emit;
 using Combat_Critters_2._0.Models;
 using CombatCrittersSharp;
 using CombatCrittersSharp.exception;
-using CombatCrittersSharp.managers;
 using CombatCrittersSharp.managers.Implementation;
 using CombatCrittersSharp.managers.interfaces;
 using CombatCrittersSharp.objects.card.Interfaces;
-using CombatCrittersSharp.objects.deck;
 using CombatCrittersSharp.objects.MarketPlace.Implementations;
-using CombatCrittersSharp.objects.MarketPlace.Interfaces;
 using CombatCrittersSharp.objects.pack;
 using CombatCrittersSharp.objects.user;
-using Foundation;
 namespace Combat_Critters_2._0.Services
 {
     public class BackendService(IClient client)
@@ -267,6 +263,11 @@ namespace Combat_Critters_2._0.Services
             }, "Failed to create packs");
         }
 
+        /// <summary>
+        /// Get all vendors in game.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="AuthException"></exception>
         public async Task<List<Vendor>> GetVendorsAsync()
         {
             return await ExecuteBackendOperationAsync(async () =>
@@ -274,11 +275,23 @@ namespace Combat_Critters_2._0.Services
                 if (_client.User == null)
                     throw new AuthException("User session is invalid or unauthorized.");
 
-                MarketPlaceManager m = new MarketPlaceManager(_client, _client.User);
-
-                var vendors = await m.GetVendorsAsync();
+                var marketPlaceManager = _client.User.MarketPlace;
+                var vendors = await marketPlaceManager.GetVendorsAsync();
                 return vendors;
             }, "Failed to return game vendors");
+        }
+
+        public async Task<Offer?> GetVendorOfferAsync(int id)
+        {
+            return await ExecuteBackendOperationAsync(async () =>
+            {
+                if (_client.User == null)
+                    throw new AuthException("User session is invalid or unathorized");
+
+                var marketplaceManager = _client.User.MarketPlace;
+                var offer = await marketplaceManager.GetVendorOfferAsync(id);
+                return offer;
+            }, "Failed to return vendor offer");
         }
 
 

@@ -8,7 +8,7 @@ namespace Combat_Critters_2._0.ViewModels
 {
     public class MarketPlaceViewModel : INotifyPropertyChanged
     {
-        private BackendService _backendService;
+        private readonly BackendService _backendService;
         private ObservableCollection<IVendor> _gameVendors;
         private bool _hasVendors;
 
