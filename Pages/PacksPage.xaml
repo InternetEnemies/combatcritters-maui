@@ -116,7 +116,7 @@
                            VerticalOptions="Fill">
 
                             <Image Grid.Row="0"
-                                   Source="pack.png"
+                                   Source="{Binding SelectedPack.Image, Converter={StaticResource ImageUrlConverter}}"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"
                                    Aspect="AspectFit"/>
