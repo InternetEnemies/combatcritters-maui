@@ -11,6 +11,8 @@ namespace Combat_Critters_2._0.ViewModels
     {
         private readonly BackendService _backendService;
 
+        public ICommand OpenGitHubCommand { get; }
+
         public ICommand OpenPackOptionsCommand { get; }
 
         private string _username;
@@ -35,8 +37,15 @@ namespace Combat_Critters_2._0.ViewModels
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
             _username = username;
             OpenPackOptionsCommand = new Command(OpenPackOptions);
+
+            OpenGitHubCommand = new Command(OpenGitHub);
         }
 
+        private void OpenGitHub()
+        {
+            var uri = new Uri("https://github.com/InternetEnemies/combatcritters-maui");
+            Browser.Default.OpenAsync(uri, BrowserLaunchMode.External);
+        }
         /// <summary>
         /// Open the pack creation options popup
         /// </summary>

@@ -13,10 +13,10 @@
                HorizontalOptions="Fill"
                VerticalOptions="Fill"
                Padding="20"
-               Background="Black">
+               BackgroundColor="Black">
 
             <Label Text="MARKETPLACE VENDORS"
-                   TextColor="Black"
+                   TextColor="White"
                    FontSize="35"
                    FontFamily="DashboardHeadersFontStyle"
                    FontAttributes="Bold"
@@ -31,10 +31,13 @@
 
             <CollectionView ItemsSource="{Binding GameVendors}"
                             HorizontalOptions="Center"
-                            VerticalOptions="Center">
+                            VerticalOptions="Center"
+                            SelectionMode="Single"
+                            SelectionChangedCommand="{Binding VendorSelectedCommand}"
+                            SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical"
-                                     Span="5"
+                                     Span="4"
                                      VerticalItemSpacing="30"
                                      HorizontalItemSpacing="30"/>
                 </CollectionView.ItemsLayout>

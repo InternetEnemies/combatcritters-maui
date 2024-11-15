@@ -2,64 +2,50 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.DashboardPage">
 
-    <Grid RowDefinitions="0.3*, 0.8*"
+    <Grid RowDefinitions="0.5*, 0.5*"
           ColumnDefinitions="*"
           VerticalOptions="Fill"
           HorizontalOptions="Fill">
 
         <Frame Grid.Row="0"
-               BackgroundColor="Black"
                HorizontalOptions="Fill"
+               BackgroundColor="Black"
                VerticalOptions="Fill"
                Padding="20"
-               Margin="20">
+               Margin="0">
 
-            <Label Text="{Binding Username, StringFormat='Hello Admin&#x0a;{0}!'}"
-                   FontSize="35"
-                   FontFamily="DashboardHeadersFontStyle"
-                   FontAttributes="Bold"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Start"
-                   TextColor=" White"
-                   Margin="0"/>
+            <Grid>
+                <Image Source="dashboardimage.png"
+                       Aspect="AspectFit"/>
 
+                <Label Text="{Binding Username, StringFormat='Hello Admin&#x0a;{0}!'}"
+                       FontSize="35"
+                       FontFamily="DashboardHeadersFontStyle"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start"
+                       TextColor=" White"
+                       Margin="0"/>
+            </Grid>
         </Frame>
 
         <Grid Grid.Row="1"
-              ColumnDefinitions="*, *"
+              ColumnDefinitions="*, *, *"
               VerticalOptions="Fill"
-              HorizontalOptions="Fill">
-
-            <!-- Overview Frame -->
-            <Frame Grid.Column="0"
-                   CornerRadius="10"
-                   HorizontalOptions="Fill"
-                   VerticalOptions="Fill"
-                   Margin="20"
-                   Padding="10"
-                   BorderColor="Purple">
-
-                <VerticalStackLayout>
-
-                    <Label Text="OVERVIEW"
-                           TextColor="Black"
-                           FontAttributes="Bold"
-                           FontSize="30"
-                           HorizontalOptions="Center"
-                           FontFamily="DashboardHeadersFontStyle"/>
-                </VerticalStackLayout>
-            </Frame>
+              HorizontalOptions="Fill"
+              BackgroundColor="Black">
 
             <!--Links Frame-->
-            <Frame Grid.Column="1"
+            <Frame Grid.Column="0"
                    CornerRadius="10"
                    Padding="10"
                    HorizontalOptions="Fill"
-                   BorderColor="Purple"
+                   VerticalOptions="Fill"
+                   BackgroundColor="Red"
                    Margin="20">
 
                 <VerticalStackLayout>
-                    <Label Text="LINKS"
+                    <Label Text="WORKSPACES"
                            TextColor="Black"
                            FontAttributes="Bold"
                            FontSize="30"
@@ -68,17 +54,78 @@
 
                     <Button Text="Manage Users"
                             TextColor="white"
+                            BackgroundColor="#19282F"
                             Margin="0,5"
                             Clicked="OnManageUsersClicked"/>
                     <Button Text="Create Cards"
                             TextColor="white"
+                            BackgroundColor="#19282F"
                             Margin="0,5"/>
                     <Button Text="Create Packs"
                             TextColor="White"
+                            BackgroundColor="#19282F"
                             Margin="0,5"
                             Command="{Binding OpenPackOptionsCommand}"/>
                 </VerticalStackLayout>
 
+            </Frame>
+
+            <!-- Overview Frame -->
+            <Frame Grid.Column="1"
+                   CornerRadius="10"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill"
+                   Margin="20"
+                   Padding="10"
+                   BackgroundColor="Green">
+
+                <VerticalStackLayout>
+
+                    <Label Text="ACTIVITY"
+                           TextColor="Black"
+                           FontAttributes="Bold"
+                           FontSize="30"
+                           HorizontalOptions="Center"
+                           FontFamily="DashboardHeadersFontStyle"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Grid.Column="2"
+                   CornerRadius="10"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Margin="20"
+                   Padding="10"
+                   BackgroundColor="White">
+
+
+                <VerticalStackLayout Spacing="30">
+                    <Label Text="Production"
+                           TextColor="Black"
+                           FontAttributes="Bold"
+                           FontSize="30"
+                           HorizontalOptions="Center"
+                           FontFamily="DashboardHeadersFontStyle"/>
+                    <HorizontalStackLayout Spacing="10">
+
+                        <Label Text="An InternetEnemies Production"
+                               TextColor="Black"
+                               FontFamily="CombatCritterLogo"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+
+                        <Image Source="github.png"
+                               HeightRequest="50"
+                               WidthRequest="50"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding OpenGitHubCommand}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
             </Frame>
         </Grid>
     </Grid>

@@ -126,7 +126,7 @@
                              HeightRequest="300">
                         <Frame HorizontalOptions="Fill"
                                VerticalOptions="Fill"
-                               Background="#1E201E"
+                               BackgroundColor="#1E201E"
                                Padding="30">
 
                                 <Grid RowDefinitions="0.7*, 0.3*"

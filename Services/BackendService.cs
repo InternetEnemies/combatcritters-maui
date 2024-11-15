@@ -294,6 +294,25 @@ namespace Combat_Critters_2._0.Services
             }, "Failed to return vendor offer");
         }
 
+        //debug
+        public async Task<string> GetAndLogVendorOfferAsync(int vendorId)
+        {
+            try
+            {
+                // Get the raw JSON response from the wrapper method
+                var json = await _client.User.MarketPlace.GetVendorOfferJsonAsync(vendorId);
+                //Console.WriteLine("Raw JSON Response: " + json); // Log the JSON structure for inspection
+
+                return json;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred: " + ex.Message);
+                return null;
+            }
+        }
+
+
 
     }
 }

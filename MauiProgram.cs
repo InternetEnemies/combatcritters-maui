@@ -22,6 +22,7 @@ public static class MauiProgram
                 fonts.AddFont("MtgBold.ttf", "CardFront2");
                 fonts.AddFont("Chalkduster.ttf", "FlyoutItemFont");
                 fonts.AddFont("MarkerFelt.ttc", "DashboardHeadersFontStyle");
+                fonts.AddFont("codestyle.ttc", "Code");
             });
 
 
