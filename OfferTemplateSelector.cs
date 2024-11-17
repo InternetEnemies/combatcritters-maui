@@ -4,19 +4,22 @@ public class OfferTemplateSelector : DataTemplateSelector
     public DataTemplate? CardTemplate { get; set; }
     public DataTemplate? PackTemplate { get; set; }
     public DataTemplate? CurrencyTemplate { get; set; }
-    protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
+    protected override DataTemplate? OnSelectTemplate(object item, BindableObject container)
     {
         if (item is not null && item.GetType().GetProperty("Type") is { } property)
         {
             var typeValue = property.GetValue(item)?.ToString()?.ToLower();
 
-            return typeValue switch
+            if (!string.IsNullOrEmpty(typeValue))
             {
-                "card" => CardTemplate,
-                "pack" => PackTemplate,
-                "currency" => CurrencyTemplate,
-                _ => null
-            };
+                return typeValue switch
+                {
+                    "card" => CardTemplate,
+                    "pack" => PackTemplate,
+                    "currency" => CurrencyTemplate,
+                    _ => null // Explicitly return null for unknown types
+                };
+            }
         }
         return null;
     }
