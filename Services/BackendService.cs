@@ -281,7 +281,13 @@ namespace Combat_Critters_2._0.Services
             }, "Failed to return game vendors");
         }
 
-        public async Task<Offer?> GetVendorOfferAsync(int id)
+        /// <summary>
+        /// Returns a list of vendor offers
+        /// </summary>
+        /// <param name="id"> vendor Id</param>
+        /// <returns></returns>
+        /// <exception cref="AuthException"></exception>
+        public async Task<List<Offer>> GetVendorOfferAsync(int id)
         {
             return await ExecuteBackendOperationAsync(async () =>
             {

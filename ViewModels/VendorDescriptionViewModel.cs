@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CombatCrittersSharp.objects.MarketPlace.Implementations;
 
@@ -6,9 +7,9 @@ namespace Combat_Critters_2._0.ViewModels
     public class VendorDescriptionViewModel : INotifyPropertyChanged
     {
         private Vendor _vendor;
-        private Offer _offer;
+        private List<Offer> _offer;
 
-        public VendorDescriptionViewModel(Vendor vendor, Offer offer)
+        public VendorDescriptionViewModel(Vendor vendor, List<Offer> offer)
         {
             _vendor = vendor;
             _offer = offer;
@@ -24,7 +25,7 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-        public Offer Offer
+        public List<Offer> Offer
         {
             get => _offer;
             set

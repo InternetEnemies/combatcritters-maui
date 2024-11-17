@@ -111,14 +111,14 @@ namespace Combat_Critters_2._0.ViewModels
             var offerJson = await _backendService.GetAndLogVendorOfferAsync(selectedVendor.Id);
             Console.WriteLine("Raw JSON Response: " + offerJson);
 
-            // Retrieve the vendor offer
-            var offer = await _backendService.GetVendorOfferAsync(selectedVendor.Id);
-
-
+            // Retrieve the list vendor offer
+            List<Offer> offer = await _backendService.GetVendorOfferAsync(selectedVendor.Id);
 
             // // Create and show the popup
             var popup = new VendorDescriptionPopup(selectedVendor, offer);
-            await Application.Current?.MainPage.ShowPopupAsync(popup);
+
+            if (Application.Current?.MainPage != null)
+                await Application.Current.MainPage.ShowPopupAsync(popup);
         }
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
