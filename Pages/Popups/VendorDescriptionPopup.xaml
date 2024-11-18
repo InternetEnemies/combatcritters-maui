@@ -10,41 +10,25 @@
     <Grid>
         <!-- Define three rows and two columns -->
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="70*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Text="{Binding Vendor.Name}"
-               FontSize="24"
-               TextColor="Black"
-               FontAttributes="Bold"
-               HorizontalOptions="Center"
-               Grid.ColumnSpan="2"
-               Grid.Row="0"/>
-
-        <Label Grid.Row="1"
+        <!--VENDOR NAME-->
+        <Label Grid.Row="0"
                Grid.Column="0"
-               VerticalOptions="Center"
+               Text="{Binding Vendor.Name}"
+               FontFamily="DashboardHeadersFontStyle"
                HorizontalOptions="Center"
-               Text="Require"/>
+               VerticalOptions="Center"/>
 
-        <Label Grid.Row="1"
-               Grid.Column="1"
-               VerticalOptions="Center"
-               HorizontalOptions="Center"
-               Text="User Receives"/>
-
-        <Frame>
-
-        </Frame>
-
-
+        <!--VENDOR LEVEL LIST-->
 
     </Grid>
 
