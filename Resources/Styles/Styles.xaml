@@ -123,8 +123,7 @@
 
         <!-- Data template for currency -->
         <DataTemplate x:Key="CurrencyTemplate">
-                <HorizontalStackLayout HorizontalOptions="Center"
-                                       VerticalOptions="Center">
+                <HorizontalStackLayout>
                         <Image Source="currency.jpg"
                                HeightRequest="50"
                                WidthRequest="50"
@@ -139,8 +138,7 @@
 
         <!--Data template for Packs-->
         <DataTemplate x:Key="PackTemplate">
-                <Grid HorizontalOptions="Center"
-                      VerticalOptions="Center">
+                <Grid>
                         <Image Grid.Row="0"
                                Source="{Binding Image, Converter={StaticResource ImageUrlConverter}}"
                                WidthRequest="190"

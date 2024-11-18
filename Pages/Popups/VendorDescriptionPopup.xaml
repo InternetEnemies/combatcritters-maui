@@ -73,6 +73,16 @@
                        HorizontalOptions="Fill"
                        VerticalOptions="Fill">
 
+                    <CollectionView ItemsSource="{Binding GiveItems}">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical"
+                                             Span="2"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <StaticResource Key="OfferTemplate"/>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
                 </Frame>
 
                 <!--I Give Frame-->
@@ -82,6 +92,9 @@
                        VerticalOptions="Fill">
 
                     <CollectionView ItemsSource="{Binding ReceiveItems}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical"/>
+                        </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <StaticResource Key="OfferTemplate"/>
                         </CollectionView.ItemTemplate>

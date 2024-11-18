@@ -13,10 +13,19 @@ namespace Combat_Critters_2._0.ViewModels
         private Offer? _selectedOffer; // This can be null
         private ObservableCollection<string> _vendorLevels;
         private ObservableCollection<object?> _receiveItems;
-
+        private ObservableCollection<object?> _giveItems;
 
         private string? _selectedLevel;
 
+        public ObservableCollection<object?> GiveItems
+        {
+            get => _giveItems;
+            set
+            {
+                _giveItems = value;
+                OnPropertyChanged(nameof(GiveItems));
+            }
+        }
         public ObservableCollection<object?> ReceiveItems
         {
             get => _receiveItems;
@@ -83,7 +92,7 @@ namespace Combat_Critters_2._0.ViewModels
             _offer = offer;
             _vendorLevels = new ObservableCollection<string>();
             _receiveItems = new ObservableCollection<object?>();
-
+            _giveItems = new ObservableCollection<object?>();
 
             PopulateVendorLevels();
         }
@@ -98,18 +107,28 @@ namespace Combat_Critters_2._0.ViewModels
             {
                 //Update the selctedOffer
                 SelectedOffer = Offer[level];
-                UpdateReceiveItems();
+                UpdateItems();
 
             }
         }
 
-        private void UpdateReceiveItems()
+        private void UpdateItems()
         {
             ReceiveItems.Clear();
+            GiveItems.Clear();
+
             if (SelectedOffer?.Receive != null)
             {
                 var item = SelectedOffer.Receive.ParsedItem;
                 ReceiveItems.Add(item); //Add the parsed Item
+            }
+
+            if (SelectedOffer?.Give != null)
+            {
+                foreach (var item in SelectedOffer.Give)
+                {
+                    GiveItems.Add(item.ParsedItem);
+                }
             }
         }
 
