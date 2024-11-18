@@ -29,7 +29,17 @@
                VerticalOptions="Center"/>
 
         <!--VENDOR LEVEL LIST-->
-
+        <ListView Grid.Row="1"
+                  Grid.Column="0"
+                  ItemsSource="{Binding VendorLevels}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label Text="{Binding .}"/>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 
 </toolkit:Popup>
