@@ -10,8 +10,43 @@ namespace Combat_Critters_2._0.ViewModels
         private Vendor _vendor;
         private List<Offer> _offer;
 
+        private Offer? _selectedOffer; // This can be null
         private ObservableCollection<string> _vendorLevels;
+        private ObservableCollection<object?> _receiveItems;
 
+
+        private string? _selectedLevel;
+
+        public ObservableCollection<object?> ReceiveItems
+        {
+            get => _receiveItems;
+            set
+            {
+                _receiveItems = value;
+                OnPropertyChanged(nameof(ReceiveItems));
+            }
+        }
+        public Offer? SelectedOffer
+        {
+            get => _selectedOffer;
+            set
+            {
+                _selectedOffer = value;
+                OnPropertyChanged(nameof(SelectedOffer));
+
+            }
+        }
+
+        public string? SelectedLevel
+        {
+            get => _selectedLevel;
+            set
+            {
+                _selectedLevel = value;
+                OnPropertyChanged(nameof(SelectedLevel));
+                OnLevelSelected(value);
+            }
+        }
         public ObservableCollection<string> VendorLevels
         {
             get => _vendorLevels;
@@ -47,8 +82,35 @@ namespace Combat_Critters_2._0.ViewModels
             _vendor = vendor;
             _offer = offer;
             _vendorLevels = new ObservableCollection<string>();
+            _receiveItems = new ObservableCollection<object?>();
+
 
             PopulateVendorLevels();
+        }
+
+        /// <summary>
+        /// Update the Offer based on selected Level
+        /// </summary>
+        /// <param name="selectedLevel"></param>
+        private void OnLevelSelected(string selectedLevel)
+        {
+            if (int.TryParse(selectedLevel?.Replace("LV ", ""), out int level) && level >= 0 && level < Offer.Count)
+            {
+                //Update the selctedOffer
+                SelectedOffer = Offer[level];
+                UpdateReceiveItems();
+
+            }
+        }
+
+        private void UpdateReceiveItems()
+        {
+            ReceiveItems.Clear();
+            if (SelectedOffer?.Receive != null)
+            {
+                var item = SelectedOffer.Receive.ParsedItem;
+                ReceiveItems.Add(item); //Add the parsed Item
+            }
         }
 
 

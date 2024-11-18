@@ -10,9 +10,9 @@
     <Grid>
         <!-- Define three rows and two columns -->
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="80*"/>
+            <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -29,17 +29,71 @@
                VerticalOptions="Center"/>
 
         <!--VENDOR LEVEL LIST-->
-        <ListView Grid.Row="1"
-                  Grid.Column="0"
-                  ItemsSource="{Binding VendorLevels}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Label Text="{Binding .}"/>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <Frame Grid.Row="1"
+               Grid.Column="0">
+            <ListView
+                ItemsSource="{Binding VendorLevels}"
+                SelectedItem="{Binding SelectedLevel}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label Text="{Binding .}"/>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Frame>
+
+        <!--VENDOR OFFER-->
+        <Frame Grid.Row="1"
+               Grid.Column="1"
+               HorizontalOptions="Fill"
+               VerticalOptions="Fill">
+
+
+            <Grid ColumnDefinitions="40*, 40*"
+                  RowDefinitions="10*,90*">
+
+                <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Text="I Collect"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+
+                <Label Grid.Row="0"
+                       Grid.Column="1"
+                       Text="I Give"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+
+
+                <!--I Collect Frame-->
+                <Frame Grid.Column="0"
+                       Grid.Row="1"
+                       HorizontalOptions="Fill"
+                       VerticalOptions="Fill">
+
+                </Frame>
+
+                <!--I Give Frame-->
+                <Frame Grid.Column="1"
+                       Grid.Row="1"
+                       HorizontalOptions="Fill"
+                       VerticalOptions="Fill">
+
+                    <CollectionView ItemsSource="{Binding ReceiveItems}">
+                        <CollectionView.ItemTemplate>
+                            <StaticResource Key="OfferTemplate"/>
+                        </CollectionView.ItemTemplate>
+
+                    </CollectionView>
+
+                </Frame>
+
+            </Grid>
+
+
+        </Frame>
     </Grid>
 
 </toolkit:Popup>

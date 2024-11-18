@@ -6,21 +6,37 @@ public class OfferTemplateSelector : DataTemplateSelector
     public DataTemplate? CurrencyTemplate { get; set; }
     protected override DataTemplate? OnSelectTemplate(object item, BindableObject container)
     {
-        if (item is not null && item.GetType().GetProperty("Type") is { } property)
+        if (item == null)
         {
-            var typeValue = property.GetValue(item)?.ToString()?.ToLower();
-
-            if (!string.IsNullOrEmpty(typeValue))
-            {
-                return typeValue switch
-                {
-                    "card" => CardTemplate,
-                    "pack" => PackTemplate,
-                    "currency" => CurrencyTemplate,
-                    _ => null // Explicitly return null for unknown types
-                };
-            }
+            Console.WriteLine("ParsedItem is null.");
+            return null;
         }
-        return null;
+
+        Console.WriteLine($"ParsedItem Type: {item.GetType()}");
+
+        var itemType = item.GetType();
+
+        // Check for specific properties to determine the type
+        if (itemType.GetProperty("CardId") != null)
+        {
+            Console.WriteLine("ParsedItem is a card.");
+            return CardTemplate;
+        }
+
+        if (itemType.GetProperty("PackId") != null)
+        {
+            Console.WriteLine("ParsedItem is a pack.");
+            return PackTemplate;
+        }
+
+        if (itemType.GetProperty("_coins") != null)
+        {
+            Console.WriteLine("ParsedItem is a currency.");
+            return CurrencyTemplate;
+        }
+
+        Console.WriteLine("ParsedItem type could not be determined.");
+        return null; // Fallback for unknown types
     }
+
 }

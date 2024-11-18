@@ -123,19 +123,39 @@
 
         <!-- Data template for currency -->
         <DataTemplate x:Key="CurrencyTemplate">
-                <HorizontalStackLayout>
+                <HorizontalStackLayout HorizontalOptions="Center"
+                                       VerticalOptions="Center">
                         <Image Source="currency.jpg"
                                HeightRequest="50"
                                WidthRequest="50"
                                HorizontalOptions="Center"
                                VerticalOptions="Center"/>
 
-                        <Label Text="{Binding coins}"/>
+                        <Label Text="{Binding _coins}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
                 </HorizontalStackLayout>
         </DataTemplate>
 
+        <!--Data template for Packs-->
+        <DataTemplate x:Key="PackTemplate">
+                <Grid HorizontalOptions="Center"
+                      VerticalOptions="Center">
+                        <Image Grid.Row="0"
+                               Source="{Binding Image, Converter={StaticResource ImageUrlConverter}}"
+                               WidthRequest="190"
+                               HeightRequest="300"/>
+                        <Label Grid.Row="0"
+                               Text="{Binding Name}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"/>
+                </Grid>
+        </DataTemplate>
+
         <local:OfferTemplateSelector x:Key="OfferTemplate"
-                                     CardTemplate="{StaticResource CardTemplate}"/>
+                                     CardTemplate="{StaticResource CardTemplate}"
+                                     CurrencyTemplate="{StaticResource CurrencyTemplate}"
+                                     PackTemplate="{StaticResource PackTemplate}"/>
 
         <!--Data template for Vendors-->
         <DataTemplate x:Key="VendorTemplate">
