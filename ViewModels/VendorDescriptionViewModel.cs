@@ -1,7 +1,10 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
+using Combat_Critters_2._0.Pages;
 using CombatCrittersSharp.objects.MarketPlace.Implementations;
 using CommunityToolkit.Maui.Core.Extensions;
+using Microsoft.Maui.Controls;
 
 namespace Combat_Critters_2._0.ViewModels
 {
@@ -14,6 +17,7 @@ namespace Combat_Critters_2._0.ViewModels
         private ObservableCollection<string> _vendorLevels;
         private ObservableCollection<object?> _receiveItems;
         private ObservableCollection<object?> _giveItems;
+
 
         private string? _selectedLevel;
 
@@ -42,7 +46,6 @@ namespace Combat_Critters_2._0.ViewModels
             {
                 _selectedOffer = value;
                 OnPropertyChanged(nameof(SelectedOffer));
-
             }
         }
 
@@ -93,9 +96,9 @@ namespace Combat_Critters_2._0.ViewModels
             _vendorLevels = new ObservableCollection<string>();
             _receiveItems = new ObservableCollection<object?>();
             _giveItems = new ObservableCollection<object?>();
-
             PopulateVendorLevels();
         }
+
 
         /// <summary>
         /// Update the Offer based on selected Level

@@ -7,7 +7,10 @@
     HorizontalOptions="Fill"
     VerticalOptions="Fill">
 
-    <Grid>
+    <Grid RowSpacing="20"
+          ColumnSpacing="20"
+          Padding="30"
+          Margin="6">
         <!-- Define three rows and two columns -->
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"/>
@@ -52,7 +55,8 @@
 
 
             <Grid ColumnDefinitions="40*, 40*"
-                  RowDefinitions="10*,90*">
+                  RowDefinitions="10*,90*"
+                  ColumnSpacing="20">
 
                 <Label Grid.Row="0"
                        Grid.Column="0"
@@ -98,15 +102,23 @@
                         <CollectionView.ItemTemplate>
                             <StaticResource Key="OfferTemplate"/>
                         </CollectionView.ItemTemplate>
-
                     </CollectionView>
-
                 </Frame>
 
             </Grid>
-
-
         </Frame>
+
+        <!--New Level-->
+        <Button Grid.Row="2"
+                Grid.Column="0"
+                Text="NEW LEVEL"
+                Clicked="OnNewLevelClicked"/>
+
+        <!--Close-->
+        <Button Grid.Row="2"
+                Grid.Column="1"
+                Text="Press ESC to Exit"/>
+
     </Grid>
 
 </toolkit:Popup>
