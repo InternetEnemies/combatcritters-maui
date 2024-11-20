@@ -77,6 +77,19 @@ namespace Combat_Critters_2._0.ViewModels
 
         }
 
+        //UI to hold object selected for I Collect
+        private ObservableCollection<object> _iCollectItems;
+
+        public ObservableCollection<object> ICollectItems
+        {
+            get => _iCollectItems;
+            set
+            {
+                _iCollectItems = value;
+                OnPropertyChanged(nameof(ICollectItems));
+            }
+        }
+
         private ObservableCollection<ICard> _gameCards;
         public ObservableCollection<ICard> GameCards
         {
@@ -112,6 +125,7 @@ namespace Combat_Critters_2._0.ViewModels
             //Inventory Initialization
             _gameCards = new ObservableCollection<ICard>();
             _gamePacks = new ObservableCollection<IPack>();
+            _iCollectItems = new ObservableCollection<object>();
 
 
             //Load Cards and Packs
@@ -218,9 +232,22 @@ namespace Combat_Critters_2._0.ViewModels
                     }
                     break;
 
-
+                case "CurrencyInventory":
+                    break;
             }
 
+        }
+
+        public void OnFlyoutItmeSelected(object e)
+        {
+            //Add the selectedItem to ICollectItems List
+            ICollectItems.Add(e);
+        }
+
+        public void OnICollectItemSelected(object e)
+        {
+            //Remove the ICollectItem 
+            ICollectItems.Remove(e);
         }
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

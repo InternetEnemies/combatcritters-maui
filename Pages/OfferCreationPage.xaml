@@ -61,9 +61,17 @@
                                                                       HorizontalOptions="Fill"
                                                                       VerticalOptions="Fill">
 
-                                                                      <CollectionView ItemsSource="{Binding SelectedCards}">
+                                                                      <CollectionView ItemsSource="{Binding ICollectItems}"
+                                                                                      SelectionMode="Single"
+                                                                                      SelectionChanged="OnRemoveICollectItem">
+                                                                             <CollectionView.ItemsLayout>
+                                                                                    <GridItemsLayout Orientation="Vertical"
+                                                                                                     Span="3"
+                                                                                                     VerticalItemSpacing="30"
+                                                                                                     HorizontalItemSpacing="30"/>
+                                                                             </CollectionView.ItemsLayout>
                                                                              <CollectionView.ItemTemplate>
-                                                                                    <StaticResource Key="CardTemplate"/>
+                                                                                    <StaticResource Key="OfferTemplate"/>
                                                                              </CollectionView.ItemTemplate>
                                                                       </CollectionView>
 
@@ -100,8 +108,12 @@
                                                                <HorizontalStackLayout Grid.Row="1"
                                                                                       HorizontalOptions="Fill"
                                                                                       Spacing="20">
-                                                                      <Button Text="Add Card"/>
-                                                                      <Button Text="Add Pack"/>
+                                                                      <Button Text="Add Card"
+                                                                              Command="{Binding OnShowFlyoutCommand}"
+                                                                              CommandParameter="CardInventory"/>
+                                                                      <Button Text="Add Pack"
+                                                                              Command="{Binding OnShowFlyoutCommand}"
+                                                                              CommandParameter="PackInventory"/>
                                                                       <Button Text="Add Currency"/>
                                                                </HorizontalStackLayout>
 
@@ -145,7 +157,9 @@
                                     Command="{Binding OnCloseFlyoutCommand}"/>
 
                             <CollectionView Grid.Row="2"
-                                            ItemsSource="{Binding FlyoutItems}">
+                                            ItemsSource="{Binding FlyoutItems}"
+                                            SelectionMode="Single"
+                                            SelectionChanged="OnSelectionChanged">
                                    <CollectionView.ItemsLayout>
                                           <GridItemsLayout Orientation="Vertical"
                                                            Span="2"
