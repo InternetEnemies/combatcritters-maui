@@ -1,6 +1,166 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.OfferCreationPage">
+       <Grid>
+              <!--Main Content-->
+              <Grid>
+                     <Frame Margin="6"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill"
+                            BackgroundColor="Black"
+                            Padding="200">
 
+                            <Grid RowDefinitions="90*, 10*"
+                                  RowSpacing="20">
+
+
+                                   <Frame Grid.Row="0"
+                                          HorizontalOptions="Fill"
+                                          VerticalOptions="Fill">
+
+                                          <Grid ColumnDefinitions="40*, 40*"
+                                                RowDefinitions="10*,10*,80*"
+                                                ColumnSpacing="20">
+
+                                                 <!--Name and Level row-->
+                                                 <Label Grid.Row="0"
+                                                        Grid.Column="0"
+                                                        Text="{Binding Vendor.Name}"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center"/>
+
+                                                 <Label Grid.Row="0"
+                                                        Grid.Column="1"
+                                                        Text="{Binding NewLevel}"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center"/>
+
+                                                 <!--Frame Headers-->
+                                                 <Label Grid.Row="1"
+                                                        Grid.Column="0"
+                                                        Text="I Collect"
+                                                        HorizontalOptions="Start"
+                                                        VerticalOptions="Center"/>
+
+                                                 <Label Grid.Row="1"
+                                                        Grid.Column="1"
+                                                        Text="I Give"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center"/>
+
+                                                 <!--Frames-->
+                                                 <!--I Collect Frame-->
+                                                 <Frame Grid.Row="2"
+                                                        Grid.Column="0"
+                                                        HorizontalOptions="Fill"
+                                                        VerticalOptions="Fill">
+
+                                                        <Grid RowDefinitions="90*,10*">
+
+                                                               <Frame Grid.Row="0"
+                                                                      HorizontalOptions="Fill"
+                                                                      VerticalOptions="Fill">
+
+                                                                      <CollectionView ItemsSource="{Binding SelectedCards}">
+                                                                             <CollectionView.ItemTemplate>
+                                                                                    <StaticResource Key="CardTemplate"/>
+                                                                             </CollectionView.ItemTemplate>
+                                                                      </CollectionView>
+
+                                                               </Frame>
+                                                               <HorizontalStackLayout Grid.Row="1"
+                                                                                      HorizontalOptions="Fill"
+                                                                                      Spacing="20">
+                                                                      <Button Text="Add Card"
+                                                                              Command="{Binding OnShowFlyoutCommand}"
+                                                                              CommandParameter="CardInventory"/>
+                                                                      <Button Text="Add Pack"
+                                                                              Command="{Binding OnShowFlyoutCommand}"
+                                                                              CommandParameter="PackInventory"/>
+                                                                      <Button Text="Add Currency"/>
+                                                               </HorizontalStackLayout>
+
+                                                        </Grid>
+
+                                                 </Frame>
+
+                                                 <!--I Give Frame-->
+                                                 <Frame Grid.Row="2"
+                                                        Grid.Column="1"
+                                                        HorizontalOptions="Fill"
+                                                        VerticalOptions="Fill">
+
+                                                        <Grid RowDefinitions="90*,10*">
+
+                                                               <Frame Grid.Row="0"
+                                                                      HorizontalOptions="Fill"
+                                                                      VerticalOptions="Fill">
+
+                                                               </Frame>
+                                                               <HorizontalStackLayout Grid.Row="1"
+                                                                                      HorizontalOptions="Fill"
+                                                                                      Spacing="20">
+                                                                      <Button Text="Add Card"/>
+                                                                      <Button Text="Add Pack"/>
+                                                                      <Button Text="Add Currency"/>
+                                                               </HorizontalStackLayout>
+
+                                                        </Grid>
+
+                                                 </Frame>
+
+                                          </Grid>
+
+                                   </Frame>
+
+                                   <Button Grid.Row="1"
+                                           HorizontalOptions="End"
+                                           VerticalOptions="Center"
+                                           Text="Create"/>
+                            </Grid>
+
+
+
+                     </Frame>
+              </Grid>
+
+
+              <Frame Grid.Row="0"
+                     Grid.ColumnSpan="2"
+                     HorizontalOptions="End"
+                     VerticalOptions="Fill"
+                     WidthRequest="550"
+                     BackgroundColor="White"
+                     Padding="10"
+                     IsVisible="{Binding IsFlyoutVisible}">
+
+                     <Grid RowDefinitions="7*,7*,86*">
+                            <Label Grid.Row="0"
+                                   Text="Inventory"
+                                   FontSize="20"
+                                   HorizontalOptions="Center"/>
+
+                            <Button Grid.Row="1"
+                                    Text="Close"
+                                    Command="{Binding OnCloseFlyoutCommand}"/>
+
+                            <CollectionView Grid.Row="2"
+                                            ItemsSource="{Binding FlyoutItems}">
+                                   <CollectionView.ItemsLayout>
+                                          <GridItemsLayout Orientation="Vertical"
+                                                           Span="2"
+                                                           VerticalItemSpacing="30"
+                                                           HorizontalItemSpacing="30"/>
+                                   </CollectionView.ItemsLayout>
+                                   <CollectionView.ItemTemplate>
+                                          <StaticResource Key="OfferTemplate"/>
+                                   </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                     </Grid>
+
+
+              </Frame>
+       </Grid>
 
 </ContentPage>

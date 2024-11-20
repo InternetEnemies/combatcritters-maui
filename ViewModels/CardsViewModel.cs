@@ -113,6 +113,21 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
+        //Properties for Adding Card a card to a vendor Offer
+        private ObservableCollection<ICard> _selectedCardsforOffer;
+
+
+        public ObservableCollection<ICard> SelectedCardsforOffer
+        {
+            get => _selectedCardsforOffer;
+            set
+            {
+                _selectedCardsforOffer = value;
+                OnPropertyChanged(nameof(SelectedCardsforOffer));
+            }
+        }
+
+
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {

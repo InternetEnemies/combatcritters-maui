@@ -8,8 +8,10 @@ namespace Combat_Critters_2._0.Pages.Popups
 {
     public partial class VendorDescriptionPopup : Popup
     {
+        public Vendor Vendor { get; }
         public VendorDescriptionPopup(Vendor vendor, List<Offer> offer)
         {
+            Vendor = vendor;
             InitializeComponent();
             BindingContext = new VendorDescriptionViewModel(vendor, offer);
         }
@@ -23,7 +25,7 @@ namespace Combat_Critters_2._0.Pages.Popups
             Close();
             if (Application.Current?.MainPage != null)
                 // Navigate to PackCreationPage with the selected pack type
-                await Application.Current.MainPage.Navigation.PushAsync(new OfferCreationPage());
+                await Application.Current.MainPage.Navigation.PushAsync(new OfferCreationPage(Vendor));
         }
 
 
