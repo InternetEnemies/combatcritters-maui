@@ -17,6 +17,7 @@ namespace Combat_Critters_2._0.ViewModels
     {
         private readonly BackendService _backendService;
         private Vendor _vendor; //Vendor Selected
+
         public Vendor Vendor
         {
             get => _vendor;
@@ -51,6 +52,7 @@ namespace Combat_Critters_2._0.ViewModels
 
         //Current Dev
         public Command<string> OnShowFlyoutCommand { get; }
+
         public Command OnCloseFlyoutCommand { get; }
         private bool _isFlyoutVisible;
         public bool IsFlyoutVisible
@@ -90,6 +92,18 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
+        //UI to hold object selected for I Give
+        private ObservableCollection<object> _iGiveItems;
+        public ObservableCollection<object> IGiveItems
+        {
+            get => _iGiveItems;
+            set
+            {
+                _iGiveItems = value;
+                OnPropertyChanged(nameof(IGiveItems));
+            }
+        }
+
         private ObservableCollection<ICard> _gameCards;
         public ObservableCollection<ICard> GameCards
         {
@@ -113,6 +127,8 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
+        private string currentSelection = "";
+
 
         public OfferCreationViewModel(Vendor vendor)
         {
@@ -126,6 +142,7 @@ namespace Combat_Critters_2._0.ViewModels
             _gameCards = new ObservableCollection<ICard>();
             _gamePacks = new ObservableCollection<IPack>();
             _iCollectItems = new ObservableCollection<object>();
+            _iGiveItems = new ObservableCollection<object>();
 
 
             //Load Cards and Packs
@@ -201,15 +218,18 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-
         /// <summary>
         /// The flyoutItem will be populated based on inventoryType
         /// </summary>
         /// <param name="inventoryType">This is the OnShowFlyoutCommand pat</param>
         private void ShowFlyout(string inventoryType)
         {
+
+            string[] parts = inventoryType.Split(':'); // Split the string by ':'
+            currentSelection = parts[0];
+
             IsFlyoutVisible = true;
-            switch (inventoryType)
+            switch (parts[1])
             {
 
                 case "CardInventory":
@@ -238,16 +258,25 @@ namespace Combat_Critters_2._0.ViewModels
 
         }
 
+
+
         public void OnFlyoutItmeSelected(object e)
         {
-            //Add the selectedItem to ICollectItems List
-            ICollectItems.Add(e);
+            if (currentSelection == "ICollect")
+                //Add the selectedItem to ICollectItems List
+                ICollectItems.Add(e);
+            else if (currentSelection == "IGive")
+                IGiveItems.Add(e);
         }
 
         public void OnICollectItemSelected(object e)
         {
             //Remove the ICollectItem 
             ICollectItems.Remove(e);
+        }
+        public void OnIGiveItemSelected(object e)
+        {
+            IGiveItems.Remove(e);
         }
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

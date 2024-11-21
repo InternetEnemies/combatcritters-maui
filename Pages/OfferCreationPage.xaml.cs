@@ -37,5 +37,17 @@ namespace Combat_Critters_2._0.Pages
             }
         }
 
+        private void OnRemoveIGiveItem(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.CurrentSelection.Count > 0)
+            {
+                var viewModel = BindingContext as OfferCreationViewModel;
+                viewModel?.OnIGiveItemSelected(e.CurrentSelection[0]);
+
+                // Clear the selection
+                ((CollectionView)sender).SelectedItem = null;
+            }
+        }
+
     }
 }

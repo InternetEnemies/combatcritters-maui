@@ -8,7 +8,7 @@
                             HorizontalOptions="Fill"
                             VerticalOptions="Fill"
                             BackgroundColor="Black"
-                            Padding="200">
+                            Padding="150">
 
                             <Grid RowDefinitions="90*, 10*"
                                   RowSpacing="20">
@@ -59,7 +59,9 @@
 
                                                                <Frame Grid.Row="0"
                                                                       HorizontalOptions="Fill"
-                                                                      VerticalOptions="Fill">
+                                                                      VerticalOptions="Fill"
+                                                                      Padding="5"
+                                                                      HasShadow="False">
 
                                                                       <CollectionView ItemsSource="{Binding ICollectItems}"
                                                                                       SelectionMode="Single"
@@ -81,10 +83,10 @@
                                                                                       Spacing="20">
                                                                       <Button Text="Add Card"
                                                                               Command="{Binding OnShowFlyoutCommand}"
-                                                                              CommandParameter="CardInventory"/>
+                                                                              CommandParameter="ICollect:CardInventory"/>
                                                                       <Button Text="Add Pack"
                                                                               Command="{Binding OnShowFlyoutCommand}"
-                                                                              CommandParameter="PackInventory"/>
+                                                                              CommandParameter="ICollect:PackInventory"/>
                                                                       <Button Text="Add Currency"/>
                                                                </HorizontalStackLayout>
 
@@ -102,7 +104,23 @@
 
                                                                <Frame Grid.Row="0"
                                                                       HorizontalOptions="Fill"
-                                                                      VerticalOptions="Fill">
+                                                                      VerticalOptions="Fill"
+                                                                      Padding="5"
+                                                                      HasShadow="False">
+
+                                                                      <CollectionView ItemsSource="{Binding IGiveItems}"
+                                                                                      SelectionMode="Single"
+                                                                                      SelectionChanged="OnRemoveIGiveItem">
+                                                                             <CollectionView.ItemsLayout>
+                                                                                    <GridItemsLayout Orientation="Vertical"
+                                                                                                     Span="3"
+                                                                                                     VerticalItemSpacing="30"
+                                                                                                     HorizontalItemSpacing="30"/>
+                                                                             </CollectionView.ItemsLayout>
+                                                                             <CollectionView.ItemTemplate>
+                                                                                    <StaticResource Key="OfferTemplate"/>
+                                                                             </CollectionView.ItemTemplate>
+                                                                      </CollectionView>
 
                                                                </Frame>
                                                                <HorizontalStackLayout Grid.Row="1"
@@ -110,10 +128,10 @@
                                                                                       Spacing="20">
                                                                       <Button Text="Add Card"
                                                                               Command="{Binding OnShowFlyoutCommand}"
-                                                                              CommandParameter="CardInventory"/>
+                                                                              CommandParameter="IGive:CardInventory"/>
                                                                       <Button Text="Add Pack"
                                                                               Command="{Binding OnShowFlyoutCommand}"
-                                                                              CommandParameter="PackInventory"/>
+                                                                              CommandParameter="IGive:PackInventory"/>
                                                                       <Button Text="Add Currency"/>
                                                                </HorizontalStackLayout>
 
