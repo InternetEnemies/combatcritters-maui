@@ -254,7 +254,7 @@ namespace Combat_Critters_2._0.ViewModels
 
             try
             {
-                IPack createdPack = await _backendService.CreatePackAsync(cardIds, _rarityProbabilities, packName, packImage);
+                // IPack createdPack = await _backendService.CreatePackAsync(cardIds, _rarityProbabilities, packName, packImage);
                 Console.WriteLine("Pack created successfully!");
 
                 if (Application.Current?.MainPage != null)
