@@ -2,6 +2,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.PackCreationPage">
 
+    <ScrollView>
+        <Grid BackgroundColor="Black">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
+            <HorizontalStackLayout Grid.Row="0"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   Spacing="20">
+                <Label Text="Name: "
+                       TextColor="White"
+                       FontSize="24"/>
+                <Entry Placeholder="Enter Pack Name"
+                       Completed="OnPackNameEntryCompleted"/>
+            </HorizontalStackLayout>
+        </Grid>
+    </ScrollView>
 
 </ContentPage>
