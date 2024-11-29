@@ -90,6 +90,7 @@ namespace Combat_Critters_2._0.Services
             Console.WriteLine($"Successfully Removed user {id}");
         }
 
+
         /// <summary>
         /// Request for all game cards
         /// </summary>
