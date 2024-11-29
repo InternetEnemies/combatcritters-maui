@@ -1,24 +1,77 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.PackCreationPage">
+    <Frame Padding="10"
+           HorizontalOptions="Fill"
+           VerticalOptions="Fill"
+           BackgroundColor="#1E201E">
+        <ScrollView>
+            <VerticalStackLayout Spacing="5"
+                                 Margin="20">
 
-    <ScrollView>
-        <Grid BackgroundColor="Black">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+                <Grid>
+                    <!--UI for Pack Name-->
+                    <HorizontalStackLayout
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Spacing="20">
+                        <Label Text="Name: "
+                               TextColor="#FFE9E2E2"
+                               FontSize="24"/>
+                        <Entry Placeholder="Enter Pack Name"
+                               Completed="OnPackNameEntryCompleted"/>
+                    </HorizontalStackLayout>
+                </Grid>
 
-            <HorizontalStackLayout Grid.Row="0"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center"
-                                   Spacing="20">
-                <Label Text="Name: "
-                       TextColor="White"
-                       FontSize="24"/>
-                <Entry Placeholder="Enter Pack Name"
-                       Completed="OnPackNameEntryCompleted"/>
-            </HorizontalStackLayout>
-        </Grid>
-    </ScrollView>
+                <!--UI for Card Inventory-->
+                <Frame HeightRequest="500"
+                       HasShadow="False"
+                       BorderColor="white"
+                       BackgroundColor="Transparent">
+
+
+                </Frame>
+
+                <!--UI for Pack Image Inventory-->
+                <Frame HeightRequest="250"
+                       HasShadow="False"
+                       BorderColor="white"
+                       BackgroundColor="Transparent">
+
+
+                </Frame>
+
+                <!--UI for Pack RarityWeights-->
+                <Frame HeightRequest="100"
+                       WidthRequest="500"
+                       HasShadow="False"
+                       BorderColor="white"
+                       BackgroundColor="Transparent">
+
+
+                </Frame>
+
+                <!--UI for Pack and Create Button-->
+                <Grid ColumnDefinitions="50*, 20*">
+
+                    <Frame Grid.Column="0"
+                           HeightRequest="700"
+                           BackgroundColor="white"
+                           VerticalOptions="Fill"
+                           HorizontalOptions="Fill">
+
+                    </Frame>
+                    <Button VerticalOptions="End"
+                            HorizontalOptions="Fill"
+                            Grid.Column="1"
+                            Text="Create"
+                            Margin="10"/>
+                </Grid>
+                <!--UI for Card Inventory-->
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Frame>
+
 
 </ContentPage>
