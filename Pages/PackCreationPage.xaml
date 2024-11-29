@@ -76,7 +76,6 @@
                                            Width="50"/>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
-
                         </CollectionView>
                     </Frame>
 
@@ -85,9 +84,126 @@
                            HeightRequest="100"
                            HasShadow="False"
                            BorderColor="white"
-                           BackgroundColor="Transparent"
-                           HorizontalOptions="Center">
+                           HorizontalOptions="Fill"
+                           BackgroundColor="Green">
 
+                        <Grid RowDefinitions="*,*"
+                              ColumnDefinitions="*,*,*,*,*"
+                              ColumnSpacing="8">
+
+                            <!--Slot 1-->
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   Text="1"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+
+                            <Grid Grid.Row="1"
+                                  Grid.Column="0"
+                                  ColumnDefinitions="50*, 50*"
+                                  ColumnSpacing="3">
+                                <Entry
+                                    Grid.Column="0"
+                                    Placeholder="Rarity"
+                                    Text="{Binding Slot1Rarity, Mode=TwoWay}"
+                                    Keyboard="Numeric"/>
+                                <Entry Grid.Column="1"
+                                       Placeholder="Weight"
+                                       Text="{Binding Slot1Weight, Mode=TwoWay}"
+                                       Keyboard="Numeric"/>
+                            </Grid>
+
+                            <!--Slot 2-->
+                            <Label Grid.Row="0"
+                                   Grid.Column="1"
+                                   Text="2"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+                            <Grid Grid.Row="1"
+                                  Grid.Column="1"
+                                  ColumnDefinitions="50*, 50*"
+                                  ColumnSpacing="3">
+                                <Entry
+                                    Grid.Column="0"
+                                    Placeholder="Rarity"
+                                    Text="{Binding Slot2Rarity, Mode=TwoWay}"
+                                    Keyboard="Numeric"/>
+                                <Entry Grid.Column="1"
+                                       Placeholder="Weight"
+                                       Text="{Binding Slot2Weight, Mode=TwoWay}"
+                                       Keyboard="Numeric"/>
+                            </Grid>
+
+                            <!--Slot 3-->
+                            <Label Grid.Row="0"
+                                   Grid.Column="2"
+                                   Text="3"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+
+                            <Grid Grid.Row="1"
+                                  Grid.Column="2"
+                                  ColumnDefinitions="50*, 50*"
+                                  ColumnSpacing="3">
+                                <Entry
+                                    Grid.Column="0"
+                                    Placeholder="Rarity"
+                                    Text="{Binding Slot3Rarity, Mode=TwoWay}"
+                                    Keyboard="Numeric"/>
+                                <Entry Grid.Column="1"
+                                       Placeholder="Weight"
+                                       Text="{Binding Slot3Weight, Mode=TwoWay}"
+                                       Keyboard="Numeric"/>
+                            </Grid>
+
+                            <!--Slot 4-->
+                            <Label Grid.Row="0"
+                                   Grid.Column="3"
+                                   Text="4"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+
+                            <Grid Grid.Row="1"
+                                  Grid.Column="3"
+                                  ColumnDefinitions="50*, 50*"
+                                  ColumnSpacing="3">
+                                <Entry
+                                    Grid.Column="0"
+                                    Placeholder="Rarity"
+                                    Text="{Binding Slot4Rarity, Mode=TwoWay}"
+                                    Keyboard="Numeric"/>
+                                <Entry Grid.Column="1"
+                                       Placeholder="Weight"
+                                       Text="{Binding Slot4Weight, Mode=TwoWay}"
+                                       Keyboard="Numeric"/>
+                            </Grid>
+
+                            <!--Slot 5-->
+                            <Label Grid.Row="0"
+                                   Grid.Column="4"
+                                   Text="5"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+                            <Grid Grid.Row="1"
+                                  Grid.Column="4"
+                                  ColumnDefinitions="50*, 50*"
+                                  ColumnSpacing="3">
+                                <Entry
+                                    Grid.Column="0"
+                                    Placeholder="Rarity"
+                                    Text="{Binding Slot4Rarity, Mode=TwoWay}"
+                                    Keyboard="Numeric"/>
+                                <Entry Grid.Column="1"
+                                       Placeholder="Weight"
+                                       Text="{Binding Slot4Weight, Mode=TwoWay}"
+                                       Keyboard="Numeric"/>
+                            </Grid>
+
+
+
+
+
+                        </Grid>
 
                     </Frame>
                 </Grid>
