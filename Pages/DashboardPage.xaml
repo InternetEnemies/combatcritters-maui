@@ -76,7 +76,7 @@
                     <Button Text="Create Packs"
                             TextColor="White"
                             Margin="0,5"
-                            Command="{Binding OpenPackOptionsCommand}"/>
+                            Clicked="OnCreatePacksClicked"/>
                 </VerticalStackLayout>
 
             </Frame>

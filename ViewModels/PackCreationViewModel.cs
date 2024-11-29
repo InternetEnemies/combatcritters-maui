@@ -2,12 +2,10 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using Combat_Critters_2._0.Pages;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card;
 using CombatCrittersSharp.objects.card.Interfaces;
-using CombatCrittersSharp.objects.pack;
 
 namespace Combat_Critters_2._0.ViewModels
 {
@@ -94,10 +92,10 @@ namespace Combat_Critters_2._0.ViewModels
 
 
 
-        public PackCreationViewModel(string packType)
+        public PackCreationViewModel()
         {
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
-            _packType = packType;
+            _packType = "packType";
             _description = "";
             _gameCards = new ObservableCollection<ICard>();
             _selectedCards = new ObservableCollection<ICard>();
