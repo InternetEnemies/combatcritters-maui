@@ -64,7 +64,9 @@
                            BackgroundColor="Transparent"
                            HorizontalOptions="Center">
 
-                        <CollectionView ItemsSource="{Binding GamePackImagesURL}">
+                        <CollectionView ItemsSource="{Binding GamePackImagesURL}"
+                                        SelectionMode="Single"
+                                        SelectedItem="{Binding SelectedPackImage, Mode=TwoWay}">
                             <CollectionView.ItemsLayout>
                                 <LinearItemsLayout Orientation="Horizontal"
                                                    ItemSpacing="20"/>
@@ -216,6 +218,8 @@
                            BackgroundColor="white"
                            VerticalOptions="Fill"
                            HorizontalOptions="Fill">
+
+
 
                     </Frame>
                     <Button VerticalOptions="End"

@@ -24,6 +24,8 @@ namespace Combat_Critters_2._0.Pages
             string text = ((Entry)sender).Text;
         }
 
+
+
         // private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         // {
         //     if (e.CurrentSelection.Count > 0 && e.CurrentSelection[0] is ICard selectedCard)

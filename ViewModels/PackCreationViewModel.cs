@@ -3,10 +3,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using Combat_Critters_2._0.Services;
-using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card;
 using CombatCrittersSharp.objects.card.Interfaces;
-
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 namespace Combat_Critters_2._0.ViewModels
 {
     public class PackCreationViewModel : INotifyPropertyChanged
@@ -175,6 +175,28 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
+        //SELECTED PACK IMAGE
+        private string? _selectedPackImage;
+        public string? SelectedPackImage
+        {
+            get => _selectedPackImage;
+            set
+            {
+                if (_selectedPackImage != value)
+                {
+                    _selectedPackImage = value;
+                    OnPropertyChanged(nameof(SelectedPackImage));
+                    string text = "Pack Image Selected";
+                    ToastDuration duration = ToastDuration.Short;
+                    double fontSize = 14;
+                    var cancellationTokenSource = new CancellationTokenSource();
+
+                    var toast = Toast.Make(text, duration, fontSize);
+                    toast.Show(cancellationTokenSource.Token);
+                }
+            }
+        }
+
         public PackCreationViewModel()
         {
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
@@ -183,6 +205,11 @@ namespace Combat_Critters_2._0.ViewModels
             _gamePackImagesURL = new ObservableCollection<string>();
 
             Task.Run(async () => await LoadDataNeeded());
+        }
+
+        private void OnSelectedPackImage()
+        {
+
         }
 
         private async Task LoadDataNeeded()
@@ -210,8 +237,6 @@ namespace Combat_Critters_2._0.ViewModels
             {
                 IsLoading = false;
             }
-
-
         }
 
 
