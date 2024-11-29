@@ -1,4 +1,5 @@
 
+using System.Collections.ObjectModel;
 using System.Reflection.Emit;
 using Combat_Critters_2._0.Models;
 using CombatCrittersSharp;
@@ -93,25 +94,53 @@ namespace Combat_Critters_2._0.Services
         /// Request for all game cards
         /// </summary>
         /// <param name="query"> the card query filter</param>
-        /// <returns>A list of game cards</returns>
+        /// <returns>Returns an observable collection of cards</returns>
         /// <exception cref="InvalidOperationException">returned if User and/or cards manager is null</exception>
-        public async Task<List<IItemStack<ICard>>?> GetCardsAsync(ICardQuery query)
+        public async Task<ObservableCollection<ICard>> GetCardsAsync(ICardQuery query)
         {
 
-            IUser? user = _client.User;
-
-            if (user != null && user.Cards != null)
+            try
             {
-                IUserCardsManager cardsManager = user.Cards;
-                Console.WriteLine("Attempting to get user cards");
-                var cards = await cardsManager.GetCards(query).ConfigureAwait(false);
-                Console.WriteLine($"Retrieved {cards.Count} cards");
+                IUser? user = _client.User;
 
-                return cards;
+                if (user != null && user.Cards != null)
+                {
+                    IUserCardsManager cardsManager = user.Cards;
+                    Console.WriteLine("Attempting to get user cards");
+                    var cards = await cardsManager.GetCards(query).ConfigureAwait(false);
+                    Console.WriteLine($"Retrieved {cards.Count} cards");
+
+                    //cards can return an empty list or a populated list
+                    var modifiedCards = new ObservableCollection<ICard>(cards.Select(stack => stack.Item).ToList());
+                    return modifiedCards;
+                }
+                else
+                    throw new InvalidOperationException("This client User cannot be null");
+            }
+            catch (InvalidOperationException)
+            {
+                //If this happens, either client instance is null of user instance of client is null
+                //Display popup
+                return null;
 
             }
-            else
-                throw new InvalidOperationException("This client User cannot be null");
+            catch (ArgumentNullException)
+            {
+                //If this happens, the argument for card Query is null
+                return null;
+            }
+            catch (RestException)
+            {
+                //Rest Exception
+                return null;
+            }
+            catch (AuthException)
+            {
+                //Auth Exception
+                return null;
+            }
+
+
         }
 
 
@@ -138,6 +167,7 @@ namespace Combat_Critters_2._0.Services
                 throw new InvalidOperationException("This Client user cannot be null");
 
         }
+
 
         /// <summary>
         /// Creates a new pack with specified card selections, rarity probabilities, and other pack details.

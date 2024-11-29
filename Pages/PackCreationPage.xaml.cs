@@ -11,7 +11,7 @@ namespace Combat_Critters_2._0.Pages
         {
             InitializeComponent();
             _viewModel = new PackCreationViewModel();
-            //BindingContext = new PackCreationViewModel();
+            BindingContext = new PackCreationViewModel();
         }
 
         /// <summary>

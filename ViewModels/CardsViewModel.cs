@@ -77,39 +77,15 @@ namespace Combat_Critters_2._0.ViewModels
             bool hasCards = false; // function scoped variable
             try
             {
-                var query = new CardQueryBuilder().Build();
-
-                var cards = await _backendService.GetCardsAsync(query);
-
-                if (cards != null && cards.Count > 0)
-                {
-                    GameCards = new ObservableCollection<ICard>(cards.Select(stack => stack.Item).ToList());
+                //Update Game Cards
+                GameCards = await _backendService.GetCardsAsync(new CardQueryBuilder().Build());
+                if (GameCards.Count > 0)
                     hasCards = true;
-                    Console.WriteLine($"Number of cards loaded: {GameCards.Count}");
-                }
-                else
-                {
-                    //Game has no Cards
-                    GameCards.Clear();
-                    Console.WriteLine("No cards found for the user.");
-                }
-
-            }
-            catch (RestException)
-            {
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to load user cards. Please try again.", "OK");
-            }
-            catch (Exception)
-            {
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Error", "An unexpected error occurred. Please try again later.", "OK");
             }
             finally
             {
-                //Set HasCards based on result of operation
-                HasCards = hasCards;
                 IsLoading = false;
+                HasCards = hasCards;
             }
         }
 

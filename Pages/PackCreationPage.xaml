@@ -27,7 +27,21 @@
                 <Frame HeightRequest="500"
                        HasShadow="False"
                        BorderColor="white"
-                       BackgroundColor="Transparent">
+                       BackgroundColor="Black"
+                       Padding="10">
+
+                    <CollectionView ItemsSource="{Binding GameCards}">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical"
+                                             Span="5"
+                                             VerticalItemSpacing="30"
+                                             HorizontalItemSpacing="30"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <StaticResource Key="CardTemplate"/>
+                        </CollectionView.ItemTemplate>
+
+                    </CollectionView>
 
 
                 </Frame>
