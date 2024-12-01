@@ -37,6 +37,9 @@ namespace Combat_Critters_2._0.Pages
                 _viewModel.SelectedCards.Add(selectedCard);
                 //Clear the selection
                 ((CollectionView)sender).SelectedItem = null;
+
+                var toast = Toast.Make($"Added '{selectedCard.Name}'", ToastDuration.Short, 14);
+                toast.Show();
             }
 
         }

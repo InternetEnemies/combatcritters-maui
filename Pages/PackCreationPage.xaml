@@ -196,11 +196,11 @@
                                 <Entry
                                     Grid.Column="0"
                                     Placeholder="Rarity"
-                                    Text="{Binding Slot4Rarity, Mode=TwoWay}"
+                                    Text="{Binding Slot5Rarity, Mode=TwoWay}"
                                     Keyboard="Numeric"/>
                                 <Entry Grid.Column="1"
                                        Placeholder="Weight"
-                                       Text="{Binding Slot4Weight, Mode=TwoWay}"
+                                       Text="{Binding Slot5Weight, Mode=TwoWay}"
                                        Keyboard="Numeric"/>
                             </Grid>
                         </Grid>
@@ -255,7 +255,8 @@
                             HorizontalOptions="Fill"
                             Grid.Column="1"
                             Text="Create"
-                            Margin="10"/>
+                            Margin="10"
+                            Command="{Binding OnCreateCommand}"/>
                 </Grid>
                 <!--UI for Card Inventory-->
 

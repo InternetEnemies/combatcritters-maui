@@ -154,8 +154,6 @@ namespace Combat_Critters_2._0.Services
 
         }
 
-
-
         /// <summary>
         /// Request for all game packs
         /// </summary>
@@ -179,26 +177,33 @@ namespace Combat_Critters_2._0.Services
 
         }
 
-
         /// <summary>
-        /// Creates a new pack with specified card selections, rarity probabilities, and other pack details.
+        /// Request for a pack to be created
         /// </summary>
-        /// <param name="cardIds">List of card IDs to include as potential contents of the pack.</param>
-        /// <param name="rarityProbabilities">Dictionary defining the probability of each rarity level appearing in the pack.</param>
-        /// <param name="packName">The name of the pack to be created.</param>
-        /// <param name="packImage">The image URL or resource identifier for the pack’s visual representation.</param>
-        /// <returns>The created pack if successful.</returns>
-        /// <exception cref="AuthException">Thrown if the user session is invalid or unauthorized.</exception>
-        /// <exception cref="ArgumentException">Thrown if any argument is invalid, such as an empty list of card IDs.</exception>
-        // public async Task<IPack> CreatePackAsync(List<int> cardIds, Dictionary<int, int> rarityProbabilities, string packName, string packImage)
-        // {
+        /// <param name="name"></param>
+        /// <param name="image"></param>
+        /// <param name="cardIds"></param>
+        /// <param name="slotRaritiesProbabilities"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public async Task<Pack?> CreatePackAsync(string name, string image, int[] cardIds, List<Dictionary<int, int>> slotRaritiesProbabilities)
+        {
+            IUser? user = _client.User;
+            if (user != null && user.Packs != null)
+            {
+                IPackManager packsManager = user.Packs;
+                Console.WriteLine($"Attempting to create pack '{name}'");
+                var pack = await packsManager.CreatePackAsync(name, image, cardIds, slotRaritiesProbabilities);
+                Console.WriteLine("Pack Creation Task Completed");
+                return pack;
+            }
+            else
+                throw new InvalidOperationException("This Client user cannot be null");
 
-        //    // var pack = await packsManager.CreatePackAsync(cardIds, rarityProbabilities, packName, packImage, slotCount);
+        }
 
-        //     Console.WriteLine("Success");
 
-        //     return pack;
-        // }
+
 
 
     }

@@ -37,8 +37,8 @@ namespace Combat_Critters_2._0.ViewModels
         }
 
         //GAME CARDS
-        private ObservableCollection<ICard> _gameCards;
-        public ObservableCollection<ICard> GameCards
+        private ObservableCollection<ICard?> _gameCards;
+        public ObservableCollection<ICard?> GameCards
         {
             get => _gameCards;
             set
@@ -164,8 +164,8 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-        private int _slot5Weight;
-        public int Slot5Weight
+        private int? _slot5Weight;
+        public int? Slot5Weight
         {
             get => _slot5Weight;
             set
@@ -187,13 +187,9 @@ namespace Combat_Critters_2._0.ViewModels
                 {
                     _selectedPackImage = value;
                     OnPropertyChanged(nameof(SelectedPackImage));
-                    string text = "Pack Image Selected";
-                    ToastDuration duration = ToastDuration.Short;
-                    double fontSize = 14;
-                    var cancellationTokenSource = new CancellationTokenSource();
 
-                    var toast = Toast.Make(text, duration, fontSize);
-                    toast.Show(cancellationTokenSource.Token);
+                    var toast = Toast.Make("Pack Image Selected", ToastDuration.Short, 14);
+                    toast.Show();
 
                 }
             }
@@ -211,16 +207,18 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-
+        public ICommand OnCreateCommand { get; }
 
         public PackCreationViewModel()
         {
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
             _packName = "";
-            _gameCards = new ObservableCollection<ICard>();
+            _selectedPackImage = "";
+            _gameCards = new ObservableCollection<ICard?>();
             _gamePackImagesURL = new ObservableCollection<string>();
 
             _selectedCards = new ObservableCollection<ICard>();
+            OnCreateCommand = new Command(async () => await CreateCommandAsync());
 
             Task.Run(async () => await LoadDataNeeded());
         }
@@ -251,13 +249,108 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-        // public void AddtoPack(ICard selectedCard)
-        // {
-        //     SelectedCards.Add(selectedCard);
-        //     Console.WriteLine($"{SelectedCards.Count} cards in selected card");
-        // }
+        private async Task CreateCommandAsync()
+        {
+            try
+            {
+                validateOnCreate();
+
+                int[] cardIds = SelectedCards.Select(card => card.CardId).ToArray();
+                List<Dictionary<int, int>> slotRarityProbabilities = new List<Dictionary<int, int>>();
+
+                if (Slot1Rarity.HasValue && Slot1Weight.HasValue)
+                    AddSlotData(slotRarityProbabilities, Slot1Rarity.Value, Slot1Weight.Value);
+
+                if (Slot2Rarity.HasValue && Slot2Weight.HasValue)
+                    AddSlotData(slotRarityProbabilities, Slot2Rarity.Value, Slot2Weight.Value);
+
+                if (Slot3Rarity.HasValue && Slot3Weight.HasValue)
+                    AddSlotData(slotRarityProbabilities, Slot3Rarity.Value, Slot3Weight.Value);
+
+                if (Slot4Rarity.HasValue && Slot4Weight.HasValue)
+                    AddSlotData(slotRarityProbabilities, Slot4Rarity.Value, Slot4Weight.Value);
+
+                if (Slot5Rarity.HasValue && Slot5Weight.HasValue)
+                    AddSlotData(slotRarityProbabilities, Slot5Rarity.Value, Slot5Weight.Value);
 
 
+                var pack = await _backendService.CreatePackAsync(PackName, SelectedPackImage, cardIds, slotRarityProbabilities);
+
+                if (pack != null)
+                {
+                    var toast = Toast.Make($"Pack Created Successfully", ToastDuration.Short);
+                    await toast.Show();
+                }
+                else
+                {
+                    var toast = Toast.Make($"Pack Creation Failed. Try Again", ToastDuration.Short);
+                    await toast.Show();
+                }
+            }
+            catch (ArgumentException e)
+            {
+                var toast = Toast.Make(e.Message, ToastDuration.Short);
+                await toast.Show();
+            }
+            catch (InvalidOperationException)
+            {
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
+            }
+        }
+
+        private void validateOnCreate()
+        {
+            //
+            if (string.IsNullOrWhiteSpace(PackName) || PackName == "")
+            {
+                throw new ArgumentException("Please Enter Pack Name");
+            }
+            else if (string.IsNullOrWhiteSpace(SelectedPackImage) || SelectedPackImage == "")
+            {
+                throw new ArgumentException("Please Choose a Pack Image");
+            }
+            else if (SelectedCards.Count == 0)
+            {
+                throw new ArgumentException("Please Add Cards to your pack");
+            }
+
+            // Validate Slot Entries
+            ValidateSlot("Slot 1", Slot1Weight, Slot1Rarity);
+            ValidateSlot("Slot 2", Slot2Weight, Slot2Rarity);
+            ValidateSlot("Slot 3", Slot3Weight, Slot3Rarity);
+            ValidateSlot("Slot 4", Slot4Weight, Slot4Rarity);
+            ValidateSlot("Slot 5", Slot5Weight, Slot5Rarity);
+
+        }
+
+        /// <summary>
+        /// Validate Slot Entries
+        /// </summary>
+        /// <param name="slotName"></param>
+        /// <param name="weight"></param>
+        /// <param name="rarity"></param>
+        /// <exception cref="ArgumentException"></exception>
+        private void ValidateSlot(string slotName, int? weight, int? rarity)
+        {
+            // Validate Weight
+            if (!weight.HasValue || weight < 1 || weight > 100)
+            {
+                throw new ArgumentException($"{slotName} weight must be a number between 1 and 100.");
+            }
+
+            // Validate Rarity
+            if (rarity.HasValue && (rarity < 1 || rarity > 5))
+            {
+                throw new ArgumentException($"{slotName} rarity must be a number between 1 and 5.");
+            }
+        }
+
+        private void AddSlotData(List<Dictionary<int, int>> slot, int rarity, int weight)
+        {
+
+            slot.Add(new Dictionary<int, int> { { rarity, weight } });
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
