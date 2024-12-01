@@ -1,5 +1,8 @@
 using Combat_Critters_2._0.ViewModels;
+using CombatCrittersSharp.objects.card;
 using CombatCrittersSharp.objects.card.Interfaces;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 
 
 namespace Combat_Critters_2._0.Pages
@@ -11,7 +14,7 @@ namespace Combat_Critters_2._0.Pages
         {
             InitializeComponent();
             _viewModel = new PackCreationViewModel();
-            BindingContext = new PackCreationViewModel();
+            BindingContext = _viewModel;
         }
 
         /// <summary>
@@ -25,18 +28,18 @@ namespace Combat_Critters_2._0.Pages
         }
 
 
+        void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
-        // private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        // {
-        //     if (e.CurrentSelection.Count > 0 && e.CurrentSelection[0] is ICard selectedCard)
-        //     {
-        //         var viewModel = BindingContext as PackCreationViewModel;
-        //         viewModel?.OnCardSelected(selectedCard);  // Call OnCardSelected instead of directly adding to SelectedCards
+            if (e.CurrentSelection.Count > 0 && e.CurrentSelection[0] is ICard selectedCard)
+            {
+                Console.WriteLine("Selection is a card");
+                _viewModel.SelectedCards.Add(selectedCard);
+                //Clear the selection
+                ((CollectionView)sender).SelectedItem = null;
+            }
 
-        //         // Clear the selection
-        //         ((CollectionView)sender).SelectedItem = null;
-        //     }
-        // }
+        }
 
     }
 

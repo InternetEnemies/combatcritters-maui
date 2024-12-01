@@ -175,6 +175,7 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
+
         //SELECTED PACK IMAGE
         private string? _selectedPackImage;
         public string? SelectedPackImage
@@ -193,9 +194,24 @@ namespace Combat_Critters_2._0.ViewModels
 
                     var toast = Toast.Make(text, duration, fontSize);
                     toast.Show(cancellationTokenSource.Token);
+
                 }
             }
         }
+
+        //SELECTED CARDS
+        private ObservableCollection<ICard> _selectedCards;
+        public ObservableCollection<ICard> SelectedCards
+        {
+            get => _selectedCards;
+            set
+            {
+                _selectedCards = value;
+                OnPropertyChanged(nameof(SelectedCards));
+            }
+        }
+
+
 
         public PackCreationViewModel()
         {
@@ -204,14 +220,10 @@ namespace Combat_Critters_2._0.ViewModels
             _gameCards = new ObservableCollection<ICard>();
             _gamePackImagesURL = new ObservableCollection<string>();
 
+            _selectedCards = new ObservableCollection<ICard>();
+
             Task.Run(async () => await LoadDataNeeded());
         }
-
-        private void OnSelectedPackImage()
-        {
-
-        }
-
         private async Task LoadDataNeeded()
         {
             IsLoading = true;
@@ -239,6 +251,11 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
+        // public void AddtoPack(ICard selectedCard)
+        // {
+        //     SelectedCards.Add(selectedCard);
+        //     Console.WriteLine($"{SelectedCards.Count} cards in selected card");
+        // }
 
 
 

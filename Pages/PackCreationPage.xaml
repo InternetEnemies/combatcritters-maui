@@ -26,7 +26,7 @@
                                TextColor="#FFE9E2E2"
                                FontSize="24"/>
                         <Entry Placeholder="Enter Pack Name"
-                               Completed="OnPackNameEntryCompleted"/>
+                               Text="{Binding PackName, Mode=TwoWay}"/>
                     </HorizontalStackLayout>
                 </Grid>
 
@@ -38,7 +38,10 @@
                        Padding="10">
 
 
-                    <CollectionView ItemsSource="{Binding GameCards}">
+                    <CollectionView
+                        ItemsSource="{Binding GameCards}"
+                        SelectionMode="Single"
+                        SelectionChanged="OnSelectionChanged">
                         <CollectionView.ItemsLayout>
                             <GridItemsLayout Orientation="Vertical"
                                              Span="5"
@@ -200,11 +203,6 @@
                                        Text="{Binding Slot4Weight, Mode=TwoWay}"
                                        Keyboard="Numeric"/>
                             </Grid>
-
-
-
-
-
                         </Grid>
 
                     </Frame>
@@ -215,11 +213,42 @@
 
                     <Frame Grid.Column="0"
                            HeightRequest="700"
-                           BackgroundColor="white"
                            VerticalOptions="Fill"
-                           HorizontalOptions="Fill">
+                           HorizontalOptions="Fill"
+                           BackgroundColor="white">
+
+                        <Grid RowDefinitions="30*, 70*"
+                              ColumnDefinitions="50*, 50*">
 
 
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   Text="{Binding PackName, Mode=TwoWay}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+
+                            <Image Grid.Row="0"
+                                   Grid.Column="1"
+                                   Source="{Binding SelectedPackImage}"
+                                   WidthRequest="50"
+                                   HeightRequest="50"
+                                   HorizontalOptions="Center"/>
+
+                            <CollectionView Grid.Row="1"
+                                            Grid.ColumnSpan="2"
+                                            ItemsSource="{Binding SelectedCards}">
+                                <CollectionView.ItemsLayout>
+                                    <GridItemsLayout Orientation="Vertical"
+                                                     Span="5"
+                                                     VerticalItemSpacing="30"
+                                                     HorizontalItemSpacing="30"/>
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <StaticResource Key="CardTemplate"/>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                        </Grid>
 
                     </Frame>
                     <Button VerticalOptions="End"

@@ -10,6 +10,8 @@ using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.deck;
 using CombatCrittersSharp.objects.pack;
 using CombatCrittersSharp.objects.user;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using Foundation;
 
 namespace Combat_Critters_2._0.Services
@@ -97,7 +99,7 @@ namespace Combat_Critters_2._0.Services
         /// <param name="query"> the card query filter</param>
         /// <returns>Returns an observable collection of cards</returns>
         /// <exception cref="InvalidOperationException">returned if User and/or cards manager is null</exception>
-        public async Task<ObservableCollection<ICard>> GetCardsAsync(ICardQuery query)
+        public async Task<ObservableCollection<ICard>?> GetCardsAsync(ICardQuery query)
         {
 
             try
@@ -122,24 +124,32 @@ namespace Combat_Critters_2._0.Services
             {
                 //If this happens, either client instance is null of user instance of client is null
                 //Display popup
-                return null;
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
 
             }
             catch (ArgumentNullException)
             {
                 //If this happens, the argument for card Query is null
-                return null;
+                var toast = Toast.Make("Invalid Card Query", ToastDuration.Short);
+                await toast.Show();
+
             }
             catch (RestException)
             {
                 //Rest Exception
-                return null;
+                var toast = Toast.Make("System Error", ToastDuration.Short);
+                await toast.Show();
+
             }
             catch (AuthException)
             {
                 //Auth Exception
-                return null;
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
             }
+            // Return null in the case of an exception.
+            return null;
 
 
         }
