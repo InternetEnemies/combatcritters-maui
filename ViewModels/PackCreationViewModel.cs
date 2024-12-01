@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using Combat_Critters_2._0.Services;
+using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CommunityToolkit.Maui.Alerts;
@@ -37,8 +38,8 @@ namespace Combat_Critters_2._0.ViewModels
         }
 
         //GAME CARDS
-        private ObservableCollection<ICard?> _gameCards;
-        public ObservableCollection<ICard?> GameCards
+        private ObservableCollection<ICard> _gameCards;
+        public ObservableCollection<ICard> GameCards
         {
             get => _gameCards;
             set
@@ -214,7 +215,7 @@ namespace Combat_Critters_2._0.ViewModels
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
             _packName = "";
             _selectedPackImage = "";
-            _gameCards = new ObservableCollection<ICard?>();
+            _gameCards = new ObservableCollection<ICard>();
             _gamePackImagesURL = new ObservableCollection<string>();
 
             _selectedCards = new ObservableCollection<ICard>();
@@ -297,6 +298,19 @@ namespace Combat_Critters_2._0.ViewModels
                 var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
                 await toast.Show();
             }
+            catch (RestException)
+            {
+                //Rest Exception
+                var toast = Toast.Make("System Error", ToastDuration.Short);
+                await toast.Show();
+
+            }
+            catch (AuthException)
+            {
+                //Auth Exception
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
+            }
         }
 
         private void validateOnCreate()
@@ -334,7 +348,7 @@ namespace Combat_Critters_2._0.ViewModels
         private void ValidateSlot(string slotName, int? weight, int? rarity)
         {
             // Validate Weight
-            if (!weight.HasValue || weight < 1 || weight > 100)
+            if (!weight.HasValue || weight < 0 || weight > 100)
             {
                 throw new ArgumentException($"{slotName} weight must be a number between 1 and 100.");
             }
@@ -346,9 +360,14 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
+        /// <summary>
+        /// Helper method to add slot data
+        /// </summary>
+        /// <param name="slot"></param>
+        /// <param name="rarity"></param>
+        /// <param name="weight"></param>
         private void AddSlotData(List<Dictionary<int, int>> slot, int rarity, int weight)
         {
-
             slot.Add(new Dictionary<int, int> { { rarity, weight } });
         }
 

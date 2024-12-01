@@ -3,16 +3,10 @@ using System.Collections.ObjectModel;
 using System.Reflection.Emit;
 using Combat_Critters_2._0.Models;
 using CombatCrittersSharp;
-using CombatCrittersSharp.exception;
-using CombatCrittersSharp.managers;
 using CombatCrittersSharp.managers.interfaces;
 using CombatCrittersSharp.objects.card.Interfaces;
-using CombatCrittersSharp.objects.deck;
 using CombatCrittersSharp.objects.pack;
 using CombatCrittersSharp.objects.user;
-using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Core;
-using Foundation;
 
 namespace Combat_Critters_2._0.Services
 {
@@ -58,18 +52,19 @@ namespace Combat_Critters_2._0.Services
         /// <returns>A list of all game users</returns>
         public async Task<List<IUser>> GetUsersAsync()
         {
-            Console.WriteLine("Attempting to get all users");
+
             IUserManager? userManager = _client.Users;
 
-            // if for some reason, this client does not have connection to the User manager
-            if (userManager == null)
+            if (userManager != null)
             {
-                throw new InvalidOperationException("This client has no access to the User Manager");
+                Console.WriteLine("Attempting to get all users");
+                var users = await userManager.GetAllUsersWithProfiles();
+                Console.WriteLine($"Retrieved {users.Count} users");
+                return users;
             }
+            else
+                throw new InvalidOperationException("This client has no access to the User Manager");
 
-            var users = await userManager.GetAllUsersWithProfiles();
-            Console.WriteLine($"Retrieved {users.Count} users");
-            return users;
         }
 
         /// <summary>
@@ -79,17 +74,18 @@ namespace Combat_Critters_2._0.Services
         /// <returns>A task that completes when user is deleted</returns>
         public async Task DeleteUserAsync(int id)
         {
-            Console.WriteLine("Attempting to delete User");
             IUserManager? userManager = _client.Users;
-
-            // if for some reason, this client does not have connection to the User manager
-            if (userManager == null)
+            if (userManager != null)
             {
-                throw new InvalidOperationException("This client has no access to the User Manager");
+                Console.WriteLine("Attempting to delete User");
+                await userManager.DeleteUser(id);
+                Console.WriteLine($"Successfully Removed user {id}");
             }
+            else
+                throw new InvalidOperationException("This client has no access to the User Manager");
 
-            await userManager.DeleteUser(id);
-            Console.WriteLine($"Successfully Removed user {id}");
+
+
         }
 
 
@@ -99,58 +95,25 @@ namespace Combat_Critters_2._0.Services
         /// <param name="query"> the card query filter</param>
         /// <returns>Returns an observable collection of cards</returns>
         /// <exception cref="InvalidOperationException">returned if User and/or cards manager is null</exception>
-        public async Task<ObservableCollection<ICard>?> GetCardsAsync(ICardQuery query)
+        public async Task<ObservableCollection<ICard>> GetCardsAsync(ICardQuery query)
         {
 
-            try
+
+            IUser? user = _client.User;
+
+            if (user != null && user.Cards != null)
             {
-                IUser? user = _client.User;
+                IUserCardsManager cardsManager = user.Cards;
+                Console.WriteLine("Attempting to get user cards");
+                var cards = await cardsManager.GetCards(query).ConfigureAwait(false);
+                Console.WriteLine($"Retrieved {cards.Count} cards");
 
-                if (user != null && user.Cards != null)
-                {
-                    IUserCardsManager cardsManager = user.Cards;
-                    Console.WriteLine("Attempting to get user cards");
-                    var cards = await cardsManager.GetCards(query).ConfigureAwait(false);
-                    Console.WriteLine($"Retrieved {cards.Count} cards");
-
-                    //cards can return an empty list or a populated list
-                    var modifiedCards = new ObservableCollection<ICard>(cards.Select(stack => stack.Item).ToList());
-                    return modifiedCards;
-                }
-                else
-                    throw new InvalidOperationException("This client User cannot be null");
+                //cards can return an empty list or a populated list
+                var modifiedCards = new ObservableCollection<ICard>(cards.Select(stack => stack.Item).ToList());
+                return modifiedCards;
             }
-            catch (InvalidOperationException)
-            {
-                //If this happens, either client instance is null of user instance of client is null
-                //Display popup
-                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
-                await toast.Show();
-
-            }
-            catch (ArgumentNullException)
-            {
-                //If this happens, the argument for card Query is null
-                var toast = Toast.Make("Invalid Card Query", ToastDuration.Short);
-                await toast.Show();
-
-            }
-            catch (RestException)
-            {
-                //Rest Exception
-                var toast = Toast.Make("System Error", ToastDuration.Short);
-                await toast.Show();
-
-            }
-            catch (AuthException)
-            {
-                //Auth Exception
-                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
-                await toast.Show();
-            }
-            // Return null in the case of an exception.
-            return null;
-
+            else
+                throw new InvalidOperationException("This client User cannot be null");
 
         }
 
@@ -201,10 +164,6 @@ namespace Combat_Critters_2._0.Services
                 throw new InvalidOperationException("This Client user cannot be null");
 
         }
-
-
-
-
 
     }
 }

@@ -5,6 +5,8 @@ using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card;
 using CombatCrittersSharp.objects.card.Interfaces;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using UIKit;
 
 namespace Combat_Critters_2._0.ViewModels
@@ -82,6 +84,35 @@ namespace Combat_Critters_2._0.ViewModels
                 if (GameCards.Count > 0)
                     hasCards = true;
             }
+            catch (InvalidOperationException)
+            {
+                //If this happens, either client instance is null of user instance of client is null
+                //Display popup
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
+
+            }
+            catch (ArgumentNullException)
+            {
+                //If this happens, the argument for card Query is null
+                var toast = Toast.Make("Invalid Card Query", ToastDuration.Short);
+                await toast.Show();
+
+            }
+            catch (RestException)
+            {
+                //Rest Exception
+                var toast = Toast.Make("System Error", ToastDuration.Short);
+                await toast.Show();
+
+            }
+            catch (AuthException)
+            {
+                //Auth Exception
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
+            }
+
             finally
             {
                 IsLoading = false;

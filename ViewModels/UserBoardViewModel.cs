@@ -7,6 +7,7 @@ using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.user;
 using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 
 
 namespace Combat_Critters_2._0.ViewModels
@@ -114,18 +115,40 @@ namespace Combat_Critters_2._0.ViewModels
                     //Reload User List
                     await LoadUsers();
 
-                    var toast = Toast.Make($"{user.Username} has been removed from Combat Critters", CommunityToolkit.Maui.Core.ToastDuration.Short);
+                    var toast = Toast.Make($"{user.Username} has been removed from Combat Critters", ToastDuration.Short);
                     await toast.Show();
                 }
-                catch (RestException)
+                catch (RestException e)
                 {
-                    if (Application.Current?.MainPage != null)
-                        await Application.Current.MainPage.DisplayAlert("Error", "Failed to Delete user. Please try again.", "OK");
+                    //Log
+                    Console.WriteLine(e.Message);
+
+                    //Rest Exception
+                    var toast = Toast.Make("System Error", ToastDuration.Short);
+                    await toast.Show();
+
+                }
+                catch (AuthException e)
+                {
+                    //Log
+                    Console.WriteLine(e.Message);
+
+                    //Auth Exception
+                    var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                    await toast.Show();
+                }
+                catch (InvalidOperationException e)
+                {
+                    //Log
+                    Console.WriteLine(e.Message);
+
+                    var toast = Toast.Make(e.Message, ToastDuration.Short);
+                    await toast.Show();
                 }
             }
             else
             {
-                var toast = Toast.Make($"{user} does not exist", CommunityToolkit.Maui.Core.ToastDuration.Short);
+                var toast = Toast.Make($"{user} does not exist", ToastDuration.Short);
                 await toast.Show();
             }
         }
@@ -142,7 +165,6 @@ namespace Combat_Critters_2._0.ViewModels
         private async Task LoadUsers()
         {
             IsLoading = true;
-
             bool hasUsers = false; //function scoped variable
             try
             {
@@ -150,11 +172,9 @@ namespace Combat_Critters_2._0.ViewModels
 
                 if (users != null && users.Count > 0)
                 {
-
                     AllUsers = new ObservableCollection<IUser>(users);
                     FilteredUser = new ObservableCollection<IUser>(users);
                     hasUsers = true;
-
                 }
                 else
                 {
@@ -163,15 +183,36 @@ namespace Combat_Critters_2._0.ViewModels
                 }
 
             }
-            catch (RestException)
+            catch (InvalidOperationException e)
             {
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to load users. Please try again.", "OK");
+                //Log
+                Console.WriteLine(e.Message);
+
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
+            }
+            catch (RestException e)
+            {
+                //Log
+                Console.WriteLine(e.Message);
+
+                //Rest Exception
+                var toast = Toast.Make("System Error", ToastDuration.Short);
+                await toast.Show();
+
+            }
+            catch (AuthException e)
+            {
+                //Log
+                Console.WriteLine(e.Message);
+
+                //Auth Exception
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
             }
 
             finally
             {
-                // Set HasUsers.
                 HasUsers = hasUsers;
                 IsLoading = false; //Turn off loading indicator
             }
@@ -194,11 +235,26 @@ namespace Combat_Critters_2._0.ViewModels
                     SelectedUserProfileDeckCards = new ObservableCollection<ICard>(cards);
                     Console.WriteLine("UI Updated");
                 }
-                catch (RestException)
+                catch (RestException e)
                 {
-                    if (Application.Current?.MainPage != null)
-                        await Application.Current.MainPage.DisplayAlert("Error", "Failed to loading users profile. Please try again.", "OK");
+                    //Log
+                    Console.WriteLine(e.Message);
+
+                    //Rest Exception
+                    var toast = Toast.Make("System Error", ToastDuration.Short);
+                    await toast.Show();
+
                 }
+                catch (AuthException e)
+                {
+                    //Log
+                    Console.WriteLine(e.Message);
+
+                    //Auth Exception
+                    var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                    await toast.Show();
+                }
+
                 finally
                 {
                     IsLoading = false;
