@@ -17,17 +17,6 @@ namespace Combat_Critters_2._0.Pages
             BindingContext = _viewModel;
         }
 
-        /// <summary>
-        /// Update the Pack name when Pack name entry is completed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void OnPackNameEntryCompleted(object sender, EventArgs e)
-        {
-            string text = ((Entry)sender).Text;
-        }
-
-
         void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
