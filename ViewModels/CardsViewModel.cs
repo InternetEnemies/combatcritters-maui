@@ -5,6 +5,8 @@ using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card;
 using CombatCrittersSharp.objects.card.Interfaces;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using UIKit;
 
 namespace Combat_Critters_2._0.ViewModels
@@ -77,39 +79,44 @@ namespace Combat_Critters_2._0.ViewModels
             bool hasCards = false; // function scoped variable
             try
             {
-                var query = new CardQueryBuilder().Build();
-
-                var cards = await _backendService.GetCardsAsync(query);
-
-                if (cards != null && cards.Count > 0)
-                {
-                    GameCards = new ObservableCollection<ICard>(cards.Select(stack => stack.Item).ToList());
+                //Update Game Cards
+                GameCards = await _backendService.GetCardsAsync(new CardQueryBuilder().Build());
+                if (GameCards.Count > 0)
                     hasCards = true;
-                    Console.WriteLine($"Number of cards loaded: {GameCards.Count}");
-                }
-                else
-                {
-                    //Game has no Cards
-                    GameCards.Clear();
-                    Console.WriteLine("No cards found for the user.");
-                }
+            }
+            catch (InvalidOperationException)
+            {
+                //If this happens, either client instance is null of user instance of client is null
+                //Display popup
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
+
+            }
+            catch (ArgumentNullException)
+            {
+                //If this happens, the argument for card Query is null
+                var toast = Toast.Make("Invalid Card Query", ToastDuration.Short);
+                await toast.Show();
 
             }
             catch (RestException)
             {
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to load user cards. Please try again.", "OK");
+                //Rest Exception
+                var toast = Toast.Make("System Error", ToastDuration.Short);
+                await toast.Show();
+
             }
-            catch (Exception)
+            catch (AuthException)
             {
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Error", "An unexpected error occurred. Please try again later.", "OK");
+                //Auth Exception
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
             }
+
             finally
             {
-                //Set HasCards based on result of operation
-                HasCards = hasCards;
                 IsLoading = false;
+                HasCards = hasCards;
             }
         }
 

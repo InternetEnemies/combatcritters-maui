@@ -2,38 +2,17 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using Combat_Critters_2._0.Pages;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card;
 using CombatCrittersSharp.objects.card.Interfaces;
-using CombatCrittersSharp.objects.pack;
-
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 namespace Combat_Critters_2._0.ViewModels
 {
     public class PackCreationViewModel : INotifyPropertyChanged
     {
         private readonly BackendService _backendService;
-        public ICommand SelectionChangedCommand { get; }
-        public ICommand CreatePackCommand { get; }
-
-        // Limits for each card type in the pack
-        private int commonLimit;
-        private int uncommonLimit;
-        private int rareLimit;
-        private int epicLimit;
-        private int legendaryLimit;
-
-        private bool _hasCards;
-        public bool HasCards
-        {
-            get => _hasCards;
-            set
-            {
-                _hasCards = value;
-                OnPropertyChanged(nameof(HasCards));
-            }
-        }
 
         private bool _isLoading;
         public bool IsLoading
@@ -46,16 +25,19 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-        private ObservableCollection<ICard> _selectedCards;
-        public ObservableCollection<ICard> SelectedCards
+        //PACK NAME
+        private string _packName;
+        public string PackName
         {
-            get => _selectedCards;
+            get => _packName;
             set
             {
-                _selectedCards = value;
-                OnPropertyChanged(nameof(SelectedCards));
+                _packName = value;
+                OnPropertyChanged(nameof(PackName));
             }
         }
+
+        //GAME CARDS
         private ObservableCollection<ICard> _gameCards;
         public ObservableCollection<ICard> GameCards
         {
@@ -67,274 +49,327 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-        private string _packType;
-        public string PackType
+        //GAME PACK IMAGES
+        private ObservableCollection<string> _gamePackImagesURL;
+        public ObservableCollection<string> GamePackImagesURL
         {
-            get => _packType;
+            get => _gamePackImagesURL;
             set
             {
-                _packType = value;
-                OnPropertyChanged(nameof(PackType));
+                _gamePackImagesURL = value;
+                OnPropertyChanged(nameof(GamePackImagesURL));
             }
         }
 
-        private string _description;
-        public string Description
+        //RARITY AND WEIGHTS **This is repetitive. But i'll leave it as it :)**
+        private int? _slot1Rarity;
+        public int? Slot1Rarity
         {
-            get => _description;
+            get => _slot1Rarity;
             set
             {
-                _description = value;
-                OnPropertyChanged(nameof(Description));
+                _slot1Rarity = value;
+                OnPropertyChanged(nameof(Slot1Rarity));
             }
         }
 
-        private readonly int CardLimit = 10;
-        private Dictionary<int, int> _rarityProbabilities;
+        private int? _slot1Weight;
+        public int? Slot1Weight
+        {
+            get => _slot1Weight;
+            set
+            {
+                _slot1Weight = value;
+                OnPropertyChanged(nameof(Slot1Weight));
+            }
+        }
+
+        //SLOT 2
+        private int? _slot2Rarity;
+        public int? Slot2Rarity
+        {
+            get => _slot2Rarity;
+            set
+            {
+                _slot2Rarity = value;
+                OnPropertyChanged(nameof(Slot2Rarity));
+            }
+        }
+
+        private int? _slot2Weight;
+        public int? Slot2Weight
+        {
+            get => _slot2Weight;
+            set
+            {
+                _slot2Weight = value;
+                OnPropertyChanged(nameof(Slot2Weight));
+            }
+        }
+
+        //SLOT 3
+        private int? _slot3Rarity;
+        public int? Slot3Rarity
+        {
+            get => _slot3Rarity;
+            set
+            {
+                _slot3Rarity = value;
+                OnPropertyChanged(nameof(Slot3Rarity));
+            }
+        }
+
+        private int? _slot3Weight;
+        public int? Slot3Weight
+        {
+            get => _slot3Weight;
+            set
+            {
+                _slot3Weight = value;
+                OnPropertyChanged(nameof(Slot3Weight));
+            }
+        }
+
+        //SLOT 4
+        private int? _slot4Rarity;
+        public int? Slot4Rarity
+        {
+            get => _slot4Rarity;
+            set
+            {
+                _slot4Rarity = value;
+                OnPropertyChanged(nameof(Slot4Rarity));
+            }
+        }
+
+        private int? _slot4Weight;
+        public int? Slot4Weight
+        {
+            get => _slot4Weight;
+            set
+            {
+                _slot4Weight = value;
+                OnPropertyChanged(nameof(Slot4Weight));
+            }
+        }
+
+        //SLOT 5
+        private int? _slot5Rarity;
+        public int? Slot5Rarity
+        {
+            get => _slot5Rarity;
+            set
+            {
+                _slot5Rarity = value;
+                OnPropertyChanged(nameof(Slot5Rarity));
+            }
+        }
+
+        private int? _slot5Weight;
+        public int? Slot5Weight
+        {
+            get => _slot5Weight;
+            set
+            {
+                _slot5Weight = value;
+                OnPropertyChanged(nameof(Slot5Weight));
+            }
+        }
 
 
+        //SELECTED PACK IMAGE
+        private string? _selectedPackImage;
+        public string? SelectedPackImage
+        {
+            get => _selectedPackImage;
+            set
+            {
+                if (_selectedPackImage != value)
+                {
+                    _selectedPackImage = value;
+                    OnPropertyChanged(nameof(SelectedPackImage));
 
-        public PackCreationViewModel(string packType)
+                    var toast = Toast.Make("Pack Image Selected", ToastDuration.Short, 14);
+                    toast.Show();
+
+                }
+            }
+        }
+
+        //SELECTED CARDS
+        private ObservableCollection<ICard> _selectedCards;
+        public ObservableCollection<ICard> SelectedCards
+        {
+            get => _selectedCards;
+            set
+            {
+                _selectedCards = value;
+                OnPropertyChanged(nameof(SelectedCards));
+            }
+        }
+
+        public ICommand OnCreateCommand { get; }
+
+        public PackCreationViewModel()
         {
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
-            _packType = packType;
-            _description = "";
+            _packName = "";
+            _selectedPackImage = "";
             _gameCards = new ObservableCollection<ICard>();
+            _gamePackImagesURL = new ObservableCollection<string>();
+
             _selectedCards = new ObservableCollection<ICard>();
-            HasCards = false;
+            OnCreateCommand = new Command(async () => await CreateCommandAsync());
 
-            SelectionChangedCommand = new Command<ICard>(OnCardSelected);
-            CreatePackCommand = new Command(async () => await CreatePackAsync());
-
-
-
-            // Initialize raritylimits and rarity probabilities based on initial PackType
-            SetRarityLimits(PackType);
-            _rarityProbabilities = new Dictionary<int, int>
-            {
-                { (int)Rarity.COMMON, 0 },
-                { (int)Rarity.UNCOMMON, 0 },
-                { (int)Rarity.RARE, 0 },
-                { (int)Rarity.EPIC, 0 },
-                { (int)Rarity.LEGENDARY, 0 }
-            };
-            SetRarityProbabilities(PackType);
-
-            //start Loading the user cards.
-            Task.Run(async () => await InitializeViewModelAsync());
-
+            Task.Run(async () => await LoadDataNeeded());
         }
-
-        private async Task InitializeViewModelAsync()
-        {
-            await LoadGameCards();
-        }
-
-        /// <summary>
-        /// Load all available game cards using backend services
-        /// </summary>
-        /// <returns>Task</returns>
-        public async Task LoadGameCards()
+        private async Task LoadDataNeeded()
         {
             IsLoading = true;
-            bool hasCards = false; // function scoped variable
-
             try
             {
-                CardQueryBuilder filteredBuild = new();
-                var cards = await _backendService.GetCardsAsync(filteredBuild.Build());
+                //Update Game Cards
+                GameCards = await _backendService.GetCardsAsync(new CardQueryBuilder().Build());
 
-                if (cards != null && cards.Count > 0)
+                var root = "https://combatcritters.s3.us-east-1.amazonaws.com/";
+                //Loading Game Pack Images
+                for (int i = 0; i < 5; i++)
                 {
-                    GameCards = new ObservableCollection<ICard>(cards.Select(stack => stack.Item).ToList());
-                    hasCards = true;
-                    Console.WriteLine($"Number of cards loaded: {GameCards.Count}");
+                    var packURL = root + $"pack{i}.png";
+                    GamePackImagesURL.Add(root + $"pack{i}.png");
                 }
-                else
+                foreach (var url in GamePackImagesURL)
                 {
-                    //Game has no Cards
-                    GameCards.Clear();
+                    Console.WriteLine(url);
                 }
-            }
-            catch (RestException)
-            {
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to load game cards. Please try again.", "OK");
-            }
 
+            }
             finally
             {
-                //Set HasCards based on result of operation
-                HasCards = hasCards;
                 IsLoading = false;
             }
         }
 
-        /// <summary>
-        /// Set rarity limits based on pack type
-        /// </summary>
-        /// <param name="packType">Pack Type</param>
-        /// <exception cref="InvalidOperationException"></exception>
-        private void SetRarityLimits(string packType)
+        private async Task CreateCommandAsync()
         {
-            switch (packType)
-            {
-                case "Basic":
-                    commonLimit = 8;
-                    uncommonLimit = 1;
-                    rareLimit = 1;
-                    epicLimit = 0;
-                    legendaryLimit = 0;
-                    break;
-
-                case "Advanced":
-                    commonLimit = 5;
-                    uncommonLimit = 3;
-                    rareLimit = 1;
-                    epicLimit = 1;
-                    legendaryLimit = 0;
-                    break;
-
-                case "Premium":
-                    commonLimit = 3;
-                    uncommonLimit = 2;
-                    rareLimit = 2;
-                    epicLimit = 1;
-                    legendaryLimit = 1;
-                    break;
-
-                default:
-                    throw new InvalidOperationException("Unknown pack type.");
-            }
-        }
-
-        /// <summary>
-        /// Set rarityProbabilities based on card type
-        /// </summary>
-        /// <param name="packType"> pack typw </param>
-        private void SetRarityProbabilities(string packType)
-        {
-            switch (packType)
-            {
-                case "Basic":
-                    _rarityProbabilities[(int)Rarity.COMMON] = 80;
-                    _rarityProbabilities[(int)Rarity.UNCOMMON] = 15;
-                    _rarityProbabilities[(int)Rarity.RARE] = 5;
-                    break;
-
-                case "Advanced":
-                    _rarityProbabilities[(int)Rarity.COMMON] = 50;
-                    _rarityProbabilities[(int)Rarity.UNCOMMON] = 30;
-                    _rarityProbabilities[(int)Rarity.RARE] = 15;
-                    _rarityProbabilities[(int)Rarity.EPIC] = 5;
-                    break;
-
-                case "Premium":
-                    _rarityProbabilities[(int)Rarity.COMMON] = 30;
-                    _rarityProbabilities[(int)Rarity.UNCOMMON] = 25;
-                    _rarityProbabilities[(int)Rarity.RARE] = 20;
-                    _rarityProbabilities[(int)Rarity.EPIC] = 15;
-                    _rarityProbabilities[(int)Rarity.LEGENDARY] = 10;
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Create Pack
-        /// </summary>
-        /// <returns></returns>
-        public async Task CreatePackAsync()
-        {
-            //CardIds
-            List<int> cardIds = SelectedCards.Select(card => card.CardId).ToList();
-
-            //PackName and image
-            string packName = PackType;
-            string packImage = "pack.png";
-
             try
             {
-                IPack createdPack = await _backendService.CreatePackAsync(cardIds, _rarityProbabilities, packName, packImage);
-                Console.WriteLine("Pack created successfully!");
+                validateOnCreate();
 
-                if (Application.Current?.MainPage != null)
+                int[] cardIds = SelectedCards.Select(card => card.CardId).ToArray();
+                List<Dictionary<int, int>> slotRarityProbabilities = new List<Dictionary<int, int>>();
+
+                if (Slot1Rarity.HasValue && Slot1Weight.HasValue)
+                    AddSlotData(slotRarityProbabilities, Slot1Rarity.Value, Slot1Weight.Value);
+
+                if (Slot2Rarity.HasValue && Slot2Weight.HasValue)
+                    AddSlotData(slotRarityProbabilities, Slot2Rarity.Value, Slot2Weight.Value);
+
+                if (Slot3Rarity.HasValue && Slot3Weight.HasValue)
+                    AddSlotData(slotRarityProbabilities, Slot3Rarity.Value, Slot3Weight.Value);
+
+                if (Slot4Rarity.HasValue && Slot4Weight.HasValue)
+                    AddSlotData(slotRarityProbabilities, Slot4Rarity.Value, Slot4Weight.Value);
+
+                if (Slot5Rarity.HasValue && Slot5Weight.HasValue)
+                    AddSlotData(slotRarityProbabilities, Slot5Rarity.Value, Slot5Weight.Value);
+
+
+                var pack = await _backendService.CreatePackAsync(PackName, SelectedPackImage, cardIds, slotRarityProbabilities);
+
+                if (pack != null)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Success", "Pack created successfully!", "OK");
+                    var toast = Toast.Make($"Pack Created Successfully", ToastDuration.Short);
+                    await toast.Show();
                 }
+                else
+                {
+                    var toast = Toast.Make($"Pack Creation Failed. Try Again", ToastDuration.Short);
+                    await toast.Show();
+                }
+            }
+            catch (ArgumentException e)
+            {
+                var toast = Toast.Make(e.Message, ToastDuration.Short);
+                await toast.Show();
+            }
+            catch (InvalidOperationException)
+            {
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
             }
             catch (RestException)
             {
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to create pack. Please try again.", "OK");
+                //Rest Exception
+                var toast = Toast.Make("System Error", ToastDuration.Short);
+                await toast.Show();
+
+            }
+            catch (AuthException)
+            {
+                //Auth Exception
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
+            }
+        }
+
+        private void validateOnCreate()
+        {
+            //
+            if (string.IsNullOrWhiteSpace(PackName) || PackName == "")
+            {
+                throw new ArgumentException("Please Enter Pack Name");
+            }
+            else if (string.IsNullOrWhiteSpace(SelectedPackImage) || SelectedPackImage == "")
+            {
+                throw new ArgumentException("Please Choose a Pack Image");
+            }
+            else if (SelectedCards.Count == 0)
+            {
+                throw new ArgumentException("Please Add Cards to your pack");
+            }
+
+            // Validate Slot Entries
+            ValidateSlot("Slot 1", Slot1Weight, Slot1Rarity);
+            ValidateSlot("Slot 2", Slot2Weight, Slot2Rarity);
+            ValidateSlot("Slot 3", Slot3Weight, Slot3Rarity);
+            ValidateSlot("Slot 4", Slot4Weight, Slot4Rarity);
+            ValidateSlot("Slot 5", Slot5Weight, Slot5Rarity);
+
+        }
+
+        /// <summary>
+        /// Validate Slot Entries
+        /// </summary>
+        /// <param name="slotName"></param>
+        /// <param name="weight"></param>
+        /// <param name="rarity"></param>
+        /// <exception cref="ArgumentException"></exception>
+        private void ValidateSlot(string slotName, int? weight, int? rarity)
+        {
+            // Validate Weight
+            if (!weight.HasValue || weight < 0 || weight > 100)
+            {
+                throw new ArgumentException($"{slotName} weight must be a number between 1 and 100.");
+            }
+
+            // Validate Rarity
+            if (rarity.HasValue && (rarity < 1 || rarity > 5))
+            {
+                throw new ArgumentException($"{slotName} rarity must be a number between 1 and 5.");
             }
         }
 
         /// <summary>
-        /// Handles logic for card selection
+        /// Helper method to add slot data
         /// </summary>
-        /// <param name="selectedCard"></param>
-        public void OnCardSelected(ICard selectedCard)
+        /// <param name="slot"></param>
+        /// <param name="rarity"></param>
+        /// <param name="weight"></param>
+        private void AddSlotData(List<Dictionary<int, int>> slot, int rarity, int weight)
         {
-            if (selectedCard == null || SelectedCards.Contains(selectedCard))
-                return;
-
-            // Enforce total card limit first
-            if (SelectedCards.Count >= CardLimit)
-            {
-                DisplayLimitReachedMessage("Maximum number of cards reached for this pack.");
-                return;
-            }
-
-            // Check if the selected card's rarity limit has been reached
-            switch (selectedCard.Rarity)
-            {
-                case Rarity.COMMON:
-                    if (SelectedCards.Count(c => c.Rarity == Rarity.COMMON) < commonLimit)
-                        SelectedCards.Add(selectedCard);
-                    else
-                        DisplayLimitReachedMessage($"Cannot add more than {commonLimit} Common cards.");
-                    break;
-
-                case Rarity.UNCOMMON:
-                    if (SelectedCards.Count(c => c.Rarity == Rarity.UNCOMMON) < uncommonLimit)
-                        SelectedCards.Add(selectedCard);
-                    else
-                        DisplayLimitReachedMessage($"Cannot add more than {uncommonLimit} Uncommon cards.");
-                    break;
-
-                case Rarity.RARE:
-                    if (SelectedCards.Count(c => c.Rarity == Rarity.RARE) < rareLimit)
-                        SelectedCards.Add(selectedCard);
-                    else
-                        DisplayLimitReachedMessage($"Cannot add more than {rareLimit} Rare cards.");
-                    break;
-
-                case Rarity.EPIC:
-                    if (SelectedCards.Count(c => c.Rarity == Rarity.EPIC) < epicLimit)
-                        SelectedCards.Add(selectedCard);
-                    else
-                        DisplayLimitReachedMessage($"Cannot add more than {epicLimit} Epic cards.");
-                    break;
-
-                case Rarity.LEGENDARY:
-                    if (SelectedCards.Count(c => c.Rarity == Rarity.LEGENDARY) < legendaryLimit)
-                        SelectedCards.Add(selectedCard);
-                    else
-                        DisplayLimitReachedMessage($"Cannot add more than {legendaryLimit} Legendary cards.");
-                    break;
-
-                default:
-                    DisplayLimitReachedMessage("Invalid card rarity.");
-                    break;
-            }
+            slot.Add(new Dictionary<int, int> { { rarity, weight } });
         }
-
-        private static void DisplayLimitReachedMessage(string message)
-        {
-            if (Application.Current?.MainPage != null)
-                Application.Current.MainPage.DisplayAlert("Limit Reached", message, "OK");
-        }
-
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

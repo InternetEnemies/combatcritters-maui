@@ -1,34 +1,37 @@
-using System.Windows.Input;
-
 using Combat_Critters_2._0.ViewModels;
+using CombatCrittersSharp.objects.card;
 using CombatCrittersSharp.objects.card.Interfaces;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 
 
 namespace Combat_Critters_2._0.Pages
 {
     public partial class PackCreationPage : ContentPage
     {
-        public PackCreationPage(string packType)
+        PackCreationViewModel _viewModel;
+        public PackCreationPage()
         {
             InitializeComponent();
-            BindingContext = new PackCreationViewModel(packType);
-
+            _viewModel = new PackCreationViewModel();
+            BindingContext = _viewModel;
         }
-        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
             if (e.CurrentSelection.Count > 0 && e.CurrentSelection[0] is ICard selectedCard)
             {
-                var viewModel = BindingContext as PackCreationViewModel;
-                viewModel?.OnCardSelected(selectedCard);  // Call OnCardSelected instead of directly adding to SelectedCards
-
-                // Clear the selection
+                Console.WriteLine("Selection is a card");
+                _viewModel.SelectedCards.Add(selectedCard);
+                //Clear the selection
                 ((CollectionView)sender).SelectedItem = null;
+
+                var toast = Toast.Make($"Added '{selectedCard.Name}'", ToastDuration.Short, 14);
+                toast.Show();
             }
+
         }
-
-
-
-
 
     }
 
