@@ -8,13 +8,15 @@ using CombatCrittersSharp.objects.MarketPlace.Implementations;
 using CombatCrittersSharp.objects.MarketPlace.Interfaces;
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 
 namespace Combat_Critters_2._0.ViewModels
 {
     public class MarketPlaceViewModel : INotifyPropertyChanged
     {
         private readonly BackendService _backendService;
-        private ObservableCollection<IVendor> _gameVendors;
+        private ObservableCollection<Vendor> _gameVendors;
         public ICommand VendorSelectedCommand { get; }
         private bool _hasVendors;
 
@@ -39,7 +41,7 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-        public ObservableCollection<IVendor> GameVendors
+        public ObservableCollection<Vendor> GameVendors
         {
             get => _gameVendors;
             set
@@ -52,7 +54,7 @@ namespace Combat_Critters_2._0.ViewModels
         {
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
 
-            _gameVendors = new ObservableCollection<IVendor>();
+            _gameVendors = new ObservableCollection<Vendor>();
             HasVendors = false;
 
             VendorSelectedCommand = new AsyncRelayCommand<Vendor>(OnVendorSelectedAsync);
@@ -72,33 +74,41 @@ namespace Combat_Critters_2._0.ViewModels
             bool hasVendors = false;
             try
             {
-                var vendors = await _backendService.GetVendorsAsync();
-
-                if (vendors != null && vendors.Count > 0)
-                {
-                    GameVendors = new ObservableCollection<IVendor>(vendors);
+                GameVendors = await _backendService.GetVendorsAsync();
+                if (GameVendors.Count > 0)
                     hasVendors = true;
-                }
-                else
-                {
-                    GameVendors.Clear();
-                }
             }
-            catch (RestException)
+            catch (InvalidOperationException e)
             {
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to load vendors. Please try again.", "OK");
+                //Log
+                Console.WriteLine(e.Message);
+
+                var toast = Toast.Make(e.Message, ToastDuration.Short);
+                await toast.Show();
+
             }
-            catch (Exception)
+            catch (RestException e)
             {
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Error", "An unexpected error occurred. Please try again later.", "OK");
+                //Log 
+                Console.WriteLine(e.Message);
+                //Rest Exception
+                var toast = Toast.Make("System Error", ToastDuration.Short);
+                await toast.Show();
+
             }
+            catch (AuthException e)
+            {
+                //Log
+                Console.WriteLine(e.Message);
+                //Auth Exception
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
+            }
+
             finally
             {
-                //Set HasCards based on result of operation
-                HasVendors = hasVendors;
                 IsLoading = false;
+                HasVendors = hasVendors;
             }
         }
 

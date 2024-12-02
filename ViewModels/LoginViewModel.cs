@@ -9,6 +9,8 @@ using Combat_Critters_2._0.Models;
 using Combat_Critters_2._0.Pages;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 
 namespace Combat_Critters_2._0.ViewModels
 {
@@ -73,32 +75,22 @@ namespace Combat_Critters_2._0.ViewModels
                 (Application.Current as App)?.NavigateToHeroPage(Username);
 
             }
-            catch (AuthException)
+            catch (AuthException e)
             {
-                //Handle authorization errors
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Login Failed", "Authorization error. Please check your username and password and try again.", "OK");
-            }
-            catch (RestException)
-            {
-                //Handle Rest specific errors
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Login Failed", "A network or server error occurred. Please try again.", "OK");
-            }
-            catch (TimeoutException)
-            {
-                //Handle timeout specific error
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Login Failed", "The login request timed out. Please check your network and try again.", "OK");
-            }
-            catch (Exception)
-            {
-                // Handle any other unexpected errors
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Login Failed", "An unexpected error occurred. Please try again.", "OK");
-            }
+                //Log
+                Console.WriteLine(e.Message);
 
+                var toast = Toast.Make("Invalid User", ToastDuration.Short, 14);
+                await toast.Show();
+            }
+            catch (RestException e)
+            {
+                //Log
+                Console.WriteLine(e.Message);
 
+                var toast = Toast.Make("An Erro Occured. Please Try again", ToastDuration.Short, 14);
+                await toast.Show();
+            }
         }
 
         private async void OnCreateAccount()

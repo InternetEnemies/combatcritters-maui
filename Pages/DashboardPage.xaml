@@ -65,7 +65,7 @@
                             TextColor="White"
                             BackgroundColor="#19282F"
                             Margin="0,5"
-                            Command="{Binding OpenPackOptionsCommand}"/>
+                            Clicked="OnCreatePacksClicked"/>
                 </VerticalStackLayout>
 
             </Frame>

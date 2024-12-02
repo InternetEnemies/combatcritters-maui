@@ -51,11 +51,11 @@ namespace Combat_Critters_2._0.ViewModels
         /// </summary>
         private async void OpenPackOptions()
         {
-            if (Application.Current?.MainPage != null)
-            {
-                var popup = new PackOptionsPopup();
-                await Application.Current.MainPage.ShowPopupAsync(popup);
-            }
+            // if (Application.Current?.MainPage != null)
+            // {
+            //     var popup = new PackOptionsPopup();
+            //     await Application.Current.MainPage.ShowPopupAsync(popup);
+            // }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

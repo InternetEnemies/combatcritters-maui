@@ -9,6 +9,15 @@
             <RowDefinition Height="0.8*"/>
         </Grid.RowDefinitions>
 
+        <ActivityIndicator
+            x:Name="LoadingIndicator"
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}"
+            Color="DarkBlue"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"/>
+
+
         <Frame Grid.Row="0"
                HorizontalOptions="Fill"
                VerticalOptions="Fill"

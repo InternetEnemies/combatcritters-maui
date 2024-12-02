@@ -7,6 +7,8 @@ using System.Windows.Input;
 using Combat_Critters_2._0.Models;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 
 public class CreateAccountViewModel : INotifyPropertyChanged
 {
@@ -63,22 +65,21 @@ public class CreateAccountViewModel : INotifyPropertyChanged
             await _navigation.PopAsync();
 
         }
-        catch (AuthException)
+        catch (AuthException e)
         {
-            // Authorization-specific message
-            if (Application.Current?.MainPage != null)
-                await Application.Current.MainPage.DisplayAlert("Authorization Error", "You do not have permission to create an account. Please check with support.", "OK");
+            //Log
+            Console.WriteLine(e.Message);
+
+            var toast = Toast.Make("Invalid User", ToastDuration.Short, 14);
+            await toast.Show();
         }
-        catch (RestException)
+        catch (RestException e)
         {
-            if (Application.Current?.MainPage != null)
-                await Application.Current.MainPage.DisplayAlert("Register Failed", "Failed to register. Please check your credentials and try again.", "OK");
-        }
-        catch (Exception)
-        {
-            // General catch-all for unexpected issues
-            if (Application.Current?.MainPage != null)
-                await Application.Current.MainPage.DisplayAlert("Registration Failed", "An unexpected error occurred. Please try again later.", "OK");
+            //Log
+            Console.WriteLine(e.Message);
+
+            var toast = Toast.Make("An Erro Occured. Please Try again", ToastDuration.Short, 14);
+            await toast.Show();
         }
     }
 
