@@ -79,12 +79,13 @@
 
         <CollectionView Grid.Column="1"
                         Grid.Row="1"
-                        ItemsSource="{Binding SelectedUserProfileDeckCards}">
+                        ItemsSource="{Binding SelectedUserProfileDeckCards}"
+                        ItemSizingStrategy="MeasureFirstItem">
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical"
-                                 Span="2"
-                                 VerticalItemSpacing="10"
-                                 HorizontalItemSpacing="10"/>
+                                 Span="4"
+                                 VerticalItemSpacing="20"
+                                 HorizontalItemSpacing="30"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <StaticResource Key="CardTemplate"/>

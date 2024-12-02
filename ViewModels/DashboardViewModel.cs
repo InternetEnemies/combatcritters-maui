@@ -1,11 +1,16 @@
 using System.ComponentModel;
+using System.Windows.Input;
+using Combat_Critters_2._0.Pages.Popups;
 using Combat_Critters_2._0.Services;
+
+using CommunityToolkit.Maui.Views;
 
 namespace Combat_Critters_2._0.ViewModels
 {
     public class DashboardViewModel : INotifyPropertyChanged
     {
         private readonly BackendService _backendService;
+
 
         private string _username;
 
@@ -29,7 +34,6 @@ namespace Combat_Critters_2._0.ViewModels
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
             _username = username;
         }
-
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

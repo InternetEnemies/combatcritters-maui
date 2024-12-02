@@ -1,4 +1,6 @@
+using Combat_Critters_2._0.Pages.Popups;
 using Combat_Critters_2._0.ViewModels;
+using CommunityToolkit.Maui.Core;
 
 namespace Combat_Critters_2._0.Pages
 {
@@ -8,6 +10,7 @@ namespace Combat_Critters_2._0.Pages
         public DashboardPage(string username)
         {
             InitializeComponent();
+
             BindingContext = new DashboardViewModel(username);
         }
 
@@ -15,6 +18,14 @@ namespace Combat_Critters_2._0.Pages
         {
             //Navigate to the UserBoardPage
             await Navigation.PushAsync(new UserBoardPage());
+        }
+
+        private async void OnCreatePacksClicked(object sender, EventArgs e)
+        {
+            Console.WriteLine("Navigating to Packs Creation Page");
+            //Navigate to the Packs Creation Page
+            await Navigation.PushAsync(new PackCreationPage());
+            Console.WriteLine("Now in PackCreationPage");
         }
     }
 }

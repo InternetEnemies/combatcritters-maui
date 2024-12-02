@@ -43,17 +43,6 @@
 
             <StackLayout Spacing="15"
                          HorizontalOptions="Fill">
-                <Entry Text="{Binding FirstName}"
-                       Placeholder="first name"
-                       Style="{StaticResource FormEntryStyle}"/>
-
-                <Entry Text="{Binding LastName}"
-                       Placeholder="last name"
-                       Style="{StaticResource FormEntryStyle}"/>
-
-                <Entry Text="{Binding Email}"
-                       Placeholder="email"
-                       Style="{StaticResource FormEntryStyle}"/>
 
                 <Entry Text="{Binding Username}"
                        Placeholder="username"
