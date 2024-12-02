@@ -95,7 +95,7 @@
                        HorizontalOptions="Fill"
                        VerticalOptions="Fill">
 
-                    <CollectionView ItemsSource="{Binding ReceiveItems}">
+                    <CollectionView ItemsSource="{Binding ReceiveItemAsCollection}">
                         <CollectionView.ItemsLayout>
                             <LinearItemsLayout Orientation="Vertical"/>
                         </CollectionView.ItemsLayout>

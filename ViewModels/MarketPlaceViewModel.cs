@@ -57,7 +57,8 @@ namespace Combat_Critters_2._0.ViewModels
             _gameVendors = new ObservableCollection<Vendor>();
             HasVendors = false;
 
-            VendorSelectedCommand = new AsyncRelayCommand<Vendor>(OnVendorSelectedAsync);
+
+            VendorSelectedCommand = new Command<Vendor>(async (vendor) => await OnVendorSelectedAsync(vendor));
 
             //Start Loading game packs
             Task.Run(async () => await InitializeViewModelAsync());
@@ -85,7 +86,6 @@ namespace Combat_Critters_2._0.ViewModels
 
                 var toast = Toast.Make(e.Message, ToastDuration.Short);
                 await toast.Show();
-
             }
             catch (RestException e)
             {
@@ -114,22 +114,46 @@ namespace Combat_Critters_2._0.ViewModels
 
         private async Task OnVendorSelectedAsync(Vendor selectedVendor)
         {
-            if (selectedVendor == null)
-                return;
+            try
+            {
+                if (selectedVendor == null)
+                    throw new InvalidOperationException("Invalid Operation");
 
-            //Debug
-            var offerJson = await _backendService.GetAndLogVendorOfferAsync(selectedVendor.Id);
-            Console.WriteLine("Raw JSON Response: " + offerJson);
+                List<Offer> offer = await _backendService.GetVendorOfferAsync(selectedVendor.Id);
 
-            // Retrieve the list vendor offer
-            List<Offer> offer = await _backendService.GetVendorOfferAsync(selectedVendor.Id);
+                //Create an instance of the vendor description popup and pass the selected vendor and offer
 
-            // // Create and show the popup
-            var popup = new VendorDescriptionPopup(selectedVendor, offer);
-            if (Application.Current?.MainPage != null)
-                await Application.Current.MainPage.ShowPopupAsync(popup);
+                var popup = new VendorDescriptionPopup(selectedVendor, offer);
+                if (Application.Current?.MainPage != null)
+                    await Application.Current.MainPage.ShowPopupAsync(popup);
 
+            }
+            catch (InvalidOperationException e)
+            {
+                //Log
+                Console.WriteLine(e.Message);
 
+                //
+                var toast = Toast.Make(e.Message, ToastDuration.Short);
+                await toast.Show();
+            }
+            catch (RestException e)
+            {
+                //Log 
+                Console.WriteLine(e.Message);
+                //Rest Exception
+                var toast = Toast.Make("System Error", ToastDuration.Short);
+                await toast.Show();
+
+            }
+            catch (AuthException e)
+            {
+                //Log
+                Console.WriteLine(e.Message);
+                //Auth Exception
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
+            }
         }
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

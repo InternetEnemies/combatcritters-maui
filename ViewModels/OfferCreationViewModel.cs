@@ -9,6 +9,8 @@ using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.MarketPlace.Implementations;
 using CombatCrittersSharp.objects.MarketPlace.Interfaces;
 using CombatCrittersSharp.objects.pack;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Views;
 
 namespace Combat_Critters_2._0.ViewModels
@@ -27,8 +29,8 @@ namespace Combat_Critters_2._0.ViewModels
                 OnPropertyChanged(nameof(Vendor));
             }
         }
-        public int _newLevel; //New Offer Level to be Created
-        public int NewLevel
+        public string _newLevel; //New Offer Level to be Created
+        public string NewLevel
         {
             get => _newLevel;
             set
@@ -65,6 +67,16 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
+        private bool _isCurrencyVisible;
+        public bool IsCurrencyVisible
+        {
+            get => _isCurrencyVisible;
+            set
+            {
+                _isCurrencyVisible = value;
+                OnPropertyChanged(nameof(IsCurrencyVisible));
+            }
+        }
         //UI to hold FlyoutItems
         private ObservableCollection<object> _flyoutItems;
 
@@ -128,13 +140,12 @@ namespace Combat_Critters_2._0.ViewModels
         }
 
         private string currentSelection = "";
-
+        public ICommand OnCreateOfferCommand { get; }
 
         public OfferCreationViewModel(Vendor vendor)
         {
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
             _vendor = vendor;
-            NewLevel = Vendor.Reputation.Level + 1;
             _selectedCards = new ObservableCollection<ICard>();
             _flyoutItems = new ObservableCollection<object>();
 
@@ -143,78 +154,57 @@ namespace Combat_Critters_2._0.ViewModels
             _gamePacks = new ObservableCollection<IPack>();
             _iCollectItems = new ObservableCollection<object>();
             _iGiveItems = new ObservableCollection<object>();
+            _newLevel = "";
 
 
             //Load Cards and Packs
-            Task.Run(async () => await InitializeViewModelAsync());
+            Task.Run(async () => await LoadDataNeeded());
 
             //CurrentDev
             IsFlyoutVisible = false;
+            IsCurrencyVisible = false;
             OnShowFlyoutCommand = new Command<string>(ShowFlyout);
             OnCloseFlyoutCommand = new Command(() => IsFlyoutVisible = false);
-        }
-        private async Task InitializeViewModelAsync()
-        {
-            await LoadGameCards();
-            await LoadPacks();
+            OnCreateOfferCommand = new Command(CreateOffer);
         }
 
-        /// <summary>
-        /// Loads game cards using predifined filter
-        /// </summary>
-        public async Task LoadGameCards()
+        private async Task LoadDataNeeded()
         {
+            //IsLoading = true;
             try
             {
-                var query = new CardQueryBuilder().Build();
+                GameCards = await _backendService.GetCardsAsync(new CardQueryBuilder().Build());
 
-                var cards = await _backendService.GetCardsAsync(query);
-
-                if (cards != null && cards.Count > 0)
-                {
-                    GameCards = new ObservableCollection<ICard>(cards.Select(stack => stack.Item).ToList());
-                    Console.WriteLine($"Number of cards loaded: {GameCards.Count}");
-                }
-                else
-                {
-                    //Game has no Cards
-                    GameCards.Clear();
-                    Console.WriteLine("No cards found for the user.");
-                }
-
-            }
-            catch (RestException)
-            {
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to load user cards. Please try again.", "OK");
-            }
-            catch (Exception)
-            {
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Error", "An unexpected error occurred. Please try again later.", "OK");
-            }
-        }
-
-        private async Task LoadPacks()
-        {
-            try
-            {
                 var packs = await _backendService.GetPacksAsync(); //Get all packs in the game
-
-                if (packs != null && packs.Count > 0)
-                {
+                if (packs != null)
                     GamePacks = new ObservableCollection<IPack>(packs);
-                }
-                else
-                {
-                    GamePacks.Clear();
-                }
+            }
+            catch (InvalidOperationException e)
+            {
+                //Log
+                Console.WriteLine(e.Message);
+
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
+            }
+            catch (RestException e)
+            {
+                //Log
+                Console.WriteLine(e.Message);
+
+                //Rest Exception
+                var toast = Toast.Make("System Error", ToastDuration.Short);
+                await toast.Show();
 
             }
-            catch (RestException)
+            catch (AuthException e)
             {
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to load users. Please try again.", "OK");
+                //Log
+                Console.WriteLine(e.Message);
+
+                //Auth Exception
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
             }
         }
 
@@ -231,8 +221,8 @@ namespace Combat_Critters_2._0.ViewModels
             IsFlyoutVisible = true;
             switch (parts[1])
             {
-
                 case "CardInventory":
+                    IsCurrencyVisible = false;
                     FlyoutItems.Clear();
 
                     //Add the cards to the flyoutItems list
@@ -243,6 +233,7 @@ namespace Combat_Critters_2._0.ViewModels
                     break;
 
                 case "PackInventory":
+                    IsCurrencyVisible = false;
                     FlyoutItems.Clear();
 
                     //Add the packs to the flyoutItems list
@@ -253,12 +244,14 @@ namespace Combat_Critters_2._0.ViewModels
                     break;
 
                 case "CurrencyInventory":
+                    FlyoutItems.Clear();
+
+                    //Display the Currency template
+                    IsCurrencyVisible = true;
                     break;
             }
 
         }
-
-
 
         public void OnFlyoutItmeSelected(object e)
         {
@@ -278,6 +271,94 @@ namespace Combat_Critters_2._0.ViewModels
         {
             IGiveItems.Remove(e);
         }
+        /// <summary>
+        /// On Create, the Object are converted into OfferCreationItems
+        /// </summary>
+        public async void CreateOffer()
+        {
+            try
+            {
+                var collectList = CreateItems(ICollectItems);
+                var giveList = CreateItems(IGiveItems);
+
+                //Send information to the backendservice
+                var offer = _backendService.CreateNewVendorOfferAsync(Vendor.Id, Int32.Parse(NewLevel), collectList, giveList[0]);
+
+                //Console.WriteLine($"Offer is {offer}");
+
+            }
+            catch (ArgumentException)
+            {
+                if (Application.Current?.MainPage != null)
+                    await Application.Current.MainPage.DisplayAlert("Error", "Note: A valid vendor must give only 1 Item", "OK");
+            }
+            catch (AuthException)
+            {
+                if (Application.Current?.MainPage != null)
+                    await Application.Current.MainPage.DisplayAlert("Error", "Invalid Client", "OK");
+            }
+        }
+
+        private List<OfferCreationItem> CreateItems(ObservableCollection<object> items)
+        {
+            //Group items by their type and ID
+            var itemCounts = new Dictionary<(int? itemId, string type), int>();
+
+            foreach (var item in items)
+            {
+                if (item is CombatCrittersSharp.objects.card.CardCritter cardCritter)
+                {
+                    var key = (itemId: (int?)cardCritter.CardId, type: "card");
+                    if (itemCounts.ContainsKey(key))
+                        itemCounts[key]++;
+                    else
+                        itemCounts[key] = 1;
+                }
+                else if (item is CombatCrittersSharp.objects.card.CardItem cardItem)
+                {
+                    var key = (itemId: (int?)cardItem.CardId, type: "card");
+                    if (itemCounts.ContainsKey(key))
+                        itemCounts[key]++;
+                    else
+                        itemCounts[key] = 1;
+                }
+                else if (item is CombatCrittersSharp.objects.pack.Pack pack)
+                {
+                    var key = (itemId: (int?)pack.PackId, type: "pack");
+                    if (itemCounts.ContainsKey(key))
+                        itemCounts[key]++;
+                    else
+                        itemCounts[key] = 1;
+                }
+                else if (item is CombatCrittersSharp.objects.currency.Currency currency)
+                {
+                    var key = (itemId: (int?)null, type: "currency");
+                    if (itemCounts.ContainsKey(key))
+                        itemCounts[key] += currency._coins;
+                    else
+                        itemCounts[key] = currency._coins;
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Unknown item type: {item.GetType().Name}");
+                }
+            }
+
+            //Convert the dictionary into a list of OfferCreationItems
+            var offerCreationItems = new List<OfferCreationItem>();
+            foreach (var kvp in itemCounts)
+            {
+                offerCreationItems.Add(new OfferCreationItem(
+                    count: kvp.Value,
+                    itemId: kvp.Key.itemId,
+                    type: kvp.Key.type
+                ));
+            }
+            return offerCreationItems;
+        }
+
+
+
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {

@@ -9,11 +9,11 @@ namespace Combat_Critters_2._0.Pages.Popups
     public partial class VendorDescriptionPopup : Popup
     {
         public Vendor Vendor { get; }
-        public VendorDescriptionPopup(Vendor vendor, List<Offer> offer)
+        public VendorDescriptionPopup(Vendor vendor, List<Offer> offers)
         {
             Vendor = vendor;
             InitializeComponent();
-            BindingContext = new VendorDescriptionViewModel(vendor, offer);
+            BindingContext = new VendorDescriptionViewModel(vendor, offers);
         }
 
         private async void OnNewLevelClicked(object sender, EventArgs e)

@@ -11,27 +11,21 @@ public class OfferTemplateSelector : DataTemplateSelector
             Console.WriteLine("ParsedItem is null.");
             return null;
         }
-
-        Console.WriteLine($"ParsedItem Type: {item.GetType()}");
-
         var itemType = item.GetType();
 
         // Check for specific properties to determine the type
         if (itemType.GetProperty("CardId") != null)
         {
-            Console.WriteLine("ParsedItem is a card.");
             return CardTemplate;
         }
 
         if (itemType.GetProperty("PackId") != null)
         {
-            Console.WriteLine("ParsedItem is a pack.");
             return PackTemplate;
         }
 
         if (itemType.GetProperty("_coins") != null)
         {
-            Console.WriteLine("ParsedItem is a currency.");
             return CurrencyTemplate;
         }
 

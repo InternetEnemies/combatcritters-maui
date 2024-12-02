@@ -29,11 +29,12 @@
                                                         HorizontalOptions="Center"
                                                         VerticalOptions="Center"/>
 
-                                                 <Label Grid.Row="0"
+                                                 <Entry Grid.Row="0"
                                                         Grid.Column="1"
-                                                        Text="{Binding NewLevel}"
+                                                        Text="{Binding NewLevel, Mode=TwoWay}"
                                                         HorizontalOptions="Center"
-                                                        VerticalOptions="Center"/>
+                                                        VerticalOptions="Center"
+                                                        Placeholder="Enter New Level"/>
 
                                                  <!--Frame Headers-->
                                                  <Label Grid.Row="1"
@@ -62,20 +63,24 @@
                                                                       VerticalOptions="Fill"
                                                                       Padding="5"
                                                                       HasShadow="False">
+                                                                      <Grid>
+                                                                             <CollectionView ItemsSource="{Binding ICollectItems}"
+                                                                                             SelectionMode="Single"
+                                                                                             SelectionChanged="OnRemoveICollectItem">
+                                                                                    <CollectionView.ItemsLayout>
+                                                                                           <GridItemsLayout Orientation="Vertical"
+                                                                                                            Span="3"
+                                                                                                            VerticalItemSpacing="30"
+                                                                                                            HorizontalItemSpacing="30"/>
+                                                                                    </CollectionView.ItemsLayout>
+                                                                                    <CollectionView.ItemTemplate>
+                                                                                           <StaticResource Key="OfferTemplate"/>
+                                                                                    </CollectionView.ItemTemplate>
+                                                                             </CollectionView>
 
-                                                                      <CollectionView ItemsSource="{Binding ICollectItems}"
-                                                                                      SelectionMode="Single"
-                                                                                      SelectionChanged="OnRemoveICollectItem">
-                                                                             <CollectionView.ItemsLayout>
-                                                                                    <GridItemsLayout Orientation="Vertical"
-                                                                                                     Span="3"
-                                                                                                     VerticalItemSpacing="30"
-                                                                                                     HorizontalItemSpacing="30"/>
-                                                                             </CollectionView.ItemsLayout>
-                                                                             <CollectionView.ItemTemplate>
-                                                                                    <StaticResource Key="OfferTemplate"/>
-                                                                             </CollectionView.ItemTemplate>
-                                                                      </CollectionView>
+                                                                      </Grid>
+
+
 
                                                                </Frame>
                                                                <HorizontalStackLayout Grid.Row="1"
@@ -87,7 +92,9 @@
                                                                       <Button Text="Add Pack"
                                                                               Command="{Binding OnShowFlyoutCommand}"
                                                                               CommandParameter="ICollect:PackInventory"/>
-                                                                      <Button Text="Add Currency"/>
+                                                                      <Button Text="Add Currency"
+                                                                              Command="{Binding OnShowFlyoutCommand}"
+                                                                              CommandParameter="ICollect:CurrencyInventory"/>
                                                                </HorizontalStackLayout>
 
                                                         </Grid>
@@ -132,7 +139,9 @@
                                                                       <Button Text="Add Pack"
                                                                               Command="{Binding OnShowFlyoutCommand}"
                                                                               CommandParameter="IGive:PackInventory"/>
-                                                                      <Button Text="Add Currency"/>
+                                                                      <Button Text="Add Currency"
+                                                                              Command="{Binding OnShowFlyoutCommand}"
+                                                                              CommandParameter="IGive:CurrencyInventory"/>
                                                                </HorizontalStackLayout>
 
                                                         </Grid>
@@ -146,7 +155,8 @@
                                    <Button Grid.Row="1"
                                            HorizontalOptions="End"
                                            VerticalOptions="Center"
-                                           Text="Create"/>
+                                           Text="Create"
+                                           Command="{Binding OnCreateOfferCommand}"/>
                             </Grid>
 
 
@@ -164,7 +174,8 @@
                      Padding="10"
                      IsVisible="{Binding IsFlyoutVisible}">
 
-                     <Grid RowDefinitions="7*,7*,86*">
+                     <Grid RowDefinitions="7*,7*,86*"
+                           RowSpacing="10">
                             <Label Grid.Row="0"
                                    Text="Inventory"
                                    FontSize="20"
@@ -188,6 +199,24 @@
                                           <StaticResource Key="OfferTemplate"/>
                                    </CollectionView.ItemTemplate>
                             </CollectionView>
+
+                            <Frame IsVisible="{Binding IsCurrencyVisible}"
+                                   Grid.Row="0"
+                                   HasShadow="False"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center">
+                                   <HorizontalStackLayout Spacing="4">
+                                          <Image Source="currency.jpg"
+                                                 HeightRequest="50"
+                                                 WidthRequest="50"
+                                                 HorizontalOptions="Center"
+                                                 VerticalOptions="Center"/>
+
+                                          <Entry x:Name="entry"
+                                                 Placeholder="Enter Amount"
+                                                 Completed="OnEntryCompleted"/>
+                                   </HorizontalStackLayout>
+                            </Frame>
 
                      </Grid>
 

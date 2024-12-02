@@ -1,4 +1,5 @@
 using Combat_Critters_2._0.ViewModels;
+using CombatCrittersSharp.objects.currency;
 using CombatCrittersSharp.objects.MarketPlace.Implementations;
 
 namespace Combat_Critters_2._0.Pages
@@ -48,6 +49,28 @@ namespace Combat_Critters_2._0.Pages
                 ((CollectionView)sender).SelectedItem = null;
             }
         }
+
+        private void OnEntryCompleted(object sender, EventArgs e)
+        {
+            string amountText = ((Entry)sender).Text;
+
+            if (int.TryParse(amountText, out int amount) && amount > 0)
+            {
+                var viewModel = BindingContext as OfferCreationViewModel;
+                // Call the ViewModel method with the valid integer amount
+                viewModel?.OnFlyoutItmeSelected(new Currency(amount));
+            }
+            else
+            {
+                // Handle invalid input
+                Console.WriteLine("Invalid amount entered. Please enter a positive integer.");
+
+
+                //display UI
+            }
+        }
+
+
 
     }
 }

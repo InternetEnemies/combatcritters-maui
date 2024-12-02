@@ -8,6 +8,7 @@ using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.MarketPlace.Implementations;
 using CombatCrittersSharp.objects.pack;
 using CombatCrittersSharp.objects.user;
+using CombatCrittersSharp.rest.payloads;
 namespace Combat_Critters_2._0.Services
 {
 
@@ -185,42 +186,64 @@ namespace Combat_Critters_2._0.Services
                 throw new InvalidOperationException("This Client user cannot be null");
         }
 
-        // /// <summary>
-        // /// Returns a list of vendor offers
-        // /// </summary>
-        // /// <param name="id"> vendor Id</param>
-        // /// <returns></returns>
-        // /// <exception cref="AuthException"></exception>
-        // public async Task<List<Offer>> GetVendorOfferAsync(int id)
-        // {
-        //     return await ExecuteBackendOperationAsync(async () =>
-        //     {
-        //         if (_client.User == null)
-        //             throw new AuthException("User session is invalid or unathorized");
-
-        //         var marketplaceManager = _client.User.MarketPlace;
-        //         var offer = await marketplaceManager.GetVendorOfferAsync(id);
-        //         return offer;
-        //     }, "Failed to return vendor offer");
-        // }
-
-        //debug
-        public async Task<string> GetAndLogVendorOfferAsync(int vendorId)
+        /// <summary>
+        /// Request for a list of vendor offers
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public async Task<List<Offer>> GetVendorOfferAsync(int id)
         {
-            try
+            IUser? user = _client.User;
+            if (user != null && user.MarketPlace != null)
             {
-                // Get the raw JSON response from the wrapper method
-                var json = await _client.User.MarketPlace.GetVendorOfferJsonAsync(vendorId);
-                //Console.WriteLine("Raw JSON Response: " + json); // Log the JSON structure for inspection
+                IMarketPlaceManager marketPlaceManager = user.MarketPlace;
+                Console.WriteLine("Attempting to get Vendor Offer");
+                var vendorOffers = await marketPlaceManager.GetVendorOfferAsync(id);
 
-                return json;
+                return vendorOffers;
+
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("An error occurred: " + ex.Message);
-                return null;
-            }
+            else
+                throw new InvalidOperationException("This Client user cannot be null");
         }
+
+        public async Task<Offer?> CreateNewVendorOfferAsync(int vendorId, int newLevel, List<OfferCreationItem> collectItems, OfferCreationItem giveItem)
+        {
+            IUser? user = _client.User;
+            if (user != null && user.MarketPlace != null)
+            {
+                IMarketPlaceManager marketPlaceManager = user.MarketPlace;
+                Console.WriteLine($"Attempting to create new Offer Level {newLevel}");
+                var createdOffer = await marketPlaceManager.CreateOfferAsync(vendorId, newLevel, collectItems, giveItem);
+                if (createdOffer == null)
+                    Console.WriteLine("Offer Creation Failed");
+                else
+                    Console.WriteLine("Offer Creation Success");
+                return createdOffer;
+
+            }
+            else
+                throw new InvalidOperationException("This Client user cannot be null");
+        }
+
+        // //debug
+        // public async Task<string> GetAndLogVendorOfferAsync(int vendorId)
+        // {
+        //     try
+        //     {
+        //         // Get the raw JSON response from the wrapper method
+        //         var json = await _client.User.MarketPlace.GetVendorOfferJsonAsync(vendorId);
+        //         //Console.WriteLine("Raw JSON Response: " + json); // Log the JSON structure for inspection
+
+        //         return json;
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         Console.WriteLine("An error occurred: " + ex.Message);
+        //         return null;
+        //     }
+        // }
 
 
 
