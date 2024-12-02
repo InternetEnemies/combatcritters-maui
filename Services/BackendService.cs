@@ -5,6 +5,7 @@ using Combat_Critters_2._0.Models;
 using CombatCrittersSharp;
 using CombatCrittersSharp.managers.interfaces;
 using CombatCrittersSharp.objects.card.Interfaces;
+using CombatCrittersSharp.objects.MarketPlace.Implementations;
 using CombatCrittersSharp.objects.pack;
 using CombatCrittersSharp.objects.user;
 
@@ -164,6 +165,27 @@ namespace Combat_Critters_2._0.Services
                 throw new InvalidOperationException("This Client user cannot be null");
 
         }
+
+        /// <summary>
+        /// Request for all game vendors
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public async Task<ObservableCollection<Vendor>> GetVendorsAsync()
+        {
+            IUser? user = _client.User;
+            if (user != null && user.MarketPlace != null)
+            {
+                IMarketPlaceManager marketPlaceManager = user.MarketPlace;
+                Console.WriteLine("Attempting to get all vendord");
+                var vendors = await marketPlaceManager.GetVendorsAsync();
+
+                return new ObservableCollection<Vendor>(vendors);
+            }
+            else
+                throw new InvalidOperationException("This Client user cannot be null");
+        }
+
 
     }
 }

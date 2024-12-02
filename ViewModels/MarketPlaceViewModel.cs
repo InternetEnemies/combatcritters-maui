@@ -2,14 +2,17 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
+using CombatCrittersSharp.objects.MarketPlace.Implementations;
 using CombatCrittersSharp.objects.MarketPlace.Interfaces;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 
 namespace Combat_Critters_2._0.ViewModels
 {
     public class MarketPlaceViewModel : INotifyPropertyChanged
     {
         private BackendService _backendService;
-        private ObservableCollection<IVendor> _gameVendors;
+        private ObservableCollection<Vendor> _gameVendors;
         private bool _hasVendors;
 
         private bool _isLoading;
@@ -33,7 +36,7 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-        public ObservableCollection<IVendor> GameVendors
+        public ObservableCollection<Vendor> GameVendors
         {
             get => _gameVendors;
             set
@@ -46,7 +49,7 @@ namespace Combat_Critters_2._0.ViewModels
         {
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
 
-            _gameVendors = new ObservableCollection<IVendor>();
+            _gameVendors = new ObservableCollection<Vendor>();
             HasVendors = false;
 
             //Start Loading game packs
@@ -60,38 +63,46 @@ namespace Combat_Critters_2._0.ViewModels
 
         private async Task LoadVendors()
         {
-            // IsLoading = true;
-            // bool hasVendors = false;
-            // try
-            // {
-            //     var vendors = await _backendService.GetVendorsAsync();
+            IsLoading = true;
+            bool hasVendors = false;
+            try
+            {
+                GameVendors = await _backendService.GetVendorsAsync();
+                if (GameVendors.Count > 0)
+                    hasVendors = true;
+            }
+            catch (InvalidOperationException e)
+            {
+                //Log
+                Console.WriteLine(e.Message);
 
-            //     if (vendors != null && vendors.Count > 0)
-            //     {
-            //         GameVendors = new ObservableCollection<IVendor>(vendors);
-            //         hasVendors = true;
-            //     }
-            //     else
-            //     {
-            //         GameVendors.Clear();
-            //     }
-            // }
-            // catch (RestException)
-            // {
-            //     if (Application.Current?.MainPage != null)
-            //         await Application.Current.MainPage.DisplayAlert("Error", "Failed to load vendors. Please try again.", "OK");
-            // }
-            // catch (Exception)
-            // {
-            //     if (Application.Current?.MainPage != null)
-            //         await Application.Current.MainPage.DisplayAlert("Error", "An unexpected error occurred. Please try again later.", "OK");
-            // }
-            // finally
-            // {
-            //     //Set HasCards based on result of operation
-            //     HasVendors = hasVendors;
-            //     IsLoading = false;
-            // }
+                var toast = Toast.Make(e.Message, ToastDuration.Short);
+                await toast.Show();
+
+            }
+            catch (RestException e)
+            {
+                //Log 
+                Console.WriteLine(e.Message);
+                //Rest Exception
+                var toast = Toast.Make("System Error", ToastDuration.Short);
+                await toast.Show();
+
+            }
+            catch (AuthException e)
+            {
+                //Log
+                Console.WriteLine(e.Message);
+                //Auth Exception
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
+            }
+
+            finally
+            {
+                IsLoading = false;
+                HasVendors = hasVendors;
+            }
         }
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
