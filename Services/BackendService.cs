@@ -29,7 +29,7 @@ namespace Combat_Critters_2._0.Services
         /// <returns>A Task representing the login process.</returns>
         public async Task LoginAsync(UserCredentials credentials)
         {
-            Console.Write("Attempting to login...");
+            Console.WriteLine("Attempting to login...");
             await _client.Login(credentials.Username, credentials.Password);
             Console.WriteLine("Login Success!");
         }
