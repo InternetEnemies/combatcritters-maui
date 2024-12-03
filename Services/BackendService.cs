@@ -8,6 +8,7 @@ using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.MarketPlace.Implementations;
 using CombatCrittersSharp.objects.pack;
 using CombatCrittersSharp.objects.user;
+using CombatCrittersSharp.objects.userpack;
 using CombatCrittersSharp.rest.payloads;
 namespace Combat_Critters_2._0.Services
 {
@@ -85,8 +86,6 @@ namespace Combat_Critters_2._0.Services
             else
                 throw new InvalidOperationException("This client has no access to the User Manager");
 
-
-
         }
 
 
@@ -98,7 +97,6 @@ namespace Combat_Critters_2._0.Services
         /// <exception cref="InvalidOperationException">returned if User and/or cards manager is null</exception>
         public async Task<ObservableCollection<ICard>> GetCardsAsync(ICardQuery query)
         {
-
 
             IUser? user = _client.User;
 
@@ -141,6 +139,19 @@ namespace Combat_Critters_2._0.Services
 
         }
 
+        public async Task<ObservableCollection<UserPack>> GetUserPacksAsync(int id)
+        {
+            IUser? user = _client.User;
+
+            if (user != null && user.Packs != null)
+            {
+                IPackManager packsManager = user.Packs;
+                List<UserPack> packs = await packsManager.GetUserPacksAsync(id);
+                return new ObservableCollection<UserPack>(packs);
+            }
+            else
+                throw new InvalidOperationException("This Client user cannot be null");
+        }
         /// <summary>
         /// Request for a pack to be created
         /// </summary>

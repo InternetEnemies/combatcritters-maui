@@ -9,8 +9,8 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="20*"/>
-                <RowDefinition Height="80*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="90*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
 
@@ -31,7 +31,7 @@
 
             <!--User and Profile Frame-->
             <Frame Grid.Row="1"
-                   BackgroundColor="{StaticResource Primary2}"
+                   BackgroundColor="Transparent"
                    HasShadow="False"
                    HorizontalOptions="Fill"
                    VerticalOptions="Fill">
@@ -153,20 +153,147 @@
                            VerticalOptions="Fill"
                            BackgroundColor="{StaticResource Primary1}">
 
-                        <CollectionView Grid.Column="1"
-                                        Grid.Row="1"
-                                        ItemsSource="{Binding SelectedUserProfileDeckCards}"
-                                        ItemSizingStrategy="MeasureFirstItem">
-                            <CollectionView.ItemsLayout>
-                                <GridItemsLayout Orientation="Vertical"
-                                                 Span="4"
-                                                 VerticalItemSpacing="20"
-                                                 HorizontalItemSpacing="30"/>
-                            </CollectionView.ItemsLayout>
-                            <CollectionView.ItemTemplate>
-                                <StaticResource Key="CardTemplate"/>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
+                        <ScrollView>
+                            <VerticalStackLayout>
+                                <!--This would contain user card inventory-->
+                                <Grid Padding="25">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Grid.Row="0"
+                                           Text="Inventory"
+                                           TextColor="White"/>
+
+                                    <Frame Grid.Row="1"
+                                           HeightRequest="500"
+                                           BackgroundColor="{StaticResource Primary3}">
+
+                                        <StackLayout Orientation="Vertical">
+                                            <!-- Message when there are no cards -->
+                                            <Label Text="User has no cards"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   IsVisible="{Binding SelectedUserCards.Count, Converter={StaticResource IsZeroConverter}}"/>
+
+                                            <!-- CollectionView for displaying cards -->
+                                            <CollectionView ItemsSource="{Binding SelectedUserCards}"
+                                                            IsVisible="{Binding SelectedUserCards.Count, Converter={StaticResource IsNotZeroConverter}}">
+                                                <CollectionView.ItemsLayout>
+                                                    <GridItemsLayout Orientation="Vertical"
+                                                                     Span="4"
+                                                                     VerticalItemSpacing="20"
+                                                                     HorizontalItemSpacing="30"/>
+                                                </CollectionView.ItemsLayout>
+                                                <CollectionView.ItemTemplate>
+                                                    <StaticResource Key="CardTemplate"/>
+                                                </CollectionView.ItemTemplate>
+                                            </CollectionView>
+                                        </StackLayout>
+                                    </Frame>
+                                </Grid>
+
+                                <!--This would contain the user Featured Deck-->
+                                <Grid Padding="25">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Grid.Row="0"
+                                           Text="Featured Deck"
+                                           TextColor="White"/>
+
+                                    <Frame Grid.Row="1"
+                                           HeightRequest="400"
+                                           BackgroundColor="{StaticResource Primary3}">
+
+                                        <StackLayout Orientation="Vertical">
+                                            <!-- Message when there are no cards -->
+                                            <Label Text="User has no featured deck cards"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   IsVisible="{Binding SelectedUserProfileDeckCards.Count, Converter={StaticResource IsZeroConverter}}"/>
+                                            <CollectionView
+                                                ItemsSource="{Binding SelectedUserProfileDeckCards}"
+                                                IsVisible="{Binding SelectedUserProfileDeckCards.Count, Converter={StaticResource IsNotZeroConverter}}"
+                                                ItemSizingStrategy="MeasureFirstItem">
+                                                <CollectionView.ItemsLayout>
+                                                    <GridItemsLayout Orientation="Vertical"
+                                                                     Span="4"
+                                                                     VerticalItemSpacing="20"
+                                                                     HorizontalItemSpacing="30"/>
+                                                </CollectionView.ItemsLayout>
+                                                <CollectionView.ItemTemplate>
+                                                    <StaticResource Key="CardTemplate"/>
+                                                </CollectionView.ItemTemplate>
+                                            </CollectionView>
+                                        </StackLayout>
+                                    </Frame>
+
+                                </Grid>
+
+                                <!--This would contain a user packs-->
+                                <Grid Padding="25">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Grid.Row="0"
+                                           Text="Packs"
+                                           TextColor="White"/>
+
+
+                                    <Frame Grid.Row="1"
+                                           HeightRequest="300"
+                                           BackgroundColor="{StaticResource Primary3}">
+                                        <StackLayout Orientation="Vertical">
+                                            <!-- Message when there are no packs -->
+                                            <Label Text="User has no Packs"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   IsVisible="{Binding SelectedUserPacks.Count, Converter={StaticResource IsZeroConverter}}"/>
+                                            <CollectionView
+                                                ItemsSource="{Binding SelectedUserPacks}"
+                                                IsVisible="{Binding SelectedUserPacks.Count, Converter={StaticResource IsNotZeroConverter}}"
+                                                ItemSizingStrategy="MeasureFirstItem">
+                                                <CollectionView.ItemsLayout>
+                                                    <GridItemsLayout Orientation="Vertical"
+                                                                     Span="4"
+                                                                     VerticalItemSpacing="20"
+                                                                     HorizontalItemSpacing="30"/>
+                                                </CollectionView.ItemsLayout>
+                                                <CollectionView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <!-- Binding to the Pack property -->
+                                                        <Grid>
+                                                            <Image Grid.Row="0"
+                                                                   Source="{Binding Pack.Image, Converter={StaticResource ImageUrlConverter}}"
+                                                                   WidthRequest="190"
+                                                                   HeightRequest="300"/>
+                                                            <Label Grid.Row="0"
+                                                                   Text="{Binding Pack.Name}"
+                                                                   VerticalOptions="Center"
+                                                                   HorizontalOptions="Center"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </CollectionView.ItemTemplate>
+                                            </CollectionView>
+                                        </StackLayout>
+
+                                    </Frame>
+
+
+                                </Grid>
+
+
+
+                            </VerticalStackLayout>
+
+                        </ScrollView>
+
 
                     </Frame>
                 </Grid>

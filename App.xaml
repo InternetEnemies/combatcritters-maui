@@ -8,6 +8,8 @@
         <ResourceDictionary>
             <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
             <converter:ImageUrlConverter x:Key="ImageUrlConverter"/>
+            <converter:IsZeroConverter x:Key="IsZeroConverter"/>
+            <converter:IsNotZeroConverter x:Key="IsNotZeroConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml"/>

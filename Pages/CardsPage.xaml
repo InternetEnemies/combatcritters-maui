@@ -2,8 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.CardsPage">
 
-
-
        <VerticalStackLayout Margin="20"
                             Spacing="10">
 
