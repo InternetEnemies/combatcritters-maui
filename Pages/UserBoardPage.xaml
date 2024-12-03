@@ -49,6 +49,7 @@
                     <Label Grid.Row="0"
                            Grid.Column="0"
                            Text="Users"
+                           TextColor="white"
                            FontFamily="PageFont1"
                            FontSize="30"
                            HorizontalOptions="Start"
@@ -57,6 +58,7 @@
                     <Label Grid.Row="0"
                            Grid.Column="1"
                            Text="Profile"
+                           TextColor="white"
                            FontFamily="PageFont1"
                            FontSize="30"
                            HorizontalOptions="Center"
@@ -97,7 +99,8 @@
                                     <DataTemplate>
                                         <ViewCell>
                                             <Frame Padding="10"
-                                                   Margin="5"
+                                                   Margin="10"
+                                                   HeightRequest="45"
                                                    CornerRadius="8"
                                                    BackgroundColor="{StaticResource Primary4}"
                                                    HasShadow="False">
@@ -141,7 +144,6 @@
                                 </ListView.ItemTemplate>
                             </ListView>
 
-
                         </Grid>
 
                     </Frame>
@@ -164,7 +166,9 @@
 
                                     <Label Grid.Row="0"
                                            Text="Inventory"
-                                           TextColor="White"/>
+                                           TextColor="White"
+                                           FontFamily="PageFont1"
+                                           FontSize="22.5"/>
 
                                     <Frame Grid.Row="1"
                                            HeightRequest="500"
@@ -203,7 +207,9 @@
 
                                     <Label Grid.Row="0"
                                            Text="Featured Deck"
-                                           TextColor="White"/>
+                                           TextColor="White"
+                                           FontFamily="PageFont1"
+                                           FontSize="22.5"/>
 
                                     <Frame Grid.Row="1"
                                            HeightRequest="400"
@@ -243,7 +249,9 @@
 
                                     <Label Grid.Row="0"
                                            Text="Packs"
-                                           TextColor="White"/>
+                                           TextColor="White"
+                                           FontFamily="PageFont1"
+                                           FontSize="22.5"/>
 
 
                                     <Frame Grid.Row="1"
