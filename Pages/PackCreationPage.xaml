@@ -1,268 +1,361 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.PackCreationPage">
-    <Frame Padding="10"
-           HorizontalOptions="Fill"
-           VerticalOptions="Fill"
-           BackgroundColor="#1E201E">
-        <ScrollView>
-            <VerticalStackLayout Spacing="5"
-                                 Margin="20">
 
-                <ActivityIndicator x:Name="LoadingIndicator"
-                                   IsRunning="{Binding IsLoading}"
-                                   IsVisible="{Binding IsLoading}"
-                                   Color="DarkBlue"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Center"/>
+    <Frame BackgroundColor="{StaticResource Secondary1}"
+           HasShadow="False"
+           Padding="10"
+           Margin="6">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="90*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-                <Grid>
-                    <!--UI for Pack Name-->
-                    <HorizontalStackLayout
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        Spacing="20">
-                        <Label Text="Name: "
-                               TextColor="#FFE9E2E2"
-                               FontSize="24"/>
-                        <Entry Placeholder="Enter Pack Name"
-                               Text="{Binding PackName, Mode=TwoWay}"/>
-                    </HorizontalStackLayout>
-                </Grid>
+            <!--Page Header-->
+            <Frame Grid.Row="0"
+                   BackgroundColor="{StaticResource Secondary4}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
 
-                <!--UI for Card Inventory-->
-                <Frame HeightRequest="500"
-                       HasShadow="False"
-                       BorderColor="white"
-                       BackgroundColor="Black"
-                       Padding="10">
+                <Label Text="PACK CREATOR"
+                       FontFamily="PageFont1"
+                       FontSize="45"/>
+            </Frame>
+
+            <!--Body Frame-->
+            <Frame Grid.Row="1"
+                   HasShadow="false"
+                   BackgroundColor="Transparent">
+
+                <!--In this Scroll view we have 2 grid. Workspaces and Outcome-->
+                <ScrollView>
+                    <VerticalStackLayout Spacing="300">
+
+                        <!--WorkSpaces-->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <!--WorkSpace body-->
+                            <ScrollView Grid.Row="0">
+                                <VerticalStackLayout Spacing="15"
+                                                     Margin="20">
+
+                                    <!--Pack Name entry-->
+                                    <Grid>
+                                        <HorizontalStackLayout
+                                            HorizontalOptions="Start"
+                                            VerticalOptions="Center"
+                                            Spacing="20">
+                                            <Label Text="Name: "
+                                                   TextColor="#FFE9E2E2"
+                                                   FontSize="24"
+                                                   FontFamily="PageFont1"/>
+                                            <Entry Placeholder="Enter Pack Name"
+                                                   Text="{Binding PackName, Mode=TwoWay}"/>
+                                        </HorizontalStackLayout>
+                                    </Grid>
+
+                                    <!--CardInventory Selector-->
+                                    <Frame HeightRequest="600"
+                                           HasShadow="False"
+                                           BackgroundColor="{StaticResource Secondary4}"
+                                           Padding="10">
+
+                                        <Grid RowDefinitions="10*, 90*">
+                                            <Label Grid.Row="0"
+                                                   Text="Select your cards"
+                                                   TextColor="{StaticResource Secondary1}"
+                                                   FontSize="22.5"
+                                                   FontFamily="PageFont1"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"/>
+
+                                            <Grid
+                                                Grid.Row="1">
+                                                <!-- Message when there are no cards -->
+                                                <Label Text="No Game Cards"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center"
+                                                       IsVisible="{Binding GameCards.Count, Converter={StaticResource IsZeroConverter}}"/>
+
+                                                <CollectionView Grid.Row="1"
+                                                                ItemsSource="{Binding GameCards}"
+                                                                SelectionMode="Single"
+                                                                SelectionChanged="OnSelectionChanged"
+                                                                IsVisible="{Binding GameCards.Count, Converter={StaticResource IsNotZeroConverter}}">
+                                                    <CollectionView.ItemsLayout>
+                                                        <GridItemsLayout Orientation="Vertical"
+                                                                         Span="5"
+                                                                         VerticalItemSpacing="30"
+                                                                         HorizontalItemSpacing="30"/>
+                                                    </CollectionView.ItemsLayout>
+                                                    <CollectionView.ItemTemplate>
+                                                        <StaticResource Key="CardTemplate"/>
+                                                    </CollectionView.ItemTemplate>
+
+                                                </CollectionView>
+                                            </Grid>
+                                        </Grid>
+                                    </Frame>
+
+                                    <!--Pack Image Selector and Rarity Inputs-->
+                                    <Grid ColumnDefinitions="50*, 50*">
+
+                                        <Frame Grid.Column="0"
+                                               HeightRequest="270"
+                                               HasShadow="False"
+                                               Padding="10"
+                                               BackgroundColor="{StaticResource Secondary2}"
+                                               HorizontalOptions="Start">
+
+                                            <Grid RowDefinitions="10*, 90*">
+                                                <Label Grid.Row="0"
+                                                       Text="Select a pack Image"
+                                                       TextColor="{StaticResource Secondary1}"
+                                                       FontSize="22.5"
+                                                       FontFamily="PageFont1"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center"/>
+
+                                                <Grid Grid.Row="1">
+                                                    <!-- Message when there are no game images -->
+                                                    <Label Text="Sorry no Images"
+                                                           HorizontalOptions="Center"
+                                                           VerticalOptions="Center"
+                                                           IsVisible="{Binding GamePackImagesURL.Count, Converter={StaticResource IsZeroConverter}}"/>
+
+                                                    <CollectionView ItemsSource="{Binding GamePackImagesURL}"
+                                                                    SelectionMode="Single"
+                                                                    SelectedItem="{Binding SelectedPackImage, Mode=TwoWay}"
+                                                                    IsVisible="{Binding GamePackImagesURL.Count, Converter={StaticResource IsNotZeroConverter}}">
+                                                        <CollectionView.ItemsLayout>
+                                                            <LinearItemsLayout Orientation="Horizontal"
+                                                                               ItemSpacing="20"/>
+                                                        </CollectionView.ItemsLayout>
+                                                        <CollectionView.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Image Source="{Binding .}"
+                                                                       Height="50"
+                                                                       Width="50"/>
+                                                            </DataTemplate>
+                                                        </CollectionView.ItemTemplate>
+                                                    </CollectionView>
+                                                </Grid>
+                                            </Grid>
+
+                                        </Frame>
+
+                                        <Frame Grid.Column="1"
+                                               HasShadow="False"
+                                               HeightRequest="170"
+                                               HorizontalOptions="Fill"
+                                               BackgroundColor="{StaticResource Secondary3}">
+
+                                            <Grid RowDefinitions="*,*,*"
+                                                  ColumnDefinitions="*,*,*,*,*"
+                                                  ColumnSpacing="12"
+                                                  RowSpacing="4">
+
+                                                <Label Grid.Row="0"
+                                                       Grid.ColumnSpan="5"
+                                                       Text="Enter Slot Probabilities"
+                                                       TextColor="{StaticResource Secondary1}"
+                                                       FontSize="22.5"
+                                                       FontFamily="PageFont1"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center"/>
+
+                                                <Label Grid.Row="1"
+                                                       Grid.Column="0"
+                                                       Text="1"
+                                                       FontFamily="PageFont1"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center"/>
+
+                                                <Grid Grid.Row="2"
+                                                      Grid.Column="0"
+                                                      ColumnDefinitions="50*, 50*"
+                                                      ColumnSpacing="3">
+                                                    <Entry
+                                                        Grid.Column="0"
+                                                        Placeholder="Rarity"
+                                                        Text="{Binding Slot1Rarity, Mode=TwoWay}"
+                                                        Keyboard="Numeric"/>
+                                                    <Entry Grid.Column="1"
+                                                           Placeholder="Weight"
+                                                           Text="{Binding Slot1Weight, Mode=TwoWay}"
+                                                           Keyboard="Numeric"/>
+                                                </Grid>
 
 
-                    <CollectionView
-                        ItemsSource="{Binding GameCards}"
-                        SelectionMode="Single"
-                        SelectionChanged="OnSelectionChanged">
-                        <CollectionView.ItemsLayout>
-                            <GridItemsLayout Orientation="Vertical"
-                                             Span="5"
-                                             VerticalItemSpacing="30"
-                                             HorizontalItemSpacing="30"/>
-                        </CollectionView.ItemsLayout>
-                        <CollectionView.ItemTemplate>
-                            <StaticResource Key="CardTemplate"/>
-                        </CollectionView.ItemTemplate>
+                                                <Label Grid.Row="1"
+                                                       Grid.Column="1"
+                                                       Text="2"
+                                                       FontFamily="PageFont1"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center"/>
+                                                <Grid Grid.Row="2"
+                                                      Grid.Column="1"
+                                                      ColumnDefinitions="50*, 50*"
+                                                      ColumnSpacing="3">
+                                                    <Entry
+                                                        Grid.Column="0"
+                                                        Placeholder="Rarity"
+                                                        Text="{Binding Slot2Rarity, Mode=TwoWay}"
+                                                        Keyboard="Numeric"/>
+                                                    <Entry Grid.Column="1"
+                                                           Placeholder="Weight"
+                                                           Text="{Binding Slot2Weight, Mode=TwoWay}"
+                                                           Keyboard="Numeric"/>
+                                                </Grid>
 
-                    </CollectionView>
+
+                                                <Label Grid.Row="1"
+                                                       Grid.Column="2"
+                                                       Text="3"
+                                                       FontFamily="PageFont1"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center"/>
+
+                                                <Grid Grid.Row="2"
+                                                      Grid.Column="2"
+                                                      ColumnDefinitions="50*, 50*"
+                                                      ColumnSpacing="3">
+                                                    <Entry
+                                                        Grid.Column="0"
+                                                        Placeholder="Rarity"
+                                                        Text="{Binding Slot3Rarity, Mode=TwoWay}"
+                                                        Keyboard="Numeric"/>
+                                                    <Entry Grid.Column="1"
+                                                           Placeholder="Weight"
+                                                           Text="{Binding Slot3Weight, Mode=TwoWay}"
+                                                           Keyboard="Numeric"/>
+                                                </Grid>
 
 
-                </Frame>
+                                                <Label Grid.Row="1"
+                                                       Grid.Column="3"
+                                                       Text="4"
+                                                       FontFamily="PageFont1"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center"/>
+
+                                                <Grid Grid.Row="2"
+                                                      Grid.Column="3"
+                                                      ColumnDefinitions="50*, 50*"
+                                                      ColumnSpacing="3">
+                                                    <Entry
+                                                        Grid.Column="0"
+                                                        Placeholder="Rarity"
+                                                        Text="{Binding Slot4Rarity, Mode=TwoWay}"
+                                                        Keyboard="Numeric"/>
+                                                    <Entry Grid.Column="1"
+                                                           Placeholder="Weight"
+                                                           Text="{Binding Slot4Weight, Mode=TwoWay}"
+                                                           Keyboard="Numeric"/>
+                                                </Grid>
 
 
-                <Grid ColumnDefinitions="50*, 50*">
-                    <!--UI for Pack Image Inventory-->
-                    <Frame Grid.Column="0"
-                           HeightRequest="250"
-                           HasShadow="False"
-                           BorderColor="white"
-                           BackgroundColor="Transparent"
-                           HorizontalOptions="Center">
+                                                <Label Grid.Row="1"
+                                                       Grid.Column="4"
+                                                       Text="5"
+                                                       FontFamily="PageFont1"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center"/>
+                                                <Grid Grid.Row="2"
+                                                      Grid.Column="4"
+                                                      ColumnDefinitions="50*, 50*"
+                                                      ColumnSpacing="3">
+                                                    <Entry
+                                                        Grid.Column="0"
+                                                        Placeholder="Rarity"
+                                                        Text="{Binding Slot5Rarity, Mode=TwoWay}"
+                                                        Keyboard="Numeric"/>
+                                                    <Entry Grid.Column="1"
+                                                           Placeholder="Weight"
+                                                           Text="{Binding Slot5Weight, Mode=TwoWay}"
+                                                           Keyboard="Numeric"/>
+                                                </Grid>
+                                            </Grid>
 
-                        <CollectionView ItemsSource="{Binding GamePackImagesURL}"
-                                        SelectionMode="Single"
-                                        SelectedItem="{Binding SelectedPackImage, Mode=TwoWay}">
-                            <CollectionView.ItemsLayout>
-                                <LinearItemsLayout Orientation="Horizontal"
-                                                   ItemSpacing="20"/>
-                            </CollectionView.ItemsLayout>
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Image Source="{Binding .}"
-                                           Height="50"
-                                           Width="50"/>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </Frame>
+                                        </Frame>
+                                    </Grid>
+                                </VerticalStackLayout>
+                            </ScrollView>
 
-                    <!--UI for Pack RarityWeights-->
-                    <Frame Grid.Column="1"
-                           HeightRequest="100"
-                           HasShadow="False"
-                           BorderColor="white"
-                           HorizontalOptions="Fill"
-                           BackgroundColor="Green">
-
-                        <Grid RowDefinitions="*,*"
-                              ColumnDefinitions="*,*,*,*,*"
-                              ColumnSpacing="8">
-
-                            <!--Slot 1-->
-                            <Label Grid.Row="0"
-                                   Grid.Column="0"
-                                   Text="1"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center"/>
-
-                            <Grid Grid.Row="1"
-                                  Grid.Column="0"
-                                  ColumnDefinitions="50*, 50*"
-                                  ColumnSpacing="3">
-                                <Entry
-                                    Grid.Column="0"
-                                    Placeholder="Rarity"
-                                    Text="{Binding Slot1Rarity, Mode=TwoWay}"
-                                    Keyboard="Numeric"/>
-                                <Entry Grid.Column="1"
-                                       Placeholder="Weight"
-                                       Text="{Binding Slot1Weight, Mode=TwoWay}"
-                                       Keyboard="Numeric"/>
-                            </Grid>
-
-                            <!--Slot 2-->
-                            <Label Grid.Row="0"
-                                   Grid.Column="1"
-                                   Text="2"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center"/>
-                            <Grid Grid.Row="1"
-                                  Grid.Column="1"
-                                  ColumnDefinitions="50*, 50*"
-                                  ColumnSpacing="3">
-                                <Entry
-                                    Grid.Column="0"
-                                    Placeholder="Rarity"
-                                    Text="{Binding Slot2Rarity, Mode=TwoWay}"
-                                    Keyboard="Numeric"/>
-                                <Entry Grid.Column="1"
-                                       Placeholder="Weight"
-                                       Text="{Binding Slot2Weight, Mode=TwoWay}"
-                                       Keyboard="Numeric"/>
-                            </Grid>
-
-                            <!--Slot 3-->
-                            <Label Grid.Row="0"
-                                   Grid.Column="2"
-                                   Text="3"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center"/>
-
-                            <Grid Grid.Row="1"
-                                  Grid.Column="2"
-                                  ColumnDefinitions="50*, 50*"
-                                  ColumnSpacing="3">
-                                <Entry
-                                    Grid.Column="0"
-                                    Placeholder="Rarity"
-                                    Text="{Binding Slot3Rarity, Mode=TwoWay}"
-                                    Keyboard="Numeric"/>
-                                <Entry Grid.Column="1"
-                                       Placeholder="Weight"
-                                       Text="{Binding Slot3Weight, Mode=TwoWay}"
-                                       Keyboard="Numeric"/>
-                            </Grid>
-
-                            <!--Slot 4-->
-                            <Label Grid.Row="0"
-                                   Grid.Column="3"
-                                   Text="4"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center"/>
-
-                            <Grid Grid.Row="1"
-                                  Grid.Column="3"
-                                  ColumnDefinitions="50*, 50*"
-                                  ColumnSpacing="3">
-                                <Entry
-                                    Grid.Column="0"
-                                    Placeholder="Rarity"
-                                    Text="{Binding Slot4Rarity, Mode=TwoWay}"
-                                    Keyboard="Numeric"/>
-                                <Entry Grid.Column="1"
-                                       Placeholder="Weight"
-                                       Text="{Binding Slot4Weight, Mode=TwoWay}"
-                                       Keyboard="Numeric"/>
-                            </Grid>
-
-                            <!--Slot 5-->
-                            <Label Grid.Row="0"
-                                   Grid.Column="4"
-                                   Text="5"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center"/>
-                            <Grid Grid.Row="1"
-                                  Grid.Column="4"
-                                  ColumnDefinitions="50*, 50*"
-                                  ColumnSpacing="3">
-                                <Entry
-                                    Grid.Column="0"
-                                    Placeholder="Rarity"
-                                    Text="{Binding Slot5Rarity, Mode=TwoWay}"
-                                    Keyboard="Numeric"/>
-                                <Entry Grid.Column="1"
-                                       Placeholder="Weight"
-                                       Text="{Binding Slot5Weight, Mode=TwoWay}"
-                                       Keyboard="Numeric"/>
-                            </Grid>
                         </Grid>
 
-                    </Frame>
-                </Grid>
 
-                <!--UI for Pack and Create Button-->
-                <Grid ColumnDefinitions="50*, 20*">
+                        <!--Outcome-->
+                        <Grid ColumnDefinitions="50*, 20*"
+                              HorizontalOptions="Center">
 
-                    <Frame Grid.Column="0"
-                           HeightRequest="700"
-                           VerticalOptions="Fill"
-                           HorizontalOptions="Fill"
-                           BackgroundColor="white">
+                            <Frame Grid.Column="0"
+                                   HeightRequest="700"
+                                   VerticalOptions="Fill"
+                                   HorizontalOptions="Fill"
+                                   BackgroundColor="{StaticResource Primary1}">
 
-                        <Grid RowDefinitions="30*, 70*"
-                              ColumnDefinitions="50*, 50*">
+                                <Grid RowDefinitions="30*, 70*"
+                                      ColumnDefinitions="50*, 50*">
 
 
-                            <Label Grid.Row="0"
-                                   Grid.Column="0"
-                                   Text="{Binding PackName, Mode=TwoWay}"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center"/>
+                                    <Label Grid.Row="0"
+                                           Grid.Column="0"
+                                           Text="{Binding PackName, Mode=TwoWay}"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           FontSize="30"
+                                           FontFamily="PageFont1"
+                                           TextDecorations="Underline"
+                                           TextColor="White"/>
 
-                            <Image Grid.Row="0"
-                                   Grid.Column="1"
-                                   Source="{Binding SelectedPackImage}"
-                                   WidthRequest="50"
-                                   HeightRequest="50"
-                                   HorizontalOptions="Center"/>
+                                    <Image Grid.Row="0"
+                                           Grid.Column="1"
+                                           Source="{Binding SelectedPackImage}"
+                                           WidthRequest="70"
+                                           HeightRequest="70"
+                                           HorizontalOptions="Center"/>
 
-                            <CollectionView Grid.Row="1"
-                                            Grid.ColumnSpan="2"
-                                            ItemsSource="{Binding SelectedCards}">
-                                <CollectionView.ItemsLayout>
-                                    <GridItemsLayout Orientation="Vertical"
-                                                     Span="5"
-                                                     VerticalItemSpacing="30"
-                                                     HorizontalItemSpacing="30"/>
-                                </CollectionView.ItemsLayout>
-                                <CollectionView.ItemTemplate>
-                                    <StaticResource Key="CardTemplate"/>
-                                </CollectionView.ItemTemplate>
-                            </CollectionView>
+                                    <CollectionView Grid.Row="1"
+                                                    Grid.ColumnSpan="2"
+                                                    ItemsSource="{Binding SelectedCards}">
+                                        <CollectionView.ItemsLayout>
+                                            <GridItemsLayout Orientation="Vertical"
+                                                             Span="5"
+                                                             VerticalItemSpacing="30"
+                                                             HorizontalItemSpacing="30"/>
+                                        </CollectionView.ItemsLayout>
+                                        <CollectionView.ItemTemplate>
+                                            <StaticResource Key="CardTemplate"/>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
 
+                                </Grid>
+
+                            </Frame>
+                            <Button VerticalOptions="End"
+                                    HorizontalOptions="Fill"
+                                    BackgroundColor="Green"
+                                    Grid.Column="1"
+                                    Text="Create"
+                                    FontFamily="PageFont1"
+                                    FontSize="30"
+                                    Margin="10"
+                                    Command="{Binding OnCreateCommand}"/>
                         </Grid>
+                    </VerticalStackLayout>
 
-                    </Frame>
-                    <Button VerticalOptions="End"
-                            HorizontalOptions="Fill"
-                            Grid.Column="1"
-                            Text="Create"
-                            Margin="10"
-                            Command="{Binding OnCreateCommand}"/>
-                </Grid>
-                <!--UI for Card Inventory-->
 
-            </VerticalStackLayout>
-        </ScrollView>
+                </ScrollView>
+
+
+            </Frame>
+        </Grid>
     </Frame>
-
 
 </ContentPage>

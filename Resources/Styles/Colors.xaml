@@ -13,7 +13,12 @@
     <Color x:Key="Primary4">#ECDFCC</Color>
 
     <!--Combat Critter Admin Color Collection 2-->
-    <Color x:Key="Secondary1"></Color>
+    <Color x:Key="Secondary1">#3E3232</Color>
+    <Color x:Key="Secondary2">#503C3C</Color>
+    <Color x:Key="Secondary3">#7E6363</Color>
+    <Color x:Key="Secondary4">#A87C7C</Color>
+    <Color x:Key="Secondary5">#E4E0E1</Color>
+
 
     <Color x:Key="Primary">#512BD4</Color>
     <Color x:Key="PrimaryDark">#ac99ea</Color>
