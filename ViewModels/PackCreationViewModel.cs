@@ -238,10 +238,7 @@ namespace Combat_Critters_2._0.ViewModels
                     var packURL = root + $"pack{i}.png";
                     GamePackImagesURL.Add(root + $"pack{i}.png");
                 }
-                foreach (var url in GamePackImagesURL)
-                {
-                    Console.WriteLine(url);
-                }
+
 
             }
             finally
@@ -298,8 +295,9 @@ namespace Combat_Critters_2._0.ViewModels
                 var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
                 await toast.Show();
             }
-            catch (RestException)
+            catch (RestException e)
             {
+                Console.WriteLine(e.Message);
                 //Rest Exception
                 var toast = Toast.Make("System Error", ToastDuration.Short);
                 await toast.Show();

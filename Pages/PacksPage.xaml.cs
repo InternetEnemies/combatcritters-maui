@@ -1,4 +1,5 @@
 using Combat_Critters_2._0.ViewModels;
+using CombatCrittersSharp.objects.pack;
 
 namespace Combat_Critters_2._0.Pages
 {

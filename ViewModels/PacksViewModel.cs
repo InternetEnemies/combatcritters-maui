@@ -6,6 +6,8 @@ using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
 using CombatCrittersSharp.objects.card.Interfaces;
 using CombatCrittersSharp.objects.pack;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Views;
 
 namespace Combat_Critters_2._0.ViewModels
@@ -28,6 +30,7 @@ namespace Combat_Critters_2._0.ViewModels
             {
                 _selectedPack = value;
                 OnPropertyChanged(nameof(SelectedPack));
+                GetContents();
             }
         }
         public bool IsLoading
@@ -68,39 +71,55 @@ namespace Combat_Critters_2._0.ViewModels
                 OnPropertyChanged(nameof(FilteredPacks));
             }
         }
-        public ICommand OpenPackCommand { get; }
-        //Constructor
+
+        private ObservableCollection<string> _gamePackImagesURL;
+        public ObservableCollection<string> GamePackImagesURL
+        {
+            get => _gamePackImagesURL;
+            set
+            {
+                _gamePackImagesURL = value;
+                OnPropertyChanged(nameof(GamePackImagesURL));
+            }
+        }
+
+        private ObservableCollection<ICard> _selectedPackContents;
+        public ObservableCollection<ICard> SelectedPackContents
+        {
+            get => _selectedPackContents;
+            set
+            {
+                _selectedPackContents = value;
+                OnPropertyChanged(nameof(SelectedPackContents));
+            }
+        }
+
+
         public PacksViewModel()
         {
             _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
             _allPacks = new ObservableCollection<IPack>();
             _filteredPacks = new ObservableCollection<IPack>();
+            _gamePackImagesURL = new ObservableCollection<string>();
+            _selectedPackContents = new ObservableCollection<ICard>();
             HasPacks = false;
-            OpenPackCommand = new Command(OpenPack);
 
             //Start Loading game packs
-            Task.Run(async () => await InitializeViewModelAsync());
+            Task.Run(async () => await LoadDataNeeded());
         }
 
-        private async Task InitializeViewModelAsync()
-        {
-            await LoadPacks();
-        }
-
-        private async Task LoadPacks()
+        private async Task LoadDataNeeded()
         {
             IsLoading = true;
-            bool hasPacks = false; //function scoped variable
-
             try
             {
+                //Load Packs
                 var packs = await _backendService.GetPacksAsync(); //Get all packs in the game
 
                 if (packs != null && packs.Count > 0)
                 {
                     AllPacks = new ObservableCollection<IPack>(packs);
                     FilteredPacks = new ObservableCollection<IPack>(packs);
-                    hasPacks = true;
                 }
                 else
                 {
@@ -108,18 +127,37 @@ namespace Combat_Critters_2._0.ViewModels
                     AllPacks.Clear();
                 }
 
+                //Load Pack Images
+                var root = "https://combatcritters.s3.us-east-1.amazonaws.com/";
+                //Loading Game Pack Images
+                for (int i = 0; i < 5; i++)
+                {
+                    var packURL = root + $"pack{i}.png";
+                    GamePackImagesURL.Add(root + $"pack{i}.png");
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
             }
             catch (RestException)
             {
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to load users. Please try again.", "OK");
+                //Rest Exception
+                var toast = Toast.Make("System Error", ToastDuration.Short);
+                await toast.Show();
+
+            }
+            catch (AuthException)
+            {
+                //Auth Exception
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
             }
             finally
             {
-                HasPacks = hasPacks;
-                IsLoading = false; //Turn off loading indicator
+                IsLoading = false;
             }
-
         }
 
         public void FilterPacks(string searchText)
@@ -137,39 +175,26 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
-        private async void OpenPack()
+        private async void GetContents()
         {
-            if (Application.Current?.MainPage != null)
+            try
             {
-
-                if (SelectedPack == null)
-                {
-                    await Application.Current.MainPage.DisplayAlert("Error", "No pack selected.", "OK");
-                    return;
-                }
-
-                try
-                {
-                    //Fetch cards in the selected pack
-                    Console.WriteLine("Opening pack..");
-
-                    var cards = await SelectedPack.GetPackContentsAsync();
-                    Console.WriteLine($"Opening pack..{cards.Count}");
-
-                    //Create and show the popup with the selected cards
-                    var popup = new PackPopup(new ObservableCollection<ICard>(cards));
-                    await Application.Current.MainPage.ShowPopupAsync(popup);
-
-
-                }
-                catch (RestException)
-                {
-                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to open pack. Please try again.", "OK");
-                }
+                var contents = await SelectedPack.GetPackContentsAsync();
+                SelectedPackContents = new ObservableCollection<ICard>(contents);
+            }
+            catch (RestException)
+            {
+                //Rest Exception
+                var toast = Toast.Make("System Error", ToastDuration.Short);
+                await toast.Show();
 
             }
-
-
+            catch (AuthException)
+            {
+                //Auth Exception
+                var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
+                await toast.Show();
+            }
 
         }
 

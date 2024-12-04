@@ -3,136 +3,143 @@
              x:Class="Combat_Critters_2._0.Pages.PacksPage">
 
 
+       <Frame BackgroundColor="{StaticResource Primary1}"
+              HasShadow="False">
 
-       <Grid RowSpacing="10"
-             ColumnSpacing="10">
-              <Grid.RowDefinitions>
-                     <RowDefinition Height="0.2*"/>
-                     <RowDefinition Height="0.1*"/>
-                     <RowDefinition Height="0.7*"/>
-              </Grid.RowDefinitions>
+              <Grid RowDefinitions="25*, 75*"
+                    VerticalOptions="Fill"
+                    HorizontalOptions="Fill">
 
-              <Grid.ColumnDefinitions>
-                     <ColumnDefinition/>
-                     <ColumnDefinition/>
-              </Grid.ColumnDefinitions>
+                     <!--Page header frame-->
+                     <Frame Grid.Row="0"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill"
+                            Padding="20"
+                            Margin="0"
+                            HasShadow="False"
+                            BackgroundColor="{StaticResource Primary3}">
 
-              <Frame Grid.Row="0"
-                     Grid.ColumnSpan="2"
-                     HorizontalOptions="Fill"
-                     VerticalOptions="Fill"
-                     BackgroundColor="Black"
-                     Padding="20"
-                     Margin="20">
-
-                     <Label Text="PACKS"
-                            FontSize="35"
-                            FontFamily="DashboardHeadersFontStyle"
-                            FontAttributes="Bold"
-                            VerticalOptions="Center"
-                            HorizontalOptions="Start"
-                            TextColor=" White"
-                            Margin="0"/>
-              </Frame>
-
-              <VerticalStackLayout  Grid.Row="1"
-                                    Grid.Column="0"
-                                    Spacing="5">
-                     <Label Text="GAME PACKS"
-                            FontSize="28"
-                            FontFamily="DashboardHeadersFontStyle"
-                            HorizontalOptions="Start"/>
-
-                     <Label Text="Search and view in game packs"
-                            FontSize="20"
-                            FontFamily="DashboardHeadersFontStyle"
-                            HorizontalOptions="Start"/>
-              </VerticalStackLayout>
-
-              <Frame Grid.Row="2"
-                     Grid.Column="0"
-                     HorizontalOptions="Fill"
-                     VerticalOptions="Fill"
-                     HasShadow="False"
-                     BorderColor="Purple">
-
-                     <Grid RowDefinitions="0.1*, 0.9*"
-                           ColumnDefinitions="0.9*, 0.1*"
-                           HorizontalOptions="Fill"
-                           VerticalOptions="Fill">
-
-                            <SearchBar Grid.Row="0"
-                                       Grid.Column="0"
-                                       Placeholder="Search Pack by Name"
-                                       TextChanged="OnTextChanged"
-                                       HorizontalOptions="Fill"
-                                       VerticalOptions="Start"/>
-
-                            <Button Text="Reload"
-                                    Grid.Row="0"
-                                    Grid.Column="1"/>
-
-                            <ListView Grid.Row="1"
-                                      Grid.ColumnSpan="2"
-                                      VerticalOptions="Fill"
-                                      ItemsSource="{Binding FilteredPacks}"
-                                      SelectionMode="Single"
-                                      SelectedItem="{Binding SelectedPack}"
-                                      HasUnevenRows="True">
-                                   <ListView.ItemTemplate>
+                            <CollectionView ItemsSource="{Binding GamePackImagesURL}"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center">
+                                   <CollectionView.ItemsLayout>
+                                          <LinearItemsLayout Orientation="Horizontal"
+                                                             ItemSpacing="100"/>
+                                   </CollectionView.ItemsLayout>
+                                   <CollectionView.ItemTemplate>
                                           <DataTemplate>
-                                                 <ViewCell>
-                                                        <Frame Padding="10"
-                                                               Margin="5"
-                                                               CornerRadius="8"
-                                                               BorderColor="LightGray"
-                                                               HasShadow="False">
-
-                                                               <Label Text="{Binding Name}"
-                                                                      FontSize="Medium"
-                                                                      HorizontalOptions="Start"
-                                                                      VerticalOptions="Center"/>
-                                                        </Frame>
-                                                 </ViewCell>
+                                                 <Image Source="{Binding .}"
+                                                        HeightRequest="70"
+                                                        WidthRequest="70"/>
                                           </DataTemplate>
+                                   </CollectionView.ItemTemplate>
+                            </CollectionView>
+                     </Frame>
 
-                                   </ListView.ItemTemplate>
+                     <!--Pack List Frame-->
+                     <Frame Grid.Row="1"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill"
+                            Margin="30"
+                            Padding="10"
+                            HasShadow="False"
+                            BackgroundColor="{StaticResource Primary2}">
 
-                            </ListView>
-                     </Grid>
+                            <Grid RowDefinitions="10*, 90*"
+                                  ColumnDefinitions="20*, 80*">
 
-              </Frame>
+                                   <ActivityIndicator
+                                          x:Name="LoadingIndicator"
+                                          IsRunning="{Binding IsLoading}"
+                                          IsVisible="{Binding IsLoading}"
+                                          Color="{StaticResource Primary4}"
+                                          VerticalOptions="Center"
+                                          HorizontalOptions="Center"/>
+                                   <!--Search Bar-->
+                                   <SearchBar Grid.Row="0"
+                                              Grid.Column="0"
+                                              Placeholder="Search pack by name"
+                                              TextChanged="OnTextChanged"
+                                              HorizontalOptions="Fill"
+                                              VerticalOptions="Center"/>
 
+                                   <!--Pack List Frame-->
+                                   <Frame Grid.Row="1"
+                                          Grid.Column="0"
+                                          Margin="10"
+                                          BackgroundColor="{StaticResource Primary1}">
+                                          <ListView
+                                                 VerticalOptions="Fill"
+                                                 ItemsSource="{Binding FilteredPacks}"
+                                                 SelectionMode="Single"
+                                                 SelectedItem="{Binding SelectedPack}"
+                                                 HasUnevenRows="True"
+                                                 BackgroundColor="Transparent">
+                                                 <ListView.ItemTemplate>
+                                                        <DataTemplate>
+                                                               <ViewCell>
+                                                                      <Frame Padding="10"
+                                                                             Margin="5"
+                                                                             CornerRadius="8"
+                                                                             BorderColor="LightGray"
+                                                                             HasShadow="False"
+                                                                             BackgroundColor="{StaticResource Secondary5}">
 
-              <Frame Grid.Row="2"
-                     Grid.Column="1"
-                     HorizontalOptions="Fill"
-                     VerticalOptions="Fill"
-                     HasShadow="False"
-                     BorderColor="Purple">
+                                                                             <Label Text="{Binding Name}"
+                                                                                    FontSize="Medium"
+                                                                                    HorizontalOptions="Start"
+                                                                                    VerticalOptions="Center"/>
+                                                                      </Frame>
+                                                               </ViewCell>
+                                                        </DataTemplate>
 
-                     <Grid RowDefinitions="0.8*, 0.2*"
-                           HorizontalOptions="Fill"
-                           VerticalOptions="Fill">
+                                                 </ListView.ItemTemplate>
 
-                            <Image Grid.Row="0"
-                                   Source="{Binding SelectedPack.Image, Converter={StaticResource ImageUrlConverter}}"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center"
-                                   Aspect="AspectFit"/>
-                            <Label Grid.Row="0"
-                                   Text="{Binding SelectedPack.Name}"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Center"/>
+                                          </ListView>
+                                   </Frame>
 
-                            <Button Grid.Row="1"
-                                    Text="Open Pack"
-                                    VerticalOptions="Center"
-                                    HorizontalOptions="End"
-                                    Command="{Binding OpenPackCommand}"/>
-                     </Grid>
+                                   <!--Pack Header Frame-->
+                                   <Grid Grid.Row="0"
+                                         Grid.Column="1"
+                                         ColumnDefinitions="*,*">
+                                          <!--Pack Name-->
+                                          <Label Grid.Column="0"
+                                                 Text="{Binding SelectedPack.Name}"
+                                                 FontFamily="CombatCritterLogo"
+                                                 HorizontalOptions="Center"
+                                                 VerticalOptions="Center"
+                                                 TextColor="white"
+                                                 FontSize="22.5"/>
+                                          <Image Grid.Column="1"
+                                                 Source="{Binding SelectedPack.Image, Converter={StaticResource ImageUrlConverter}}"
+                                                 HorizontalOptions="Center"
+                                                 VerticalOptions="Center"/>
+                                   </Grid>
 
-              </Frame>
-       </Grid>
+                                   <!--Pack Contents Frame-->
+                                   <Frame Grid.Row="1"
+                                          Grid.Column="1"
+                                          BackgroundColor="{StaticResource Primary1}"
+                                          Margin="10">
 
+                                          <CollectionView ItemsSource="{Binding SelectedPackContents}">
+                                                 <CollectionView.ItemsLayout>
+                                                        <GridItemsLayout Orientation="Vertical"
+                                                                         Span="4"
+                                                                         VerticalItemSpacing="20"
+                                                                         HorizontalItemSpacing="20"/>
+                                                 </CollectionView.ItemsLayout>
+                                                 <CollectionView.ItemTemplate>
+                                                        <StaticResource Key="CardTemplate"/>
+                                                 </CollectionView.ItemTemplate>
+                                          </CollectionView>
+                                   </Frame>
+                            </Grid>
+
+                     </Frame>
+
+              </Grid>
+       </Frame>
 </ContentView>
+                   
+                    
