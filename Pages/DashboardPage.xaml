@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.DashboardPage">
 
-    <Grid RowDefinitions="0.3*, 0.7*"
+    <Grid RowDefinitions="40*, 60*"
           ColumnDefinitions="*"
           VerticalOptions="Fill"
           HorizontalOptions="Fill">
@@ -57,7 +57,7 @@
                             <DataTemplate>
                                 <ContentView HorizontalOptions="Center"
                                              WidthRequest="400"
-                                             HeightRequest="650">
+                                             HeightRequest="600">
 
                                     <Frame Style="{StaticResource CardFrameStyle}"
                                            HorizontalOptions="Fill"

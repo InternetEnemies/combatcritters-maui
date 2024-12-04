@@ -83,16 +83,16 @@
                                VerticalOptions="Fill"
                                Margin="0">
 
-                                <ScrollView HorizontalOptions="Fill"
-                                            VerticalOptions="Fill">
-                                        <!--Content Area-->
-                                        <ContentView x:Name="ContentArea"
-                                                     Padding="0"
-                                                     HorizontalOptions="Fill"
-                                                     VerticalOptions="Fill">
+                                <!-- <ScrollView HorizontalOptions="Fill"
+                                            VerticalOptions="Fill"> -->
+                                <!--Content Area-->
+                                <ContentView x:Name="ContentArea"
+                                             Padding="0"
+                                             HorizontalOptions="Fill"
+                                             VerticalOptions="Fill">
 
-                                        </ContentView>
-                                </ScrollView>
+                                </ContentView>
+                                <!-- </ScrollView> -->
 
                         </Frame>
 
