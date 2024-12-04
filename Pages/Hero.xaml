@@ -27,7 +27,7 @@
                                 <!--Page Header Grid-->
                                 <Grid ColumnDefinitions="*,*">
                                         <Label Grid.Column="0"
-                                               Text="COMBAT CRITTERS ADMIN"
+                                               Text="COMBAT CRITTERS MANAGER"
                                                VerticalOptions="Center"
                                                HorizontalOptions="Start"
                                                FontFamily="CombatCritterLogo"
@@ -81,10 +81,10 @@
                                Padding="0"
                                HorizontalOptions="Fill"
                                VerticalOptions="Fill"
-                               Margin="0">
+                               Margin="0"
+                               BackgroundColor="{StaticResource Primary1}">
 
-                                <!-- <ScrollView HorizontalOptions="Fill"
-                                            VerticalOptions="Fill"> -->
+
                                 <!--Content Area-->
                                 <ContentView x:Name="ContentArea"
                                              Padding="0"
@@ -92,7 +92,7 @@
                                              VerticalOptions="Fill">
 
                                 </ContentView>
-                                <!-- </ScrollView> -->
+
 
                         </Frame>
 

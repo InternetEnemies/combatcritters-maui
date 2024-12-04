@@ -1,83 +1,87 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.CardsPage">
+       <Frame BackgroundColor="{StaticResource Primary1}"
+              HasShadow="False">
+              <Grid RowDefinitions="25*, 75*"
+                    VerticalOptions="Fill"
+                    HorizontalOptions="Fill">
 
-       <VerticalStackLayout Margin="20"
-                            Spacing="10">
+                     <!--Page header frame-->
+                     <Frame Grid.Row="0"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill"
+                            Padding="20"
+                            Margin="0"
+                            HasShadow="False"
+                            BackgroundColor="{StaticResource Primary3}">
 
-              <!-- Header Text -->
-              <Label Text="CARDS"
-                     FontFamily="HeaderText"
-                     HorizontalOptions="Start"
-                     FontSize="Large"
-                     FontAttributes="Bold"
-                     TextDecorations="Underline"/>
+                            <Grid ColumnDefinitions="*, *, *">
 
-              <!-- Reload Button -->
-              <Button Text="Reload cards"
-                      Command="{Binding ReloadCommand}"
-                      HorizontalOptions="End"
-                      Margin="0,10,0,10"/>
+                                   <Label Grid.Column="0"
+                                          Text="CRITTER"
+                                          HorizontalOptions="Center"
+                                          VerticalOptions="Center"
+                                          FontSize="32"
+                                          FontFamily="CombatCritterLogo"/>
 
+                                   <Label Grid.Column="1"
+                                          Text="X"
+                                          HorizontalOptions="Center"
+                                          VerticalOptions="Center"
+                                          FontSize="32"
+                                          FontFamily="CombatCritterLogo"/>
 
-              <!-- Scrollable Content Row -->
-              <Border
-                     VerticalOptions="Fill">
-                     <ScrollView>
+                                   <Label Grid.Column="2"
+                                          Text="ITEM"
+                                          HorizontalOptions="Center"
+                                          VerticalOptions="Center"
+                                          FontSize="32"
+                                          FontFamily="CombatCritterLogo"/>
+                            </Grid>
+                     </Frame>
 
-                            <ContentView BackgroundColor="Black"
-                                         Padding="10">
-                                   <ContentView.Triggers>
+                     <!--Game Cards Frame-->
+                     <Frame Grid.Row="1"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill"
+                            Margin="30"
+                            Padding="10"
+                            HasShadow="False"
+                            BackgroundColor="{StaticResource Primary2}">
 
-                                          <DataTrigger TargetType="ContentView"
-                                                       Binding="{Binding HasCards}"
-                                                       Value="False">
-                                                 <Setter Property="Content">
-                                                        <Setter.Value>
-                                                               <Label Text="Game has no cards!"
-                                                                      HorizontalOptions="Center"
-                                                                      VerticalOptions="Center"/>
-                                                        </Setter.Value>
-                                                 </Setter>
-                                          </DataTrigger>
+                            <Grid>
+                                   <!-- Message when there are no cards -->
+                                   <Label Text="Sorry, there are no game cards at the moment"
+                                          HorizontalOptions="Center"
+                                          VerticalOptions="Center"
+                                          IsVisible="{Binding GameCards.Count, Converter={StaticResource IsZeroConverter}}"/>
 
+                                   <ActivityIndicator
+                                          x:Name="LoadingIndicator"
+                                          IsRunning="{Binding IsLoading}"
+                                          IsVisible="{Binding IsLoading}"
+                                          Color="DarkBlue"
+                                          VerticalOptions="Center"
+                                          HorizontalOptions="Center"/>
 
-                                          <DataTrigger TargetType="ContentView"
-                                                       Binding="{Binding HasCards}"
-                                                       Value="True">
-                                                 <Setter Property="Content">
-                                                        <Setter.Value>
+                                   <!-- CollectionView for displaying cards -->
+                                   <CollectionView ItemsSource="{Binding GameCards}"
+                                                   IsVisible="{Binding GameCards.Count, Converter={StaticResource IsNotZeroConverter}}">
+                                          <CollectionView.ItemsLayout>
+                                                 <GridItemsLayout Orientation="Vertical"
+                                                                  Span="4"
+                                                                  VerticalItemSpacing="20"
+                                                                  HorizontalItemSpacing="20"/>
+                                          </CollectionView.ItemsLayout>
+                                          <CollectionView.ItemTemplate>
+                                                 <StaticResource Key="CardTemplate"/>
+                                          </CollectionView.ItemTemplate>
+                                   </CollectionView>
+                            </Grid>
 
-                                                               <CollectionView ItemsSource="{Binding GameCards}">
-                                                                      <CollectionView.ItemsLayout>
-                                                                             <GridItemsLayout Orientation="Vertical"
-                                                                                              Span="5"
-                                                                                              VerticalItemSpacing="30"
-                                                                                              HorizontalItemSpacing="30"/>
-                                                                      </CollectionView.ItemsLayout>
-                                                                      <CollectionView.ItemTemplate>
-                                                                             <StaticResource Key="CardTemplate"/>
-                                                                      </CollectionView.ItemTemplate>
+                     </Frame>
 
-                                                               </CollectionView>
-
-                                                        </Setter.Value>
-                                                 </Setter>
-
-                                          </DataTrigger>
-
-                                   </ContentView.Triggers>
-                            </ContentView>
-                     </ScrollView>
-
-              </Border>
-
-              <ActivityIndicator
-                     x:Name="LoadingIndicator"
-                     IsRunning="{Binding IsLoading}"
-                     IsVisible="{Binding IsLoading}"
-                     Color="DarkBlue"
-                     VerticalOptions="Center"
-                     HorizontalOptions="Center"/>
-       </VerticalStackLayout>
+              </Grid>
+       </Frame>
 </ContentView>
