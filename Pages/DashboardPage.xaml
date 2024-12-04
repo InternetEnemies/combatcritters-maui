@@ -18,7 +18,7 @@
                 <Image Source="dashboardimage.png"
                        Aspect="AspectFit"/>
 
-                <Label Text="{Binding Username, StringFormat='Hello Admin&#x0a;{0}!'}"
+                <Label Text="{Binding Username, StringFormat='Hello Administrator&#x0a;{0}'}"
                        FontSize="35"
                        FontFamily="DashboardHeadersFontStyle"
                        FontAttributes="Bold"
@@ -43,7 +43,107 @@
                    BackgroundColor="Transparent"
                    BorderColor="{StaticResource Secondary1}"
                    Margin="30">
+                <Grid>
+                    <ActivityIndicator
+                        x:Name="LoadingIndicator"
+                        IsRunning="{Binding IsLoading}"
+                        IsVisible="{Binding IsLoading}"
+                        Color="DarkBlue"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"/>
+                    <CarouselView ItemsSource="{Binding GameCards}"
+                                  PeekAreaInsets="120">
+                        <CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <ContentView HorizontalOptions="Center"
+                                             WidthRequest="400"
+                                             HeightRequest="650">
 
+                                    <Frame Style="{StaticResource CardFrameStyle}"
+                                           HorizontalOptions="Fill"
+                                           VerticalOptions="Fill"
+                                           WidthRequest="400"
+                                           CornerRadius="8">
+                                        <Frame.Triggers>
+                                            <DataTrigger TargetType="Frame"
+                                                         Binding="{Binding Rarity}"
+                                                         Value="0">
+                                                <Setter Property="Background"
+                                                        Value="{StaticResource CommonGradient}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Frame"
+                                                         Binding="{Binding Rarity}"
+                                                         Value="1">
+                                                <Setter Property="Background"
+                                                        Value="{StaticResource UncommonGradient}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Frame"
+                                                         Binding="{Binding Rarity}"
+                                                         Value="2">
+                                                <Setter Property="Background"
+                                                        Value="{StaticResource RareGradient}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Frame"
+                                                         Binding="{Binding Rarity}"
+                                                         Value="3">
+                                                <Setter Property="Background"
+                                                        Value="{StaticResource EpicGradient}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Frame"
+                                                         Binding="{Binding Rarity}"
+                                                         Value="4">
+                                                <Setter Property="Background"
+                                                        Value="{StaticResource LegendaryGradient}"/>
+                                            </DataTrigger>
+                                        </Frame.Triggers>
+
+                                        <StackLayout Orientation="Vertical">
+
+                                            <!-- Card Name -->
+                                            <Frame Padding="5"
+                                                   BackgroundColor="Black"
+                                                   Margin="0,0,0,1"
+                                                   HasShadow="False"
+                                                   HeightRequest="50">
+                                                <Label Text="{Binding Name}"
+                                                       FontFamily="MtgBold"
+                                                       FontSize="18"
+                                                       TextColor="White"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center"/>
+                                            </Frame>
+
+                                            <!-- Card Image -->
+                                            <Frame Padding="10"
+                                                   HasShadow="False"
+                                                   BackgroundColor="Transparent">
+                                                <Image Source="{Binding Image, Converter={StaticResource ImageUrlConverter}}"
+                                                       Aspect="AspectFit"
+                                                       HeightRequest="300"
+                                                       WidthRequest="200"/>
+                                            </Frame>
+
+                                            <!-- Card Description -->
+                                            <Frame BorderColor="Black"
+                                                   Padding="5"
+                                                   Margin="0,1,0,0"
+                                                   HasShadow="False">
+                                                <Label Text="{Binding Description}"
+                                                       FontSize="12"
+                                                       TextColor="Black"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center"/>
+                                            </Frame>
+
+                                        </StackLayout>
+
+                                    </Frame>
+                                </ContentView>
+                            </DataTemplate>
+                        </CarouselView.ItemTemplate>
+                    </CarouselView>
+
+                </Grid>
             </Frame>
 
             <!--Links Frame-->
@@ -54,7 +154,6 @@
                    HorizontalOptions="Fill"
                    VerticalOptions="Fill"
                    BackgroundColor="Transparent"
-                   BorderColor="{StaticResource Secondary1}"
                    Margin="30">
 
                 <Grid RowDefinitions="*, *"
