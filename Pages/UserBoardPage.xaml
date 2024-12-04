@@ -25,7 +25,7 @@
 
                 <Label Text="USER BOARD"
                        FontFamily="PageFont1"
-                       FontSize="45"/>
+                       FontSize="32"/>
 
             </Frame>
 

@@ -5,32 +5,33 @@
         <!--Global frame for page-->
         <Frame HasShadow="False"
                BorderColor="Black"
-               Padding="0"
-               Margin="6">
+               Padding="0">
 
                 <!-- Grid with 2 rows and 3 columns -->
-
-                <Grid RowDefinitions="0.1*,0.9*">
+                <Grid RowDefinitions="10*,90*">
                         <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="0.1*"/>
                                 <ColumnDefinition Width="0.8*"/>
                                 <ColumnDefinition Width="0.1*"/>
                         </Grid.ColumnDefinitions>
 
+                        <!--Page Header Frame-->
                         <Frame Grid.Row="0"
                                Grid.ColumnSpan="3"
                                HorizontalOptions="Fill"
                                VerticalOptions="Fill"
                                HasShadow="false"
-                               BackgroundColor="#19282F">
+                               BackgroundColor="Black"
+                               Margin="0">
 
+                                <!--Page Header Grid-->
                                 <Grid ColumnDefinitions="*,*">
                                         <Label Grid.Column="0"
-                                               Text="COMBAT CRITTERS"
+                                               Text="COMBAT CRITTERS ADMIN"
                                                VerticalOptions="Center"
                                                HorizontalOptions="Start"
                                                FontFamily="CombatCritterLogo"
-                                               TextColor="#B33030"
+                                               TextColor="white"
                                                FontSize="32"/>
 
                                         <HorizontalStackLayout Grid.Column="1"
@@ -38,6 +39,9 @@
                                                                VerticalOptions="Center"
                                                                Spacing="10">
                                                 <Button Text="Dashboard"
+                                                        TextColor="{StaticResource Primary4}"
+                                                        BackgroundColor="{StaticResource Primary3}"
+                                                        FontSize="22.5"
                                                         Clicked="OnDashboardClicked"
                                                         HeightRequest="30"
                                                         VerticalOptions="Center"/>
@@ -45,17 +49,26 @@
                                                 <Button Text="Cards"
                                                         Clicked="OnCardsClicked"
                                                         HeightRequest="30"
-                                                        VerticalOptions="Center"/>
+                                                        VerticalOptions="Center"
+                                                        TextColor="{StaticResource Primary4}"
+                                                        BackgroundColor="{StaticResource Primary3}"
+                                                        FontSize="22.5"/>
 
                                                 <Button Text="Packs"
                                                         Clicked="OnPacksClicked"
                                                         HeightRequest="30"
-                                                        VerticalOptions="Center"/>
+                                                        VerticalOptions="Center"
+                                                        TextColor="{StaticResource Primary4}"
+                                                        BackgroundColor="{StaticResource Primary3}"
+                                                        FontSize="22.5"/>
 
                                                 <Button Text="Marketplace"
                                                         Clicked="OnMarketplaceClicked"
                                                         HeightRequest="30"
-                                                        VerticalOptions="Center"/>
+                                                        VerticalOptions="Center"
+                                                        TextColor="{StaticResource Primary4}"
+                                                        BackgroundColor="{StaticResource Primary3}"
+                                                        FontSize="22.5"/>
                                         </HorizontalStackLayout>
                                 </Grid>
                         </Frame>
@@ -67,7 +80,8 @@
                                BorderColor="Transparent"
                                Padding="0"
                                HorizontalOptions="Fill"
-                               VerticalOptions="Fill">
+                               VerticalOptions="Fill"
+                               Margin="0">
 
                                 <ScrollView HorizontalOptions="Fill"
                                             VerticalOptions="Fill">

@@ -21,7 +21,7 @@
 
                 <Label Text="PACK CREATOR"
                        FontFamily="PageFont1"
-                       FontSize="45"/>
+                       FontSize="32"/>
             </Frame>
 
             <!--Body Frame-->

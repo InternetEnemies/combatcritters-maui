@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.DashboardPage">
 
-    <Grid RowDefinitions="0.5*, 0.5*"
+    <Grid RowDefinitions="0.3*, 0.7*"
           ColumnDefinitions="*"
           VerticalOptions="Fill"
           HorizontalOptions="Fill">
@@ -30,54 +30,79 @@
         </Frame>
 
         <Grid Grid.Row="1"
-              ColumnDefinitions="*, *, *"
+              RowDefinitions="*, *, *"
+              ColumnDefinitions="*, *"
               VerticalOptions="Fill"
               HorizontalOptions="Fill"
               BackgroundColor="Black">
 
+            <!--Cards Carousel Frame-->
+            <Frame Grid.Row="0"
+                   Grid.RowSpan="3"
+                   Grid.Column="0"
+                   BackgroundColor="Transparent"
+                   BorderColor="{StaticResource Secondary1}"
+                   Margin="30">
+
+            </Frame>
+
             <!--Links Frame-->
-            <Frame Grid.Column="0"
+            <Frame Grid.Row="0"
+                   Grid.Column="1"
                    CornerRadius="10"
                    Padding="10"
                    HorizontalOptions="Fill"
                    VerticalOptions="Fill"
-                   BackgroundColor="Red"
-                   Margin="20">
+                   BackgroundColor="Transparent"
+                   BorderColor="{StaticResource Secondary1}"
+                   Margin="30">
 
-                <VerticalStackLayout>
-                    <Label Text="WORKSPACES"
-                           TextColor="Black"
+                <Grid RowDefinitions="*, *"
+                      ColumnDefinitions="*, *">
+                    <Label Grid.Row="0"
+                           Grid.ColumnSpan="2"
+                           Text="Quick Links"
+                           TextColor="White"
                            FontAttributes="Bold"
                            FontSize="30"
                            HorizontalOptions="Center"
                            FontFamily="DashboardHeadersFontStyle"/>
 
-                    <Button Text="Manage Users"
-                            TextColor="white"
-                            BackgroundColor="#19282F"
-                            Margin="0,5"
-                            Clicked="OnManageUsersClicked"/>
-                    <Button Text="Create Cards"
-                            TextColor="white"
-                            BackgroundColor="#19282F"
-                            Margin="0,5"/>
-                    <Button Text="Create Packs"
-                            TextColor="White"
-                            BackgroundColor="#19282F"
-                            Margin="0,5"
-                            Clicked="OnCreatePacksClicked"/>
-                </VerticalStackLayout>
+                    <Button Grid.Column="0"
+                            Grid.Row="1"
+                            Text="Manage Users"
+                            TextColor="Black"
+                            FontSize="18"
+                            BackgroundColor="{StaticResource Primary4}"
+                            Clicked="OnManageUsersClicked"
+                            WidthRequest="200"
+                            HeightRequest="30"
+                            HorizontalOptions="Center"/>
+
+                    <Button Grid.Column="1"
+                            Grid.Row="1"
+                            Text="Create Packs"
+                            TextColor="Black"
+                            FontSize="18"
+                            BackgroundColor="{StaticResource Secondary4}"
+                            Clicked="OnCreatePacksClicked"
+                            WidthRequest="200"
+                            HeightRequest="30"
+                            HorizontalOptions="Center"/>
+
+                </Grid>
 
             </Frame>
 
-            <!-- Overview Frame -->
-            <Frame Grid.Column="1"
+            <!-- Activity Frame -->
+            <Frame Grid.Row="1"
+                   Grid.Column="1"
                    CornerRadius="10"
                    HorizontalOptions="Fill"
                    VerticalOptions="Fill"
-                   Margin="20"
+                   Margin="30"
                    Padding="10"
-                   BackgroundColor="Green">
+                   BackgroundColor="{StaticResource Primary3}">
 
                 <VerticalStackLayout>
 
@@ -90,7 +115,9 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <Frame Grid.Column="2"
+            <!--Production Frame-->
+            <Frame Grid.Row="3"
+                   Grid.Column="1"
                    CornerRadius="10"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
