@@ -2,63 +2,60 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.MarketplacePage">
 
-    <Grid RowSpacing="10"
-          Padding="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.2*"/>
-            <RowDefinition Height="0.8*"/>
-        </Grid.RowDefinitions>
+    <Frame BackgroundColor="{StaticResource Primary1}"
+           HasShadow="False">
 
-        <ActivityIndicator
-            x:Name="LoadingIndicator"
-            IsRunning="{Binding IsLoading}"
-            IsVisible="{Binding IsLoading}"
-            Color="DarkBlue"
-            VerticalOptions="Center"
-            HorizontalOptions="Center"/>
+        <Grid RowDefinitions="25*, 75*"
+              VerticalOptions="Fill"
+              HorizontalOptions="Fill">
 
+            <!--Page header frame-->
+            <Frame Grid.Row="0"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill"
+                   Padding="20"
+                   Margin="0"
+                   HasShadow="False"
+                   BackgroundColor="{StaticResource Primary3}">
 
-        <Frame Grid.Row="0"
-               HorizontalOptions="Fill"
-               VerticalOptions="Fill"
-               Padding="20"
-               BackgroundColor="Black">
+                <Label
+                    Text="GAME VENDORS"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    FontSize="32"
+                    FontFamily="CombatCritterLogo"/>
 
-            <Label Text="MARKETPLACE VENDORS"
-                   TextColor="White"
-                   FontSize="35"
-                   FontFamily="DashboardHeadersFontStyle"
-                   FontAttributes="Bold"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Start"/>
-        </Frame>
+            </Frame>
 
-        <Frame Grid.Row="1"
-               HorizontalOptions="Fill"
-               VerticalOptions="Fill"
-               Padding="20">
+            <!--Game Vendors-->
+            <Frame Grid.Row="1"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill"
+                   Margin="30"
+                   Padding="10"
+                   HasShadow="False"
+                   BackgroundColor="{StaticResource Primary2}">
 
-            <CollectionView ItemsSource="{Binding GameVendors}"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center"
-                            SelectionMode="Single"
-                            SelectionChangedCommand="{Binding VendorSelectedCommand}"
-                            SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical"
-                                     Span="4"
-                                     VerticalItemSpacing="30"
-                                     HorizontalItemSpacing="30"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <StaticResource Key="VendorTemplate"/>
-                </CollectionView.ItemTemplate>
+                <CollectionView ItemsSource="{Binding GameVendors}"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                SelectionMode="Single"
+                                SelectionChangedCommand="{Binding VendorSelectedCommand}"
+                                SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical"
+                                         Span="4"
+                                         VerticalItemSpacing="30"
+                                         HorizontalItemSpacing="30"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <StaticResource Key="VendorTemplate"/>
+                    </CollectionView.ItemTemplate>
 
-            </CollectionView>
+                </CollectionView>
 
-        </Frame>
+            </Frame>
+        </Grid>
+    </Frame>
 
-
-
-    </Grid>
 </ContentView>

@@ -4,11 +4,12 @@
        <Grid>
               <!--Main Content-->
               <Grid>
-                     <Frame Margin="6"
+                     <Frame
                             HorizontalOptions="Fill"
                             VerticalOptions="Fill"
-                            BackgroundColor="Black"
-                            Padding="150">
+                            BackgroundColor="{StaticResource Primary2}"
+                            HasShadow="False"
+                            Padding="100">
 
                             <Grid RowDefinitions="90*, 10*"
                                   RowSpacing="20">
@@ -16,7 +17,8 @@
 
                                    <Frame Grid.Row="0"
                                           HorizontalOptions="Fill"
-                                          VerticalOptions="Fill">
+                                          VerticalOptions="Fill"
+                                          BackgroundColor="Transparent">
 
                                           <Grid ColumnDefinitions="40*, 40*"
                                                 RowDefinitions="10*,10*,80*"
@@ -25,7 +27,10 @@
                                                  <!--Name and Level row-->
                                                  <Label Grid.Row="0"
                                                         Grid.Column="0"
+                                                        FontSize="32"
                                                         Text="{Binding Vendor.Name}"
+                                                        FontFamily="DashboardHeadersFontStyle"
+                                                        TextColor="{StaticResource Secondary5}"
                                                         HorizontalOptions="Center"
                                                         VerticalOptions="Center"/>
 
@@ -39,22 +44,31 @@
                                                  <!--Frame Headers-->
                                                  <Label Grid.Row="1"
                                                         Grid.Column="0"
-                                                        Text="I Collect"
-                                                        HorizontalOptions="Start"
-                                                        VerticalOptions="Center"/>
+                                                        Text="Give"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center"
+                                                        FontFamily="DashboardHeadersFontStyle"
+                                                        TextColor="{StaticResource Secondary5}"
+                                                        FontSize="22.5"/>
 
                                                  <Label Grid.Row="1"
                                                         Grid.Column="1"
-                                                        Text="I Give"
+                                                        Text="Receive"
                                                         HorizontalOptions="Center"
-                                                        VerticalOptions="Center"/>
+                                                        VerticalOptions="Center"
+                                                        FontFamily="DashboardHeadersFontStyle"
+                                                        TextColor="{StaticResource Secondary5}"
+                                                        FontSize="22.5"/>
 
                                                  <!--Frames-->
                                                  <!--I Collect Frame-->
                                                  <Frame Grid.Row="2"
                                                         Grid.Column="0"
                                                         HorizontalOptions="Fill"
-                                                        VerticalOptions="Fill">
+                                                        VerticalOptions="Fill"
+                                                        Margin="30"
+                                                        Padding="10"
+                                                        BackgroundColor="{StaticResource Primary1}">
 
                                                         <Grid RowDefinitions="90*,10*">
 
@@ -88,13 +102,25 @@
                                                                                       Spacing="20">
                                                                       <Button Text="Add Card"
                                                                               Command="{Binding OnShowFlyoutCommand}"
-                                                                              CommandParameter="ICollect:CardInventory"/>
+                                                                              CommandParameter="ICollect:CardInventory"
+                                                                              HeightRequest="30"
+                                                                              TextColor="{StaticResource Primary4}"
+                                                                              BackgroundColor="{StaticResource Primary3}"
+                                                                              FontSize="18"/>
                                                                       <Button Text="Add Pack"
                                                                               Command="{Binding OnShowFlyoutCommand}"
-                                                                              CommandParameter="ICollect:PackInventory"/>
+                                                                              CommandParameter="ICollect:PackInventory"
+                                                                              HeightRequest="30"
+                                                                              TextColor="{StaticResource Primary4}"
+                                                                              BackgroundColor="{StaticResource Primary3}"
+                                                                              FontSize="18"/>
                                                                       <Button Text="Add Currency"
                                                                               Command="{Binding OnShowFlyoutCommand}"
-                                                                              CommandParameter="ICollect:CurrencyInventory"/>
+                                                                              CommandParameter="ICollect:CurrencyInventory"
+                                                                              HeightRequest="30"
+                                                                              TextColor="{StaticResource Primary4}"
+                                                                              BackgroundColor="{StaticResource Primary3}"
+                                                                              FontSize="18"/>
                                                                </HorizontalStackLayout>
 
                                                         </Grid>
@@ -105,7 +131,10 @@
                                                  <Frame Grid.Row="2"
                                                         Grid.Column="1"
                                                         HorizontalOptions="Fill"
-                                                        VerticalOptions="Fill">
+                                                        VerticalOptions="Fill"
+                                                        Margin="30"
+                                                        Padding="10"
+                                                        BackgroundColor="{StaticResource Primary1}">
 
                                                         <Grid RowDefinitions="90*,10*">
 
@@ -135,13 +164,25 @@
                                                                                       Spacing="20">
                                                                       <Button Text="Add Card"
                                                                               Command="{Binding OnShowFlyoutCommand}"
-                                                                              CommandParameter="IGive:CardInventory"/>
+                                                                              CommandParameter="IGive:CardInventory"
+                                                                              HeightRequest="30"
+                                                                              TextColor="{StaticResource Primary4}"
+                                                                              BackgroundColor="{StaticResource Primary3}"
+                                                                              FontSize="18"/>
                                                                       <Button Text="Add Pack"
                                                                               Command="{Binding OnShowFlyoutCommand}"
-                                                                              CommandParameter="IGive:PackInventory"/>
+                                                                              CommandParameter="IGive:PackInventory"
+                                                                              HeightRequest="30"
+                                                                              TextColor="{StaticResource Primary4}"
+                                                                              BackgroundColor="{StaticResource Primary3}"
+                                                                              FontSize="18"/>
                                                                       <Button Text="Add Currency"
                                                                               Command="{Binding OnShowFlyoutCommand}"
-                                                                              CommandParameter="IGive:CurrencyInventory"/>
+                                                                              CommandParameter="IGive:CurrencyInventory"
+                                                                              HeightRequest="30"
+                                                                              TextColor="{StaticResource Primary4}"
+                                                                              BackgroundColor="{StaticResource Primary3}"
+                                                                              FontSize="18"/>
                                                                </HorizontalStackLayout>
 
                                                         </Grid>
@@ -156,7 +197,11 @@
                                            HorizontalOptions="End"
                                            VerticalOptions="Center"
                                            Text="Create"
-                                           Command="{Binding OnCreateOfferCommand}"/>
+                                           Command="{Binding OnCreateOfferCommand}"
+                                           FontFamily="PageFont1"
+                                           FontSize="30"
+                                           Margin="10"
+                                           BackgroundColor="Green"/>
                             </Grid>
 
 
@@ -170,7 +215,7 @@
                      HorizontalOptions="End"
                      VerticalOptions="Fill"
                      WidthRequest="550"
-                     BackgroundColor="White"
+                     BackgroundColor="{StaticResource Primary1}"
                      Padding="10"
                      IsVisible="{Binding IsFlyoutVisible}">
 
@@ -182,8 +227,9 @@
                                    HorizontalOptions="Center"/>
 
                             <Button Grid.Row="1"
-                                    Text="Close"
-                                    Command="{Binding OnCloseFlyoutCommand}"/>
+                                    Text="X"
+                                    Command="{Binding OnCloseFlyoutCommand}"
+                                    BackgroundColor="#FF632727"/>
 
                             <CollectionView Grid.Row="2"
                                             ItemsSource="{Binding FlyoutItems}"

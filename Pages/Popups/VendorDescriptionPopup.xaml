@@ -7,118 +7,159 @@
     HorizontalOptions="Fill"
     VerticalOptions="Fill">
 
-    <Grid RowSpacing="20"
-          ColumnSpacing="20"
-          Padding="30"
-          Margin="6">
-        <!-- Define three rows and two columns -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="80*"/>
-            <RowDefinition Height="10*"/>
-        </Grid.RowDefinitions>
+    <Frame BackgroundColor="{StaticResource Primary2}"
+           HasShadow="False"
+           Padding="100">
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="30*"/>
-            <ColumnDefinition Width="70*"/>
-        </Grid.ColumnDefinitions>
+        <Grid RowSpacing="20"
+              ColumnSpacing="20"
+              Padding="30"
+              Margin="6">
+            <!-- Define three rows and two columns -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="80*"/>
+                <RowDefinition Height="10*"/>
+            </Grid.RowDefinitions>
 
-        <!--VENDOR NAME-->
-        <Label Grid.Row="0"
-               Grid.Column="0"
-               Text="{Binding Vendor.Name}"
-               FontFamily="DashboardHeadersFontStyle"
-               HorizontalOptions="Center"
-               VerticalOptions="Center"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="70*"/>
+            </Grid.ColumnDefinitions>
 
-        <!--VENDOR LEVEL LIST-->
-        <Frame Grid.Row="1"
-               Grid.Column="0">
-            <ListView
-                ItemsSource="{Binding VendorLevels}"
-                SelectedItem="{Binding SelectedLevel}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Label Text="{Binding .}"/>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Frame>
+            <!--VENDOR NAME-->
+            <Label Grid.Row="0"
+                   Grid.Column="0"
+                   FontSize="32"
+                   Text="{Binding Vendor.Name}"
+                   FontFamily="DashboardHeadersFontStyle"
+                   TextColor="{StaticResource Secondary5}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"/>
 
-        <!--VENDOR OFFER-->
-        <Frame Grid.Row="1"
-               Grid.Column="1"
-               HorizontalOptions="Fill"
-               VerticalOptions="Fill">
+            <!--VENDOR LEVEL LIST-->
+            <Frame Grid.Row="1"
+                   Grid.Column="0"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill"
+                   Margin="30"
+                   Padding="10"
+                   HasShadow="False"
+                   BackgroundColor="{StaticResource Primary1}">
+                <ListView
+                    ItemsSource="{Binding VendorLevels}"
+                    SelectedItem="{Binding SelectedLevel}"
+                    BackgroundColor="Transparent">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame Padding="10"
+                                       Margin="5"
+                                       CornerRadius="8"
+                                       BorderColor="LightGray"
+                                       HasShadow="False"
+                                       BackgroundColor="{StaticResource Secondary5}">
+                                    <Label Text="{Binding .}"
+                                           FontSize="Medium"
+                                           HorizontalOptions="Start"
+                                           VerticalOptions="Center"/>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Frame>
+
+            <!--VENDOR OFFER-->
+            <Frame Grid.Row="1"
+                   Grid.Column="1"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill"
+                   Margin="30"
+                   Padding="10"
+                   HasShadow="False"
+                   BackgroundColor="{StaticResource Primary1}">
 
 
-            <Grid ColumnDefinitions="40*, 40*"
-                  RowDefinitions="10*,90*"
-                  ColumnSpacing="20">
+                <Grid ColumnDefinitions="40*, 40*"
+                      RowDefinitions="10*,90*"
+                      ColumnSpacing="20">
 
-                <Label Grid.Row="0"
-                       Grid.Column="0"
-                       Text="I Collect"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"/>
+                    <Label Grid.Row="0"
+                           Grid.Column="0"
+                           Text="Give"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           FontFamily="DashboardHeadersFontStyle"
+                           TextColor="{StaticResource Secondary5}"
+                           FontSize="22.5"/>
 
-                <Label Grid.Row="0"
-                       Grid.Column="1"
-                       Text="I Give"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"/>
+                    <Label Grid.Row="0"
+                           Grid.Column="1"
+                           Text="Receive"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           FontFamily="DashboardHeadersFontStyle"
+                           TextColor="{StaticResource Secondary5}"
+                           FontSize="22.5"/>
 
 
-                <!--I Collect Frame-->
-                <Frame Grid.Column="0"
-                       Grid.Row="1"
-                       HorizontalOptions="Fill"
-                       VerticalOptions="Fill">
+                    <!--I Collect Frame-->
+                    <Frame Grid.Column="0"
+                           Grid.Row="1"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="Fill"
+                           Margin="30"
+                           Padding="10">
 
-                    <CollectionView ItemsSource="{Binding GiveItems}">
-                        <CollectionView.ItemsLayout>
-                            <GridItemsLayout Orientation="Vertical"
-                                             Span="2"/>
-                        </CollectionView.ItemsLayout>
-                        <CollectionView.ItemTemplate>
-                            <StaticResource Key="OfferTemplate"/>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                        <CollectionView ItemsSource="{Binding GiveItems}">
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout Orientation="Vertical"
+                                                 Span="2"/>
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <StaticResource Key="OfferTemplate"/>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
 
-                </Frame>
+                    </Frame>
 
-                <!--I Give Frame-->
-                <Frame Grid.Column="1"
-                       Grid.Row="1"
-                       HorizontalOptions="Fill"
-                       VerticalOptions="Fill">
+                    <!--I Give Frame-->
+                    <Frame Grid.Column="1"
+                           Grid.Row="1"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="Fill"
+                           Margin="30"
+                           Padding="10">
 
-                    <CollectionView ItemsSource="{Binding ReceiveItemAsCollection}">
-                        <CollectionView.ItemsLayout>
-                            <LinearItemsLayout Orientation="Vertical"/>
-                        </CollectionView.ItemsLayout>
-                        <CollectionView.ItemTemplate>
-                            <StaticResource Key="OfferTemplate"/>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </Frame>
+                        <CollectionView ItemsSource="{Binding ReceiveItemAsCollection}">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Vertical"/>
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <StaticResource Key="OfferTemplate"/>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Frame>
 
-            </Grid>
-        </Frame>
+                </Grid>
+            </Frame>
 
-        <!--New Level-->
-        <Button Grid.Row="2"
-                Grid.Column="0"
-                Text="NEW LEVEL"
-                Clicked="OnNewLevelClicked"/>
+            <!--New Level-->
+            <Button Grid.Row="2"
+                    Grid.Column="0"
+                    BackgroundColor="Green"
+                    Text="NEW LEVEL"
+                    Clicked="OnNewLevelClicked"/>
 
-        <!--Close-->
-        <Button Grid.Row="2"
-                Grid.Column="1"
-                Text="Press ESC to Exit"/>
+            <!--Close-->
+            <Button Grid.Row="2"
+                    Grid.Column="1"
+                    BackgroundColor="#FF632727"
+                    Text="Press ESC to Exit"/>
 
-    </Grid>
+        </Grid>
+    </Frame>
+
 
 </toolkit:Popup>
