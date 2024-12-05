@@ -69,6 +69,8 @@
                                                         TextColor="{StaticResource Primary4}"
                                                         BackgroundColor="{StaticResource Primary3}"
                                                         FontSize="22.5"/>
+
+
                                         </HorizontalStackLayout>
                                 </Grid>
                         </Frame>

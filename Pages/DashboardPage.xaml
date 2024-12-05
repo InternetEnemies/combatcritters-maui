@@ -30,7 +30,7 @@
         </Frame>
 
         <Grid Grid.Row="1"
-              RowDefinitions="*, *, *"
+              RowDefinitions="*, *"
               ColumnDefinitions="*, *"
               VerticalOptions="Fill"
               HorizontalOptions="Fill"
@@ -153,13 +153,12 @@
                    Padding="10"
                    HorizontalOptions="Fill"
                    VerticalOptions="Fill"
+                   BorderColor="{StaticResource Secondary1}"
                    BackgroundColor="Transparent"
                    Margin="30">
 
-                <Grid RowDefinitions="*, *"
-                      ColumnDefinitions="*, *">
+                <Grid RowDefinitions="*, *, *, *">
                     <Label Grid.Row="0"
-                           Grid.ColumnSpan="2"
                            Text="Quick Links"
                            TextColor="White"
                            FontAttributes="Bold"
@@ -167,27 +166,48 @@
                            HorizontalOptions="Center"
                            FontFamily="DashboardHeadersFontStyle"/>
 
-                    <Button Grid.Column="0"
-                            Grid.Row="1"
-                            Text="Manage Users"
-                            TextColor="Black"
-                            FontSize="18"
-                            BackgroundColor="{StaticResource Primary4}"
-                            Clicked="OnManageUsersClicked"
-                            WidthRequest="200"
-                            HeightRequest="30"
-                            HorizontalOptions="Center"/>
+                    <Button
+                        Grid.Row="1"
+                        Text="Manage Users"
+                        TextColor="Black"
+                        FontSize="18"
+                        BackgroundColor="{StaticResource Primary4}"
+                        Clicked="OnManageUsersClicked"
+                        WidthRequest="200"
+                        HeightRequest="30"
+                        HorizontalOptions="Center"/>
 
-                    <Button Grid.Column="1"
-                            Grid.Row="1"
-                            Text="Create Packs"
-                            TextColor="Black"
-                            FontSize="18"
-                            BackgroundColor="{StaticResource Secondary4}"
-                            Clicked="OnCreatePacksClicked"
-                            WidthRequest="200"
-                            HeightRequest="30"
-                            HorizontalOptions="Center"/>
+                    <Button
+                        Grid.Row="2"
+                        Text="Create Packs"
+                        TextColor="Black"
+                        FontSize="18"
+                        BackgroundColor="{StaticResource Secondary4}"
+                        Clicked="OnCreatePacksClicked"
+                        WidthRequest="200"
+                        HeightRequest="30"
+                        HorizontalOptions="Center"/>
+
+                    <HorizontalStackLayout Grid.Row="3"
+                                           Spacing="10"
+                                           HorizontalOptions="Center">
+
+                        <Label Text="An InternetEnemies Production"
+                               TextColor="white"
+                               FontFamily="CombatCritterLogo"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+
+                        <Image Source="github.png"
+                               HeightRequest="30"
+                               WidthRequest="30"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding OpenGitHubCommand}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </HorizontalStackLayout>
 
                 </Grid>
 
@@ -211,46 +231,6 @@
                            FontSize="30"
                            HorizontalOptions="Center"
                            FontFamily="DashboardHeadersFontStyle"/>
-                </VerticalStackLayout>
-            </Frame>
-
-            <!--Production Frame-->
-            <Frame Grid.Row="3"
-                   Grid.Column="1"
-                   CornerRadius="10"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   Margin="20"
-                   Padding="10"
-                   BackgroundColor="White">
-
-
-                <VerticalStackLayout Spacing="30">
-                    <Label Text="Production"
-                           TextColor="Black"
-                           FontAttributes="Bold"
-                           FontSize="30"
-                           HorizontalOptions="Center"
-                           FontFamily="DashboardHeadersFontStyle"/>
-                    <HorizontalStackLayout Spacing="10">
-
-                        <Label Text="An InternetEnemies Production"
-                               TextColor="Black"
-                               FontFamily="CombatCritterLogo"
-                               HorizontalOptions="Center"
-                               VerticalOptions="Center"/>
-
-                        <Image Source="github.png"
-                               HeightRequest="50"
-                               WidthRequest="50"
-                               HorizontalOptions="Center"
-                               VerticalOptions="Center">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding OpenGitHubCommand}"/>
-                            </Image.GestureRecognizers>
-                        </Image>
-                    </HorizontalStackLayout>
-
                 </VerticalStackLayout>
             </Frame>
         </Grid>
