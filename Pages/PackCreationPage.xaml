@@ -130,7 +130,7 @@
 
                                                     <CollectionView ItemsSource="{Binding GamePackImagesURL}"
                                                                     SelectionMode="Single"
-                                                                    SelectedItem="{Binding SelectedPackImage, Mode=TwoWay}"
+                                                                    SelectionChanged="OnImageSelectionChanged"
                                                                     IsVisible="{Binding GamePackImagesURL.Count, Converter={StaticResource IsNotZeroConverter}}">
                                                         <CollectionView.ItemsLayout>
                                                             <LinearItemsLayout Orientation="Horizontal"
@@ -316,7 +316,7 @@
 
                                     <Image Grid.Row="0"
                                            Grid.Column="1"
-                                           Source="{Binding SelectedPackImage}"
+                                           Source="{Binding SelectedPackImage, Converter={StaticResource ImageUrlConverter}}"
                                            WidthRequest="70"
                                            HeightRequest="70"
                                            HorizontalOptions="Center"/>

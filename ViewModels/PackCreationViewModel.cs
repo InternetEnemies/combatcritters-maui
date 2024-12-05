@@ -236,7 +236,7 @@ namespace Combat_Critters_2._0.ViewModels
                 for (int i = 0; i < 5; i++)
                 {
                     var packURL = root + $"pack{i}.png";
-                    GamePackImagesURL.Add(root + $"pack{i}.png");
+                    GamePackImagesURL.Add(packURL);
                 }
 
 
@@ -247,6 +247,11 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
+        public void SetImage(string image)
+        {
+            SelectedPackImage = image.Substring(image.LastIndexOf('/') + 1);
+
+        }
         private async Task CreateCommandAsync()
         {
             try
