@@ -154,13 +154,13 @@
                    HorizontalOptions="Fill"
                    VerticalOptions="Fill"
                    BorderColor="{StaticResource Secondary1}"
-                   BackgroundColor="Transparent"
+                   BackgroundColor="white"
                    Margin="30">
 
                 <Grid RowDefinitions="*, *, *, *">
                     <Label Grid.Row="0"
                            Text="Quick Links"
-                           TextColor="White"
+                           TextColor="black"
                            FontAttributes="Bold"
                            FontSize="30"
                            HorizontalOptions="Center"
@@ -193,7 +193,7 @@
                                            HorizontalOptions="Center">
 
                         <Label Text="An InternetEnemies Production"
-                               TextColor="white"
+                               TextColor="black"
                                FontFamily="CombatCritterLogo"
                                HorizontalOptions="Center"
                                VerticalOptions="Center"/>
