@@ -168,7 +168,7 @@
                                       HorizontalOptions="Fill"
                                       VerticalOptions="Fill">
 
-                                        <Image Source="testvendor.webp"
+                                        <Image Source="{Binding Image, Converter={StaticResource ImageUrlConverter}}"
                                                Aspect="AspectFit"
                                                Grid.Row="0"/>
 

@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using Combat_Critters_2._0.Pages;
+using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.objects.MarketPlace.Implementations;
 using CombatCrittersSharp.objects.MarketPlace.Interfaces;
 using CommunityToolkit.Maui.Core.Extensions;
@@ -11,6 +12,7 @@ namespace Combat_Critters_2._0.ViewModels
 {
     public class VendorDescriptionViewModel : INotifyPropertyChanged
     {
+        private readonly BackendService _backendService;
         private Vendor _vendor;
         public Vendor Vendor
         {
@@ -96,6 +98,7 @@ namespace Combat_Critters_2._0.ViewModels
 
         public VendorDescriptionViewModel(Vendor vendor, List<Offer> offer)
         {
+            _backendService = new BackendService(ClientSingleton.GetInstance("http://api.combatcritters.ca:4000"));
             _vendor = vendor;
             _offer = offer;
             _vendorLevels = new ObservableCollection<string>();
@@ -137,8 +140,10 @@ namespace Combat_Critters_2._0.ViewModels
         /// <summary>
         /// This method populated the vendor offers
         /// </summary>
-        public void PopulateVendorLevels()
+        public async void PopulateVendorLevels()
         {
+            List<Offer> offers = await _backendService.GetVendorOfferAsync(Vendor.Id);
+            Offer = offers;
             for (int i = 0; i < Offer.Count; i++)
             {
                 var item = Offer[i];
