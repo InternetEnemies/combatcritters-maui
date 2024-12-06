@@ -2,16 +2,60 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.MarketplacePage">
 
-    <VerticalStackLayout Margin="20"
-                         Spacing="10">
+    <Frame BackgroundColor="{StaticResource Primary1}"
+           HasShadow="False">
 
-        <!-- Header Text -->
-        <Label Text="MARKETPLACE"
-               FontFamily="HeaderText"
-               HorizontalOptions="Start"
-               FontSize="Large"
-               FontAttributes="Bold"
-               TextDecorations="Underline"/>
+        <Grid RowDefinitions="25*, 75*"
+              VerticalOptions="Fill"
+              HorizontalOptions="Fill">
 
-    </VerticalStackLayout>
+            <!--Page header frame-->
+            <Frame Grid.Row="0"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill"
+                   Padding="20"
+                   Margin="0"
+                   HasShadow="False"
+                   BackgroundColor="{StaticResource Primary3}">
+
+                <Label
+                    Text="GAME VENDORS"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    FontSize="32"
+                    FontFamily="CombatCritterLogo"/>
+
+            </Frame>
+
+            <!--Game Vendors-->
+            <Frame Grid.Row="1"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill"
+                   Margin="30"
+                   Padding="10"
+                   HasShadow="False"
+                   BackgroundColor="{StaticResource Primary2}">
+
+                <CollectionView ItemsSource="{Binding GameVendors}"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                SelectionMode="Single"
+                                SelectionChangedCommand="{Binding VendorSelectedCommand}"
+                                SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical"
+                                         Span="4"
+                                         VerticalItemSpacing="30"
+                                         HorizontalItemSpacing="30"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <StaticResource Key="VendorTemplate"/>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+            </Frame>
+        </Grid>
+    </Frame>
+
 </ContentView>

@@ -2,107 +2,320 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.UserBoardPage">
 
-    <Grid ColumnDefinitions="*, 2*"
-          RowDefinitions="Auto, *"
-          ColumnSpacing="20">
+    <Frame BackgroundColor="{StaticResource Primary1}"
+           HasShadow="False"
+           Padding="10"
+           Margin="6">
 
-        <SearchBar Grid.Column="0"
-                   Placeholder="Search users by username"
-                   TextChanged="OnTextChanged"
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="90*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+
+            </Grid.ColumnDefinitions>
+
+
+            <!--Page Header-->
+            <Frame Grid.Row="0"
+                   BackgroundColor="{StaticResource Primary4}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
+
+                <Label Text="USER BOARD"
+                       FontFamily="PageFont1"
+                       FontSize="32"/>
+
+            </Frame>
+
+            <!--User and Profile Frame-->
+            <Frame Grid.Row="1"
+                   BackgroundColor="Transparent"
+                   HasShadow="False"
                    HorizontalOptions="Fill"
-                   VerticalOptions="Start"/>
+                   VerticalOptions="Fill">
 
-        <ListView Grid.Column="0"
-                  Grid.Row="1"
-                  ItemsSource="{Binding FilteredUser}"
-                  SelectionMode="Single"
-                  SelectedItem="{Binding SelectedUser}"
-                  VerticalOptions="Fill"
-                  HasUnevenRows="True">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Frame Padding="10"
-                               Margin="5"
-                               CornerRadius="8"
-                               BorderColor="LightGray"
-                               HasShadow="False">
+                <Grid ColumnSpacing="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10*"/>
+                        <RowDefinition Height="90*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20*"/>
+                        <ColumnDefinition Width="80*"/>
+                    </Grid.ColumnDefinitions>
 
-                            <Grid
-                                HorizontalOptions="Fill"
-                                VerticalOptions="Center">
+                    <Label Grid.Row="0"
+                           Grid.Column="0"
+                           Text="Users"
+                           TextColor="white"
+                           TextDecorations="Underline"
+                           FontFamily="PageFont1"
+                           FontSize="30"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Center"/>
 
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0"
+                           Grid.Column="1"
+                           Text="Profile"
+                           TextColor="white"
+                           TextDecorations="Underline"
+                           FontFamily="PageFont1"
+                           FontSize="30"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
 
-                                <Label Text="{Binding Username}"
-                                       FontSize="Medium"
-                                       HorizontalOptions="Start"
-                                       VerticalOptions="Center"
-                                       Grid.Column="0"/>
+                    <!--Users List Frame-->
+                    <Frame Grid.Row="1"
+                           Grid.Column="0"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="Fill"
+                           BackgroundColor="{StaticResource Primary1}"
+                           Padding="0">
 
-                                <!-- Ellipsis Button for Options Menu -->
-                                <Button Text="…"
-                                        TextColor="Black"
-                                        FontSize="Large"
-                                        FontAttributes="Bold"
-                                        HorizontalOptions="End"
-                                        BackgroundColor="Transparent"
-                                        Grid.Column="1">
+                        <Grid RowDefinitions="Auto,*">
+                            <SearchBar Grid.Row="0"
+                                       Placeholder="Search users by username"
+                                       TextChanged="OnTextChanged"
+                                       HorizontalOptions="Fill"
+                                       VerticalOptions="Start"/>
 
-                                    <FlyoutBase.ContextFlyout>
-                                        <MenuFlyout>
-                                            <MenuFlyoutItem Text="Remove User"
-                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteUserCommand}"
-                                                            CommandParameter="{Binding .}"/>
-                                        </MenuFlyout>
-                                    </FlyoutBase.ContextFlyout>
-                                </Button>
-                            </Grid>
-                        </Frame>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                            <ActivityIndicator
+                                x:Name="LoadingIndicator"
+                                IsRunning="{Binding IsLoading}"
+                                IsVisible="{Binding IsLoading}"
+                                Color="{StaticResource Primary4}"
+                                VerticalOptions="Center"
+                                HorizontalOptions="Center"/>
 
-        <!--Selected User Profile-->
+                            <ListView
+                                Grid.Row="1"
+                                ItemsSource="{Binding FilteredUser}"
+                                SelectionMode="Single"
+                                SelectedItem="{Binding SelectedUser}"
+                                VerticalOptions="Fill"
+                                HasUnevenRows="True"
+                                BackgroundColor="Transparent">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <Frame Padding="10"
+                                                   Margin="10"
+                                                   HeightRequest="45"
+                                                   CornerRadius="8"
+                                                   BackgroundColor="{StaticResource Primary4}"
+                                                   HasShadow="False">
 
-        <Label Grid.Row="0"
-               Grid.Column="1"
-               Text="USER PROFILE"
-               FontFamily="DashboardHeadersFontStyle"
-               TextColor="Black"
-               HorizontalOptions="Center"
-               VerticalOptions="Center"/>
+                                                <Grid
+                                                    HorizontalOptions="Fill"
+                                                    VerticalOptions="Center">
 
-        <CollectionView Grid.Column="1"
-                        Grid.Row="1"
-                        ItemsSource="{Binding SelectedUserProfileDeckCards}"
-                        ItemSizingStrategy="MeasureFirstItem">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical"
-                                 Span="4"
-                                 VerticalItemSpacing="20"
-                                 HorizontalItemSpacing="30"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <StaticResource Key="CardTemplate"/>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
 
-        <ActivityIndicator
-            x:Name="LoadingIndicator"
-            IsRunning="{Binding IsLoading}"
-            IsVisible="{Binding IsLoading}"
-            Color="DarkBlue"
-            VerticalOptions="Center"
-            HorizontalOptions="Center"
-            Grid.RowSpan="2"
-            Grid.ColumnSpan="2"/>
+                                                    <Label Text="{Binding Username}"
+                                                           FontSize="Medium"
+                                                           HorizontalOptions="Start"
+                                                           VerticalOptions="Center"
+                                                           Grid.Column="0"/>
 
-    </Grid>
+
+                                                    <Button Text="…"
+                                                            TextColor="Black"
+                                                            FontSize="Large"
+                                                            FontAttributes="Bold"
+                                                            HorizontalOptions="End"
+                                                            BackgroundColor="Transparent"
+                                                            Grid.Column="1">
+
+                                                        <FlyoutBase.ContextFlyout>
+                                                            <MenuFlyout>
+                                                                <MenuFlyoutItem Text="Remove User"
+                                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteUserCommand}"
+                                                                                CommandParameter="{Binding .}"/>
+                                                            </MenuFlyout>
+                                                        </FlyoutBase.ContextFlyout>
+                                                    </Button>
+                                                </Grid>
+                                            </Frame>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+
+                        </Grid>
+
+                    </Frame>
+
+                    <!--User Profile Frame-->
+                    <Frame Grid.Row="1"
+                           Grid.Column="1"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="Fill"
+                           BackgroundColor="{StaticResource Primary1}">
+
+                        <ScrollView>
+                            <VerticalStackLayout>
+                                <!--This would contain user card inventory-->
+                                <Grid Padding="25">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Grid.Row="0"
+                                           Text="Inventory"
+                                           TextColor="White"
+                                           FontFamily="PageFont1"
+                                           FontSize="22.5"/>
+
+                                    <Frame Grid.Row="1"
+                                           HeightRequest="500"
+                                           BackgroundColor="{StaticResource Primary3}">
+
+                                        <Grid>
+                                            <!-- Message when there are no cards -->
+                                            <Label Text="User has no cards"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   IsVisible="{Binding SelectedUserCards.Count, Converter={StaticResource IsZeroConverter}}"/>
+
+                                            <!-- CollectionView for displaying cards -->
+                                            <CollectionView ItemsSource="{Binding SelectedUserCards}"
+                                                            IsVisible="{Binding SelectedUserCards.Count, Converter={StaticResource IsNotZeroConverter}}">
+                                                <CollectionView.ItemsLayout>
+                                                    <GridItemsLayout Orientation="Vertical"
+                                                                     Span="4"
+                                                                     VerticalItemSpacing="20"
+                                                                     HorizontalItemSpacing="30"/>
+                                                </CollectionView.ItemsLayout>
+                                                <CollectionView.ItemTemplate>
+                                                    <StaticResource Key="CardTemplate"/>
+                                                </CollectionView.ItemTemplate>
+                                            </CollectionView>
+                                        </Grid>
+                                    </Frame>
+                                </Grid>
+
+                                <!--This would contain the user Featured Deck-->
+                                <Grid Padding="25">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Grid.Row="0"
+                                           Text="Featured Deck"
+                                           TextColor="White"
+                                           FontFamily="PageFont1"
+                                           FontSize="22.5"/>
+
+                                    <Frame Grid.Row="1"
+                                           HeightRequest="400"
+                                           BackgroundColor="{StaticResource Primary3}">
+
+                                        <Grid>
+                                            <!-- Message when there are no cards -->
+                                            <Label Text="User has no featured deck cards"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   IsVisible="{Binding SelectedUserProfileDeckCards.Count, Converter={StaticResource IsZeroConverter}}"/>
+                                            <CollectionView
+                                                ItemsSource="{Binding SelectedUserProfileDeckCards}"
+                                                IsVisible="{Binding SelectedUserProfileDeckCards.Count, Converter={StaticResource IsNotZeroConverter}}"
+                                                ItemSizingStrategy="MeasureFirstItem">
+                                                <CollectionView.ItemsLayout>
+                                                    <GridItemsLayout Orientation="Vertical"
+                                                                     Span="4"
+                                                                     VerticalItemSpacing="20"
+                                                                     HorizontalItemSpacing="30"/>
+                                                </CollectionView.ItemsLayout>
+                                                <CollectionView.ItemTemplate>
+                                                    <StaticResource Key="CardTemplate"/>
+                                                </CollectionView.ItemTemplate>
+                                            </CollectionView>
+                                        </Grid>
+                                    </Frame>
+
+                                </Grid>
+
+                                <!--This would contain a user packs-->
+                                <Grid Padding="25">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Grid.Row="0"
+                                           Text="Packs"
+                                           TextColor="White"
+                                           FontFamily="PageFont1"
+                                           FontSize="22.5"/>
+
+
+                                    <Frame Grid.Row="1"
+                                           HeightRequest="300"
+                                           BackgroundColor="{StaticResource Primary3}">
+                                        <Grid>
+                                            <!-- Message when there are no packs -->
+                                            <Label Text="User has no Packs"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   IsVisible="{Binding SelectedUserPacks.Count, Converter={StaticResource IsZeroConverter}}"/>
+                                            <CollectionView
+                                                ItemsSource="{Binding SelectedUserPacks}"
+                                                IsVisible="{Binding SelectedUserPacks.Count, Converter={StaticResource IsNotZeroConverter}}"
+                                                ItemSizingStrategy="MeasureFirstItem">
+                                                <CollectionView.ItemsLayout>
+                                                    <GridItemsLayout Orientation="Vertical"
+                                                                     Span="4"
+                                                                     VerticalItemSpacing="20"
+                                                                     HorizontalItemSpacing="30"/>
+                                                </CollectionView.ItemsLayout>
+                                                <CollectionView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <!-- Binding to the Pack property -->
+                                                        <Grid>
+                                                            <Image Grid.Row="0"
+                                                                   Source="{Binding Pack.Image, Converter={StaticResource ImageUrlConverter}}"
+                                                                   WidthRequest="190"
+                                                                   HeightRequest="300"/>
+                                                            <Label Grid.Row="0"
+                                                                   Text="{Binding Pack.Name}"
+                                                                   VerticalOptions="Center"
+                                                                   HorizontalOptions="Center"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </CollectionView.ItemTemplate>
+                                            </CollectionView>
+                                        </Grid>
+
+                                    </Frame>
+
+
+                                </Grid>
+
+
+
+                            </VerticalStackLayout>
+
+                        </ScrollView>
+
+
+                    </Frame>
+                </Grid>
+            </Frame>
+
+        </Grid>
+
+
+
+
+    </Frame>
+
 
 
 </ContentPage>

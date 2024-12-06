@@ -2,7 +2,8 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary
         xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:local="clr-namespace:Combat_Critters_2._0">
 
         <!-- Hero page divider style -->
         <Style x:Key="VerticalDividerStyle"
@@ -116,6 +117,69 @@
 
                                 </StackLayout>
 
+                        </Frame>
+                </ContentView>
+        </DataTemplate>
+
+        <!-- Data template for currency -->
+        <DataTemplate x:Key="CurrencyTemplate">
+                <HorizontalStackLayout>
+                        <Image Source="currency.jpg"
+                               HeightRequest="50"
+                               WidthRequest="50"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+
+                        <Label Text="{Binding _coins}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+        </DataTemplate>
+
+        <!--Data template for Packs-->
+        <DataTemplate x:Key="PackTemplate">
+                <Grid>
+                        <Image Grid.Row="0"
+                               Source="{Binding Image, Converter={StaticResource ImageUrlConverter}}"
+                               WidthRequest="190"
+                               HeightRequest="300"/>
+                        <Label Grid.Row="0"
+                               Text="{Binding Name}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"/>
+                </Grid>
+        </DataTemplate>
+
+        <local:OfferTemplateSelector x:Key="OfferTemplate"
+                                     CardTemplate="{StaticResource CardTemplate}"
+                                     CurrencyTemplate="{StaticResource CurrencyTemplate}"
+                                     PackTemplate="{StaticResource PackTemplate}"/>
+
+        <!--Data template for Vendors-->
+        <DataTemplate x:Key="VendorTemplate">
+                <ContentView WidthRequest="200"
+                             HeightRequest="300">
+                        <Frame HorizontalOptions="Fill"
+                               VerticalOptions="Fill"
+                               BackgroundColor="#1E201E"
+                               Padding="30">
+
+                                <Grid RowDefinitions="0.7*, 0.3*"
+                                      HorizontalOptions="Fill"
+                                      VerticalOptions="Fill">
+
+                                        <Image Source="{Binding Image, Converter={StaticResource ImageUrlConverter}}"
+                                               Aspect="AspectFit"
+                                               Grid.Row="0"/>
+
+                                        <Frame Grid.Row="1"
+                                               HorizontalOptions="Fill"
+                                               VerticalOptions="Fill">
+                                                <Label Text="{Binding Name}"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center"/>
+                                        </Frame>
+                                </Grid>
                         </Frame>
                 </ContentView>
         </DataTemplate>

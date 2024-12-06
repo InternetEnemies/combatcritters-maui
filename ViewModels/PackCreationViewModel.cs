@@ -236,12 +236,9 @@ namespace Combat_Critters_2._0.ViewModels
                 for (int i = 0; i < 5; i++)
                 {
                     var packURL = root + $"pack{i}.png";
-                    GamePackImagesURL.Add(root + $"pack{i}.png");
+                    GamePackImagesURL.Add(packURL);
                 }
-                foreach (var url in GamePackImagesURL)
-                {
-                    Console.WriteLine(url);
-                }
+
 
             }
             finally
@@ -250,6 +247,11 @@ namespace Combat_Critters_2._0.ViewModels
             }
         }
 
+        public void SetImage(string image)
+        {
+            SelectedPackImage = image.Substring(image.LastIndexOf('/') + 1);
+
+        }
         private async Task CreateCommandAsync()
         {
             try
@@ -298,8 +300,9 @@ namespace Combat_Critters_2._0.ViewModels
                 var toast = Toast.Make("Access Denied. Contact Support.", ToastDuration.Short);
                 await toast.Show();
             }
-            catch (RestException)
+            catch (RestException e)
             {
+                Console.WriteLine(e.Message);
                 //Rest Exception
                 var toast = Toast.Make("System Error", ToastDuration.Short);
                 await toast.Show();

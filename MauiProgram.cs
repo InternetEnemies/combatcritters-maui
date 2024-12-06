@@ -17,11 +17,15 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                fonts.AddFont("MarkerFelt.ttc", "PageFont1");
+
+
                 fonts.AddFont("HeaderText.ttf", "CombatCritterLogo");
                 fonts.AddFont("Roboto-Regular.ttf", "CardFont1");
                 fonts.AddFont("MtgBold.ttf", "CardFront2");
                 fonts.AddFont("Chalkduster.ttf", "FlyoutItemFont");
                 fonts.AddFont("MarkerFelt.ttc", "DashboardHeadersFontStyle");
+                fonts.AddFont("codestyle.ttc", "Code");
             });
 
 

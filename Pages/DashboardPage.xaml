@@ -2,83 +2,236 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Combat_Critters_2._0.Pages.DashboardPage">
 
-    <Grid RowDefinitions="0.3*, 0.8*"
+    <Grid RowDefinitions="35*, 65*"
           ColumnDefinitions="*"
           VerticalOptions="Fill"
           HorizontalOptions="Fill">
 
         <Frame Grid.Row="0"
-               BackgroundColor="Black"
                HorizontalOptions="Fill"
+               BackgroundColor="Black"
                VerticalOptions="Fill"
                Padding="20"
-               Margin="20">
+               Margin="0">
 
-            <Label Text="{Binding Username, StringFormat='Hello Admin&#x0a;{0}!'}"
-                   FontSize="35"
-                   FontFamily="DashboardHeadersFontStyle"
-                   FontAttributes="Bold"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Start"
-                   TextColor=" White"
-                   Margin="0"/>
+            <Grid>
+                <Image Source="dashboardimage.png"
+                       Aspect="AspectFit"/>
 
+                <Label Text="{Binding Username, StringFormat='Hello Administrator&#x0a;{0}'}"
+                       FontSize="35"
+                       FontFamily="DashboardHeadersFontStyle"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start"
+                       TextColor=" White"
+                       Margin="0"/>
+            </Grid>
         </Frame>
 
         <Grid Grid.Row="1"
+              RowDefinitions="*, *"
               ColumnDefinitions="*, *"
               VerticalOptions="Fill"
-              HorizontalOptions="Fill">
+              HorizontalOptions="Fill"
+              BackgroundColor="Black">
 
-            <!-- Overview Frame -->
-            <Frame Grid.Column="0"
-                   CornerRadius="10"
-                   HorizontalOptions="Fill"
-                   VerticalOptions="Fill"
-                   Margin="20"
-                   Padding="10"
-                   BorderColor="Purple">
+            <!--Cards Carousel Frame-->
+            <Frame Grid.Row="0"
+                   Grid.RowSpan="3"
+                   Grid.Column="0"
+                   BackgroundColor="Transparent"
+                   BorderColor="{StaticResource Secondary1}"
+                   Margin="30">
+                <Grid>
+                    <ActivityIndicator
+                        x:Name="LoadingIndicator"
+                        IsRunning="{Binding IsLoading}"
+                        IsVisible="{Binding IsLoading}"
+                        Color="DarkBlue"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"/>
+                    <CarouselView ItemsSource="{Binding GameCards}"
+                                  PeekAreaInsets="120">
+                        <CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <ContentView HorizontalOptions="Center"
+                                             WidthRequest="400"
+                                             HeightRequest="600">
 
-                <VerticalStackLayout>
+                                    <Frame Style="{StaticResource CardFrameStyle}"
+                                           HorizontalOptions="Fill"
+                                           VerticalOptions="Fill"
+                                           WidthRequest="400"
+                                           CornerRadius="8">
+                                        <Frame.Triggers>
+                                            <DataTrigger TargetType="Frame"
+                                                         Binding="{Binding Rarity}"
+                                                         Value="0">
+                                                <Setter Property="Background"
+                                                        Value="{StaticResource CommonGradient}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Frame"
+                                                         Binding="{Binding Rarity}"
+                                                         Value="1">
+                                                <Setter Property="Background"
+                                                        Value="{StaticResource UncommonGradient}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Frame"
+                                                         Binding="{Binding Rarity}"
+                                                         Value="2">
+                                                <Setter Property="Background"
+                                                        Value="{StaticResource RareGradient}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Frame"
+                                                         Binding="{Binding Rarity}"
+                                                         Value="3">
+                                                <Setter Property="Background"
+                                                        Value="{StaticResource EpicGradient}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Frame"
+                                                         Binding="{Binding Rarity}"
+                                                         Value="4">
+                                                <Setter Property="Background"
+                                                        Value="{StaticResource LegendaryGradient}"/>
+                                            </DataTrigger>
+                                        </Frame.Triggers>
 
-                    <Label Text="OVERVIEW"
-                           TextColor="Black"
-                           FontAttributes="Bold"
-                           FontSize="30"
-                           HorizontalOptions="Center"
-                           FontFamily="DashboardHeadersFontStyle"/>
-                </VerticalStackLayout>
+                                        <StackLayout Orientation="Vertical">
+
+                                            <!-- Card Name -->
+                                            <Frame Padding="5"
+                                                   BackgroundColor="Black"
+                                                   Margin="0,0,0,1"
+                                                   HasShadow="False"
+                                                   HeightRequest="50">
+                                                <Label Text="{Binding Name}"
+                                                       FontFamily="MtgBold"
+                                                       FontSize="18"
+                                                       TextColor="White"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center"/>
+                                            </Frame>
+
+                                            <!-- Card Image -->
+                                            <Frame Padding="10"
+                                                   HasShadow="False"
+                                                   BackgroundColor="Transparent">
+                                                <Image Source="{Binding Image, Converter={StaticResource ImageUrlConverter}}"
+                                                       Aspect="AspectFit"
+                                                       HeightRequest="300"
+                                                       WidthRequest="200"/>
+                                            </Frame>
+
+                                            <!-- Card Description -->
+                                            <Frame BorderColor="Black"
+                                                   Padding="5"
+                                                   Margin="0,1,0,0"
+                                                   HasShadow="False">
+                                                <Label Text="{Binding Description}"
+                                                       FontSize="12"
+                                                       TextColor="Black"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center"/>
+                                            </Frame>
+
+                                        </StackLayout>
+
+                                    </Frame>
+                                </ContentView>
+                            </DataTemplate>
+                        </CarouselView.ItemTemplate>
+                    </CarouselView>
+
+                </Grid>
             </Frame>
 
             <!--Links Frame-->
-            <Frame Grid.Column="1"
+            <Frame Grid.Row="0"
+                   Grid.Column="1"
                    CornerRadius="10"
                    Padding="10"
                    HorizontalOptions="Fill"
-                   BorderColor="Purple"
-                   Margin="20">
+                   VerticalOptions="Fill"
+                   BorderColor="{StaticResource Secondary1}"
+                   BackgroundColor="white"
+                   Margin="30">
 
-                <VerticalStackLayout>
-                    <Label Text="LINKS"
-                           TextColor="Black"
+                <Grid RowDefinitions="*, *, *, *">
+                    <Label Grid.Row="0"
+                           Text="Quick Links"
+                           TextColor="black"
                            FontAttributes="Bold"
                            FontSize="30"
                            HorizontalOptions="Center"
                            FontFamily="DashboardHeadersFontStyle"/>
 
-                    <Button Text="Manage Users"
-                            TextColor="white"
-                            Margin="0,5"
-                            Clicked="OnManageUsersClicked"/>
-                    <Button Text="Create Cards"
-                            TextColor="white"
-                            Margin="0,5"/>
-                    <Button Text="Create Packs"
-                            TextColor="White"
-                            Margin="0,5"
-                            Clicked="OnCreatePacksClicked"/>
-                </VerticalStackLayout>
+                    <Button
+                        Grid.Row="1"
+                        Text="Manage Users"
+                        TextColor="Black"
+                        FontSize="18"
+                        BackgroundColor="{StaticResource Primary4}"
+                        Clicked="OnManageUsersClicked"
+                        WidthRequest="200"
+                        HeightRequest="30"
+                        HorizontalOptions="Center"/>
 
+                    <Button
+                        Grid.Row="2"
+                        Text="Create Packs"
+                        TextColor="Black"
+                        FontSize="18"
+                        BackgroundColor="{StaticResource Secondary4}"
+                        Clicked="OnCreatePacksClicked"
+                        WidthRequest="200"
+                        HeightRequest="30"
+                        HorizontalOptions="Center"/>
+
+                    <HorizontalStackLayout Grid.Row="3"
+                                           Spacing="10"
+                                           HorizontalOptions="Center">
+
+                        <Label Text="An InternetEnemies Production"
+                               TextColor="black"
+                               FontFamily="CombatCritterLogo"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+
+                        <Image Source="github.png"
+                               HeightRequest="30"
+                               WidthRequest="30"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding OpenGitHubCommand}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </HorizontalStackLayout>
+
+                </Grid>
+
+            </Frame>
+
+            <!-- Activity Frame -->
+            <Frame Grid.Row="1"
+                   Grid.Column="1"
+                   CornerRadius="10"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill"
+                   Margin="30"
+                   Padding="10"
+                   BackgroundColor="{StaticResource Primary3}">
+
+                <VerticalStackLayout>
+
+                    <Label Text="ACTIVITY"
+                           TextColor="Black"
+                           FontAttributes="Bold"
+                           FontSize="30"
+                           HorizontalOptions="Center"
+                           FontFamily="DashboardHeadersFontStyle"/>
+                </VerticalStackLayout>
             </Frame>
         </Grid>
     </Grid>
