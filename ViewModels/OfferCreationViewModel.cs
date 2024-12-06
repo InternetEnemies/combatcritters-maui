@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using Combat_Critters_2._0.Pages;
 using Combat_Critters_2._0.Pages.Popups;
 using Combat_Critters_2._0.Services;
 using CombatCrittersSharp.exception;
@@ -284,7 +285,8 @@ namespace Combat_Critters_2._0.ViewModels
                 //Send information to the backendservice
                 var offer = _backendService.CreateNewVendorOfferAsync(Vendor.Id, Int32.Parse(NewLevel), collectList, giveList[0]);
 
-                //Console.WriteLine($"Offer is {offer}");
+                var toast = Toast.Make("Offer Created Successfully", ToastDuration.Short);
+                await toast.Show();
 
             }
             catch (ArgumentException)
